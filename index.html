@@ -84,48 +84,75 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/images/1.PNG" alt="GitHub Logo"><br>Format: <img src="http://localhost:4000/images/1.PNG" alt="Alt Text"></p>
-
+        <p><img src="/images/Kubernetes.png" alt="kubernetes architecture"></p>
+<h2 id="准备机器"><a href="#准备机器" class="headerlink" title="准备机器"></a>准备机器</h2><ul>
+<li>可以通过vmware创建1台centos虚拟机，我用的是7.6版本，可以从官网下载<a href="https://www.centos.org/download/" target="_blank" rel="noopener">centos</a></li>
+<li>安装完成之后会发现网卡是禁用的，通过nmtui命令开启网卡,然后yum install -y net-tools安装网络工具</li>
+<li>需要提醒的是,下面所有的操作都是root用户</li>
+</ul>
+<h2 id="禁用防火墙"><a href="#禁用防火墙" class="headerlink" title="禁用防火墙"></a>禁用防火墙</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+<h2 id="安装-kubeadm-kubelet-kubectl-docker"><a href="#安装-kubeadm-kubelet-kubectl-docker" class="headerlink" title="安装 kubeadm, kubelet, kubectl, docker"></a>安装 kubeadm, kubelet, kubectl, docker</h2><ul>
+<li>参考<a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener">docker install</a>来安装最新版的docker</li>
+<li><p>设置kubernetes repository</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span><br><span class="line">exclude=kube*</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装k8s相关工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Set SELinux in permissive mode (effectively disabling it)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br><span class="line">sed -i &apos;s/^SELINUX=enforcing$/SELINUX=permissive/&apos; /etc/selinux/config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开机自启动kubernetes, docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable kubelet</span><br><span class="line">systemctl enable docker</span><br><span class="line">systemctl restart kubelet</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭swap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">vi /etc/fstab</span><br><span class="line">注释掉下面这一行永久关闭swap</span><br><span class="line">#/dev/mapper/centos-swap swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="clone这个vm生成两个新的work-node"><a href="#clone这个vm生成两个新的work-node" class="headerlink" title="clone这个vm生成两个新的work node"></a>clone这个vm生成两个新的work node</h1><h1 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl set-hostname &apos;k8smaster&apos;</span><br><span class="line">hostnamectl set-hostname &apos;node1&apos;</span><br><span class="line">hostnamectl set-hostname &apos;node2&apos;</span><br></pre></td></tr></table></figure>
+<h1 id="Initializing-your-master"><a href="#Initializing-your-master" class="headerlink" title="Initializing your master"></a>Initializing your master</h1><ul>
+<li><p>在master机器执行kubeadm init</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --pod-network-cidr=10.244.0.0/16</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>master上面更新/root/.bash_profile<br><strong>增加下面一行，source /root/.bash_profile 立即生效</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export KUBECONFIG=/etc/kubernetes/admin.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在master上 Installing a pod network add-on</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sysctl net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Once a pod network has been installed, you can confirm that it is working by checking that the CoreDNS pod is Running in the output of<br><strong>kubectl get pods –all-namespaces</strong></p>
+<ul>
+<li><p>work node上面更新/root/.bash_profile<br><strong>增加下面一行，source /root/.bash_profile 立即生效</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export KUBECONFIG=/etc/kubernetes/kubelet.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加node到cluster<br>刚刚kubeadm init执行后输出的join命令可以在另外两台work node上面跑，跑完之后 Run <strong>kubectl get nodes</strong> on the master to see this machine join.</p>
+</li>
+</ul>
+<h1 id="master上配置dashboard"><a href="#master上配置dashboard" class="headerlink" title="master上配置dashboard"></a>master上配置dashboard</h1><ul>
+<li><p>安装<a href="https://github.com/kubernetes/dashboard" target="_blank" rel="noopener">dashboard</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>create sample user<br>参考<a href="https://github.com/kubernetes/dashboard/wiki/Creating-sample-user" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/wiki/Creating-sample-user</a></p>
+</li>
+<li><p>使用NodePort来配置<br><a href="https://github.com/kubernetes/dashboard/wiki/Accessing-Dashboard---1.7.X-and-above#nodeport" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/wiki/Accessing-Dashboard---1.7.X-and-above#nodeport</a></p>
+</li>
+<li><p>得到dashboard端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n kube-system get service kubernetes-dashboard</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行下面命令得到dashboard跑在哪个node</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system -owide</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&lt;node-ip&gt;:&lt;nodePort&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>不过因为没有安全证书，所以chrome和ie禁止访问，只能通过Firefox增加exception来访问，后续可以研究下更好的访问dashboard方法</p>
+<h1 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kubeadm reset</span><br><span class="line">kubectl describe pods</span><br><span class="line">journalctl -u kubelet.service</span><br><span class="line">journalctl -xeu kubelet(查看日志)</span><br><span class="line">kubectl get pods --all-namespaces</span><br><span class="line">kubectl get pods -n kube-system -owide</span><br><span class="line">kubectl logs -n kube-system kubernetes-dashboard-56bcddb89b-wbcqg</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2018/12/24/kubernetes-cluster-setup/" data-id="cjq2glero000290tud5jxfqot" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="kubernetes-setup" class="article article-type-kubernetes" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/24/setup/" class="article-date">
-  <time datetime="2018-12-24T14:51:27.000Z" itemprop="datePublished">2018-12-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/24/setup/">setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/24/setup/" data-id="cjq2glerm000190tuoeqjugf2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -212,10 +239,6 @@
         
           <li>
             <a href="/2018/12/24/kubernetes-cluster-setup/">kubernetes cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/24/setup/">setup</a>
           </li>
         
           <li>
