@@ -15,7 +15,7 @@
 <meta property="og:description" content="准备机器 可以通过vmware创建1台centos虚拟机，我用的是7.6版本，可以从官网下载centos 接下来所有的操作都是基于root用户，且需要配置科学上网，否则会遇到安装失败, 因为中间可能会访问到google地址  配置网卡 安装完成之后执行nmcli d会发现网卡是禁用的，ipconfig命令执行不了 关于网络配置可以参考CentOS 7 minimal 版本安装后网络配置 简单来说">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/Kubernetes.png">
-<meta property="og:updated_time" content="2018-12-26T13:07:30.650Z">
+<meta property="og:updated_time" content="2018-12-26T13:55:36.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kubernetes cluster setup">
 <meta name="twitter:description" content="准备机器 可以通过vmware创建1台centos虚拟机，我用的是7.6版本，可以从官网下载centos 接下来所有的操作都是基于root用户，且需要配置科学上网，否则会遇到安装失败, 因为中间可能会访问到google地址  配置网卡 安装完成之后执行nmcli d会发现网卡是禁用的，ipconfig命令执行不了 关于网络配置可以参考CentOS 7 minimal 版本安装后网络配置 简单来说">
@@ -146,7 +146,11 @@
 </li>
 <li><p>加node到cluster<br>刚刚kubeadm init执行后输出的join命令可以在另外两台work node上面跑，跑完之后 Run <strong>kubectl get nodes</strong> on the master to see this machine join.</p>
 </li>
-<li><p>总结<br>至此，执行kubectl get pods –all-namespaces可能会报错，可能是网络的问题， 通过journalctl -xeu kubelet查看相关日志，我是通过重启服务器来解决的</p>
+<li><p>总结</p>
+<ol>
+<li>至此，执行kubectl get pods –all-namespaces可能会报错，可能是网络的问题， 通过journalctl -xeu kubelet查看相关日志，我是通过重启服务器来解决的</li>
+<li>建议重启的时候先启动work node，最后启动master，然后等待5分钟执行kubectl get pods</li>
+</ol>
 </li>
 </ul>
 <h2 id="master上配置dashboard"><a href="#master上配置dashboard" class="headerlink" title="master上配置dashboard"></a>master上配置dashboard</h2><ul>
