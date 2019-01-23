@@ -5,17 +5,17 @@
   
 
   
-  <title>mengxu</title>
+  <title>No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="mengxu">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="mengxu">
+<meta property="og:title" content="No pains,no gains">
+<meta property="og:url" content="https://mengxu2018.github.io/index.html">
+<meta property="og:site_name" content="No pains,no gains">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mengxu">
+<meta name="twitter:title" content="No pains,no gains">
   
-    <link rel="alternate" href="/atom.xml" title="mengxu" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">mengxu</a>
+        <a href="/" id="logo">No pains,no gains</a>
       </h1>
       
     </div>
@@ -54,13 +54,177 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
       </div>
     </div>
   </div>
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/23/puppeteer-centos7-setup/" class="article-date">
+  <time datetime="2019-01-23T15:41:46.474Z" itemprop="datePublished">2019-01-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
+<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/23/puppeteer-centos7-setup/" data-id="cjr9bpr2e0004xcjia9r862ik" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
+  <time datetime="2019-01-21T04:55:37.309Z" itemprop="datePublished">2019-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java"><a href="#java" class="headerlink" title="java"></a>java</h2><p>分组捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String line = &quot;This order was placed for QT3000! OK?&quot;;</span><br><span class="line">     Pattern pattern = Pattern.compile(&quot;(.*?)(\\d+)(.*)&quot;);</span><br><span class="line">     Matcher matcher = pattern.matcher(line);</span><br><span class="line"></span><br><span class="line">     while (matcher.find()) &#123;</span><br><span class="line">         System.out.println(&quot;group 1: &quot; + matcher.group(1));</span><br><span class="line">         System.out.println(&quot;group 2: &quot; + matcher.group(2));</span><br><span class="line">         System.out.println(&quot;group 3: &quot; + matcher.group(3));</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//匹配str中所有字符串hello，这时str中3个hello都能匹配上，通过下面打印的匹配上的字符串的位置可以看出</span><br><span class="line">Pattern p=Pattern.compile(&quot;hello&quot;);</span><br><span class="line">Matcher m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且该字符串是在开头的位置===========&quot;);</span><br><span class="line">// ^表示匹配字符串的开头，但是如何在[]里面则表示非，如[^a-f] 不匹配a-f</span><br><span class="line">// &quot;hello&quot;和&quot;^hello&quot;的区别就是：前者匹配时不管是不是在开头位置，只要能匹配就行，后者则是不但要能匹配而且还要是在开头的位置。这时str中3个hello只有第1个能匹配上。</span><br><span class="line">p=Pattern.compile(&quot;^hello&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">System.out.println(&quot;is:&quot; + m.matches());</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置xxx：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//这时str中两个java都能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且是该字符串是在末尾的位置===========&quot;);</span><br><span class="line">//这时str中两个java只有第2个才能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java$&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 这是整个匹配，直接是String的方法</span><br><span class="line">String test = &quot;http://yahoo.com&quot;;</span><br><span class="line">System.out.println(test.matches(&quot;^(http|https|ftp)://.*$&quot;));</span><br><span class="line"></span><br><span class="line">// 这个是编译过的表达式，也是整个匹配</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">System.out.println(&quot;m2:&quot; + m2.matches());</span><br><span class="line"></span><br><span class="line">// 这个是捕获group，取第一个group, index从1开始</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">if (m2.find()) &#123;</span><br><span class="line">    System.out.println(&quot;g1:&quot; + m2.group(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个是group(0)，没有小括号分组，从前到后匹配到什么算什么</span><br><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjr9bpr2i0008xcjikuxe0idm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T08:27:38.111Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
+<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
+<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
+</ul>
+<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
+<li>systemctl start mongod.service</li>
+<li>systemctl enable mongod.service</li>
+</ul>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjr9bpr2g0006xcjiwsyf88br" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/redis5-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T05:52:11.086Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server</span><br></pre></td></tr></table></figure>
+<h1 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/redis5-centos7-setup/" data-id="cjr9bpr2h0007xcjiz737pvgm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
@@ -109,7 +273,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/16/mysql8-centos7-setup/" data-id="cjqzcgxdx0000w4jis5v8m9t7" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/16/mysql8-centos7-setup/" data-id="cjr9bpr2p0009xcjie8k5nqtm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -146,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/16/docker-command/" data-id="cjqz8ak300000j8ji5evs2db2" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjr9bpr230000xcjii75jy2wm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/docker-network/" data-id="cjqz8ak370001j8jihmvt9zpa" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjr9bpr280001xcjib12nn34x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -228,7 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjqz8ak3c0003j8jibvkmn04z" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjr9bpr2c0003xcji28xh1y1v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -267,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/06/k8s-deploy-application/" data-id="cjqz8ak390002j8ji681a8a25" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjr9bpr2b0002xcji7l8sl4ms" class="article-share-link">Share</a>
       
       
     </footer>
@@ -389,7 +553,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/24/kubernetes-cluster-setup/" data-id="cjq53s1900000xwtut5n80n5t" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2018/12/24/kubernetes-cluster-setup/" data-id="cjr9bpr2f0005xcji6i3exn7e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -430,23 +594,23 @@
       <ul>
         
           <li>
+            <a href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
+          </li>
+        
+          <li>
             <a href="/2019/01/16/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/16/docker-command/">docker command</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/09/docker-network/">docker network</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/06/k8s-deploy-application/">k8s deploy sample apps</a>
           </li>
         
       </ul>
@@ -461,7 +625,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 John Doe<br>
+      &copy; 2019 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
