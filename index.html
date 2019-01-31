@@ -62,6 +62,120 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/ant-design-sample/" class="article-date">
+  <time datetime="2019-01-31T15:57:44.951Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/ant-design-sample/">ant design sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用create-react-app创建的项目， react-router作为路由创建了sidebar, 用ant-design创建的表格，<br>后续会用springboot作为后台，增加crud的功能<br><a href="https://github.com/mengxu2018/ant-design-sample.git" target="_blank" rel="noopener">https://github.com/mengxu2018/ant-design-sample.git</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/ant-design-sample/" data-id="cjrkt0hap0000fsjievz8kv27" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/springboot-docker/" class="article-date">
+  <time datetime="2019-01-31T15:40:21.563Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/springboot-docker/">sprintboot docker deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/springboot-docker/" data-id="cjrksje9c0000joji85fe78ww" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/windows10-disable-update/" class="article-date">
+  <time datetime="2019-01-31T11:28:59.160Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/windows10-disable-update/">win10 disable auto-update</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/windows10-disable-update/" data-id="cjrkjc6z50000zkjiv4k6ekay" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nodejs-module.export" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/26/nodejs-module.export/" class="article-date">
@@ -368,127 +482,6 @@
 
 
   
-    <article id="post-docker-network" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/09/docker-network/" class="article-date">
-  <time datetime="2019-01-09T14:37:23.453Z" itemprop="datePublished">2019-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/09/docker-network/">docker network</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="eth0-vethxxx"><a href="#eth0-vethxxx" class="headerlink" title="eth0, vethxxx"></a>eth0, vethxxx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit --name alpine1 alpine ash</span><br><span class="line">docker exec -it 581c07020bd0 ash</span><br></pre></td></tr></table></figure>
-<p><em><a href="https://kairen.github.io/2016/01/05/container/docker-network/" target="_blank" rel="noopener">https://kairen.github.io/2016/01/05/container/docker-network/</a></em></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjrd1nliw0000soji24rsy9sd" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-k8s-port-targetport-nodeport-service" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/08/k8s-port-targetport-nodeport-service/" class="article-date">
-  <time datetime="2019-01-08T13:29:44.764Z" itemprop="datePublished">2019-01-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>总的来说，port和nodePort都是service的端口，前者暴露给集群内客户访问服务，后者暴露给集群外客户访问服务。从这两个端口到来的数据都需要经过反向代理kube-proxy流入后端pod的targetPort，从而到达pod上的容器内。</em></p>
-<p><em>nodeport只有 type为NodePort类型的的service用</em></p>
-<p>容易混淆的概念：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1、NodePort和port</span><br><span class="line"></span><br><span class="line">前者是将服务暴露给外部用户使用并在node上、后者则是为内部组件相互通信提供服务的，他们是在service上的端口。</span><br><span class="line"></span><br><span class="line">2、targetPort</span><br><span class="line">targetPort是pod上的端口，用来将pod内的container与外部进行通信的端口</span><br><span class="line"></span><br><span class="line">3、port、NodePort、ContainerPort和targetPort在哪儿？</span><br><span class="line"></span><br><span class="line">port在service上，负责处理对内的通信，clusterIP:port</span><br><span class="line"></span><br><span class="line">NodePort在node上，负责对外通信，NodeIP:NodePort</span><br><span class="line"></span><br><span class="line">ContainerPort在容器上，用于被pod绑定</span><br><span class="line"></span><br><span class="line">targetPort在pod上、负责与kube-proxy代理的port和Nodeport数据进行通信</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">      kind: Service</span><br><span class="line">      metadata:</span><br><span class="line">        name: test-service</span><br><span class="line">      spec:</span><br><span class="line">        ports:</span><br><span class="line">        - port: 8080</span><br><span class="line">          targetPort: 8170</span><br><span class="line">          nodePort: 33333</span><br><span class="line">          protocol: TCP </span><br><span class="line">        selector:</span><br><span class="line">          component: test-service-app</span><br></pre></td></tr></table></figure>
-<p>The port is 8080 which represents that test-service can be accessed by other services in the cluster at port 8080.<br>The targetPort is 8170 which represents the test-service is actually running on port 8170 on pods<br>The nodePort is 33333 which represents that test-service can be accessed via kube-proxy on port 33333.<br><strong>pod运行在targetPort为8170不代表就可以通过这个端口访问，还是得通过port的8080来访问他(cluster内部)，或者nodePort的33333来访问（外部）</strong></p>
-<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h2><p><em>nodeport是外部机器访问的端口，这个是刚刚到kube-proxy的时候，还没有进入具体的pod</em><br><em>targetport是具体的port的监听端口，比如mysql的3306，就是dockerfile里面的expose端口</em><br><em>port是内部pod直接的访问端口，这个端口也是刚刚到kube-proxy的时候，还没有进入具体的pod，这个跟nodeport一个级别，<br>比如mysql的targetport虽然是3306，但是cluster里面的pod可能通过33306来访问mysql pod</em></p>
-<p><em>Kubernetes 分配给 Service 一个固定 IP，这是一个虚拟 IP （也称为 ClusterIP），并不是一个真实存在的IP,而是由 Kubernetes 虚拟出来的。虚拟 IP 的范围通过 Kubernetes API Service 的启动参数–service-cluster-ip-range=10.254.0.0/16 配置</em><br><em>虚拟 IP 属于 Kubernetes 内部的虚拟网络，外部是寻址不到的，在 Kubernetes 系统中，实际上是由 Kubernetes Proxy 组件负责实现虚拟 IP 路由和转发的，所以在 Kubernetes Node 中我们都运行了 Kubernetes Proxy，从而在容器覆盖网络之上又实现了 Kubernetes 层级的虚拟转发网络。</em></p>
-<p><em><a href="https://blog.csdn.net/xinghun_4/article/details/50492041" target="_blank" rel="noopener">https://blog.csdn.net/xinghun_4/article/details/50492041</a></em><br><em><a href="https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291" target="_blank" rel="noopener">https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291</a></em><br><em><a href="https://ieevee.com/tech/2017/01/20/k8s-service.html" target="_blank" rel="noopener">https://ieevee.com/tech/2017/01/20/k8s-service.html</a></em><br><em><a href="https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition" target="_blank" rel="noopener">https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition</a></em><br><em><a href="https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170" target="_blank" rel="noopener">https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170</a></em><br><em><a href="https://juejin.im/post/5bd6c14be51d455b7461cb46" target="_blank" rel="noopener">https://juejin.im/post/5bd6c14be51d455b7461cb46</a></em></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjrd1nlj70005sojie0r43cnw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-k8s-deploy-application" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/06/k8s-deploy-application/" class="article-date">
-  <time datetime="2019-01-06T09:48:18.621Z" itemprop="datePublished">2019-01-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/06/k8s-deploy-application/">k8s deploy sample apps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Create-a-backend-and-frontend-app"><a href="#Create-a-backend-and-frontend-app" class="headerlink" title="Create a backend and frontend app"></a>Create a backend and frontend app</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/</span><br></pre></td></tr></table></figure>
-<p><em>please do not forget to change the type to NODEPORT for frontend application.</em><br><em>the deployment and service can be included in a single file or in separated file</em></p>
-<h3 id="Create-a-python-app-which-can-print-the-local-ip"><a href="#Create-a-python-app-which-can-print-the-local-ip" class="headerlink" title="Create a python app which can print the local ip"></a>Create a python app which can print the local ip</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://itnext.io/install-kubernetes-on-bare-metal-centos7-fba40e9bb3de</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjrd1nlj30002sojiv8k9jj97" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -525,23 +518,23 @@
       <ul>
         
           <li>
+            <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/31/springboot-docker/">sprintboot docker deployment</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/31/windows10-disable-update/">win10 disable auto-update</a>
+          </li>
+        
+          <li>
             <a href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
           </li>
         
           <li>
             <a href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
           </li>
         
       </ul>
