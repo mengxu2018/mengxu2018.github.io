@@ -62,6 +62,44 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/17/elasticsearch-start/" class="article-date">
+  <time datetime="2019-02-17T07:55:39.066Z" itemprop="datePublished">2019-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.6.0.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.6.0-linux-x86_64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you want to access kibana remotely, please update `server.host` to real IP in</span></span><br><span class="line"><span class="comment"># `kibana-6.6.0-linux-x86_64/config/kibana.yml` like 192.168.77.140</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You should run elasticsearch in non-root user</span></span><br><span class="line">bin/elasticsearch -d</span><br><span class="line">bin/kibana or `nohup bin/kibana &amp;`</span><br><span class="line"></span><br><span class="line"><span class="comment"># now you can access http://192.168.77.140:5601</span></span><br></pre></td></tr></table></figure>
+<h2 id="elasticsearch-http-verb"><a href="#elasticsearch-http-verb" class="headerlink" title="elasticsearch http verb"></a>elasticsearch http verb</h2><p>elasticsearch 按照HTTP协议下RestFul框架的交互格式就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /uri 创建</span><br><span class="line">DELETE /uri/xxx 删除</span><br><span class="line">PUT /uri/xxx 更新或创建</span><br><span class="line">GET /uri/xxx 查看</span><br></pre></td></tr></table></figure></p>
+<h2 id="sample-case"><a href="#sample-case" class="headerlink" title="sample case"></a>sample case</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_doc/1?pretty</span><br><span class="line"></span><br><span class="line">DELETE /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/2?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /customer/_doc?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_search?q=Doe</span><br><span class="line"></span><br><span class="line">GET /customer/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这种更新是删除再增加，version变化了</span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这样更新是真的更新，version不变</span><br><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get all index</span><br><span class="line">curl &quot;localhost:9200/_cat/indices?v&quot;</span><br><span class="line"></span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=*&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=Fitzgerald&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line"></span><br><span class="line">//查询某个index</span><br><span class="line">GET /twitter/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询所有的index</span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;from&quot; : 0, &quot;size&quot; : 10,</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/02/17/elasticsearch-start/" data-id="cjs6yab46000054jiyham925x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/31/ant-design-sample/" class="article-date">
@@ -445,43 +483,6 @@
 
 
   
-    <article id="post-docker-command" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/16/docker-command/" class="article-date">
-  <time datetime="2019-01-16T13:35:57.886Z" itemprop="datePublished">2019-01-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/16/docker-command/">docker command</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name test  debian</span><br><span class="line">docker restart test</span><br><span class="line">docker container ls</span><br><span class="line">docker exec -it 28df3d5895a4 bash</span><br><span class="line">docker container  ls --all</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjrd1nlj10001sojifo7emut4" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -505,7 +506,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -516,6 +517,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
+          </li>
         
           <li>
             <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
@@ -531,10 +536,6 @@
         
           <li>
             <a href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
           </li>
         
       </ul>
