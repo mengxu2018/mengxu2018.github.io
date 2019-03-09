@@ -62,6 +62,147 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T08:27:38.111Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
+<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
+<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
+</ul>
+<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
+<li>systemctl start mongod.service</li>
+<li>systemctl enable mongod.service</li>
+</ul>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjrd1nlj40003sojiwm4shkgn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/redis5-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T05:52:11.086Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server</span><br></pre></td></tr></table></figure>
+<h1 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/redis5-centos7-setup/" data-id="cjrd1nljb0009soji5wldtvy6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/16/mysql8-centos7-setup/" class="article-date">
+  <time datetime="2019-01-16T14:57:05.336Z" itemprop="datePublished">2019-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/16/mysql8-centos7-setup/">mysql8 centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
+<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
+<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a></li>
+<li>yum install mysql-community-server</li>
+</ul>
+<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
+<li>systemctl start mysqld.service ## use restart after update</li>
+<li>systemctl enable mysqld.service</li>
+</ul>
+<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
+<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
+<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>但是至此是不能从远程访问此mysqld</p>
+<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
+<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/16/mysql8-centos7-setup/" data-id="cjrd1nlj80006sojiwmyfm9oe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-docker-command" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/16/docker-command/" class="article-date">
@@ -365,7 +506,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -378,23 +519,23 @@
       <ul>
         
           <li>
+            <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/07/file-io/">IO</a>
+          </li>
+        
+          <li>
             <a href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
           </li>
         
           <li>
             <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/31/springboot-docker/">sprintboot docker deployment</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/31/windows10-disable-update/">win10 disable auto-update</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
           </li>
         
       </ul>

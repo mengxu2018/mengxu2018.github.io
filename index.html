@@ -62,6 +62,154 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/09/httpd-tomcat/" class="article-date">
+  <time datetime="2019-03-09T09:48:44.436Z" itemprop="datePublished">2019-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="install-apache-on-VM1"><a href="#install-apache-on-VM1" class="headerlink" title="install apache on VM1"></a>install apache on VM1</h2><p>yum install -y httpd</p>
+<h2 id="start-apache"><a href="#start-apache" class="headerlink" title="start apache"></a>start apache</h2><p>sudo systemctl start httpd</p>
+<h2 id="starts-at-boot"><a href="#starts-at-boot" class="headerlink" title="starts at boot"></a>starts at boot</h2><p>sudo systemctl enable httpd</p>
+<h2 id="install-apxs"><a href="#install-apxs" class="headerlink" title="install apxs"></a>install apxs</h2><p>yum install httpd-devel</p>
+<ul>
+<li>find / -name apxs</li>
+<li>which apxs  (this file path will be used in ./configure below)</li>
+</ul>
+<h2 id="install-gcc"><a href="#install-gcc" class="headerlink" title="install gcc"></a>install gcc</h2><p>yum install -y gcc*<br>yum install autoconf<br>yum install libtool</p>
+<h2 id="install-mod-jk"><a href="#install-mod-jk" class="headerlink" title="install mod_jk"></a>install mod_jk</h2><p>wget <a href="http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz" target="_blank" rel="noopener">http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz</a><br>tar -xf tomcat-connectors-1.2.46-src.tar.gz<br>cd tomcat-connectors-1.2.46-src/native<br>./buildconf.sh<br>./configure –with-apxs=/usr/bin/apxs<br>make &amp;&amp; make install<br>(find / -name mod_jk.so<br>/usr/lib64/httpd/modules/mod_jk.so)</p>
+<h2 id="Configure-httpd-conf"><a href="#Configure-httpd-conf" class="headerlink" title="Configure httpd.conf"></a>Configure httpd.conf</h2><p>Now that you’ve installed mod_jk, you need to configure it in your httpd.conf file so that you can use it.<br>You can find httpd.conf in the ‘conf’ directory of your Apache HTTPD home folder.<br>If httpd in installed by ‘yum install httpd’, this file is<br><code>/etc/httpd/conf/httpd.conf</code></p>
+<p>mod_jk requires two entities:</p>
+<ul>
+<li>mod_jk.xxx - The Apache HTTP Server module, depending on your operating system, it will be mod_jk.so, mod_jk.nlm or MOD_JK.SRVPGM (see the build section).</li>
+<li>workers.properties - A file that describes the host(s) and port(s) used by the workers (Tomcat processes). A sample workers.properties can be found under the conf directory in the source download.</li>
+</ul>
+<p>The configuration provided below, based on the Tomcat documentation, is the minimum configuration required for mod_jk to run correctly.</p>
+<p><code>#Load mod_jk module</code><br>LoadModule    jk_module  /usr/lib64/httpd/modules/mod_jk.so<br><code># Add the module (activate this lne for Apache 1.3)</code><br><code># AddModule     mod_jk.c</code><br><code># Where to find workers.properties</code><br>JkWorkersFile /etc/httpd/conf/workers.properties<br><code># Where to put jk shared memory</code><br>JkShmFile     /var/log/httpd/mod_jk.shm<br><code># Where to put jk logs</code><br>JkLogFile     /var/log/httpd/mod_jk.log<br><code># Set the jk log level [debug/error/info]</code><br>JkLogLevel    info<br><code># Send requests for context /examples to worker named worker1</code><br><code># 至于为什么 balancer，https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</code><br>JkMount  /playbook/* balancer</p>
+<h2 id="set-up-two-tomcat-on-VM2-VM3"><a href="#set-up-two-tomcat-on-VM2-VM3" class="headerlink" title="set up two tomcat on VM2, VM3"></a>set up two tomcat on VM2, VM3</h2><p>wget <a href="http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz" target="_blank" rel="noopener">http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz</a></p>
+<h2 id="Configure-workers-properties"><a href="#Configure-workers-properties" class="headerlink" title="Configure workers.properties"></a>Configure workers.properties</h2><p>The workers.properties file defines a list of Tomcat ‘workers’ to which Apache HTTPD can pass requests.<br>8009 is the ajp port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">worker.node1.host=192.168.77.131</span><br><span class="line">worker.node1.port=8009</span><br><span class="line"></span><br><span class="line">worker.node2.host=192.168.77.132</span><br><span class="line">worker.node2.port=8009</span><br></pre></td></tr></table></figure></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>start two tomcat<br>可以在两台tomcat里面都放一个playbook<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node1<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node2<br>systemctl restart httpd<br>现在访问<br><code>http://192.168.77.130/playbook/1.txt</code><br>会发现I am node1和I am node2交替出现<br>如果强制停止一台tomcat，整个服务不会中断</p>
+<h2 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h2><p>systemctl start httpd<br>systemctl restart/start/status httpd<br><a href="https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html</a><br><a href="https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration" target="_blank" rel="noopener">https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/workers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/workers.html</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/" data-id="cjsyoem2u0000zsjitpb5btcz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/09/spring-jpa/" class="article-date">
+  <time datetime="2019-03-09T07:54:45.869Z" itemprop="datePublished">2019-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/09/spring-jpa/">spring jpa</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
+<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
+</li>
+<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
+</li>
+<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
+</li>
+<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
+</li>
+<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
+</li>
+<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
+</li>
+<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
+</li>
+<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/09/spring-jpa/" data-id="cjt1ctxkc0000fkjiiyy0yauf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-file-io" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/07/file-io/" class="article-date">
+  <time datetime="2019-03-07T13:38:31.056Z" itemprop="datePublished">2019-03-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/07/file-io/">IO</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sample-code-charset-related"><a href="#sample-code-charset-related" class="headerlink" title="sample code, charset related"></a>sample code, charset related</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import com.google.common.io.Files;</span><br><span class="line"></span><br><span class="line">import java.io.*;</span><br><span class="line">import java.nio.charset.Charset;</span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* https://www.zhihu.com/question/27562173</span><br><span class="line">* https://www.oracle.com/technetwork/articles/javase/supplementary-142654.html</span><br><span class="line">*</span><br><span class="line">* https://www.baeldung.com/java-write-to-file</span><br><span class="line">*/</span><br><span class="line">public class Test &#123;</span><br><span class="line">   public  static void main(String[] s) throws IOException &#123;</span><br><span class="line">       // print os default charset</span><br><span class="line">       Charset.defaultCharset().name();</span><br><span class="line">       System.out.println( Charset.defaultCharset().name());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // below ascii charset will be garbled code.</span><br><span class="line">       FileOutputStream fos = new FileOutputStream(&quot;c:/temp/abc.txt&quot;);</span><br><span class="line">       fos.write(&quot;我的&quot;.getBytes(StandardCharsets.US_ASCII));</span><br><span class="line"></span><br><span class="line">       // below will be right</span><br><span class="line">       fos.write(&quot;中国&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        *</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        */</span><br><span class="line">       Writer out = new BufferedWriter(new OutputStreamWriter(</span><br><span class="line">               new FileOutputStream(&quot;c:\\temp\\test.txt&quot;), StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">       out.append(&quot;Website UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;你是 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;我的 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out.flush();</span><br><span class="line">       out.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        * append a String to the existing file:</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        * but this way can not specify charset</span><br><span class="line">        */</span><br><span class="line">       Writer out2 = new BufferedWriter(new FileWriter(&quot;c:/temp/test2.txt&quot;, true));</span><br><span class="line"></span><br><span class="line">       out2.append(&quot;Website2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;你是2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;我的2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out2.flush();</span><br><span class="line">       out2.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // java 7 write string to file</span><br><span class="line">       Files.write(&quot;我的&quot;, new File(&quot;c:/temp/test3.txt&quot;), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/07/file-io/" data-id="cjsyoem340001zsjiurl76o6y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/02/17/elasticsearch-start/" class="article-date">
@@ -342,147 +490,6 @@
 
 
   
-    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
-  <time datetime="2019-01-17T08:27:38.111Z" itemprop="datePublished">2019-01-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
-<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
-<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
-<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
-</ul>
-<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
-<li>systemctl start mongod.service</li>
-<li>systemctl enable mongod.service</li>
-</ul>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjrd1nlj40003sojiwm4shkgn" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/17/redis5-centos7-setup/" class="article-date">
-  <time datetime="2019-01-17T05:52:11.086Z" itemprop="datePublished">2019-01-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server</span><br></pre></td></tr></table></figure>
-<h1 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/redis5-centos7-setup/" data-id="cjrd1nljb0009soji5wldtvy6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/16/mysql8-centos7-setup/" class="article-date">
-  <time datetime="2019-01-16T14:57:05.336Z" itemprop="datePublished">2019-01-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/16/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
-<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
-<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a></li>
-<li>yum install mysql-community-server</li>
-</ul>
-<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
-<li>systemctl start mysqld.service ## use restart after update</li>
-<li>systemctl enable mysqld.service</li>
-</ul>
-<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
-<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
-<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
-<p>但是至此是不能从远程访问此mysqld</p>
-<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/16/mysql8-centos7-setup/" data-id="cjrd1nlj80006sojiwmyfm9oe" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -506,7 +513,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -519,23 +526,23 @@
       <ul>
         
           <li>
+            <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/07/file-io/">IO</a>
+          </li>
+        
+          <li>
             <a href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
           </li>
         
           <li>
             <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/31/springboot-docker/">sprintboot docker deployment</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/31/windows10-disable-update/">win10 disable auto-update</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
           </li>
         
       </ul>

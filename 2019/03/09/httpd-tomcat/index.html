@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>httpd tomcat | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="install apache on VM1yum install -y httpd start apachesudo systemctl start httpd starts at bootsudo systemctl enable httpd install apxsyum install httpd-devel  find / -name apxs which apxs  (this file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="httpd tomcat">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="install apache on VM1yum install -y httpd start apachesudo systemctl start httpd starts at bootsudo systemctl enable httpd install apxsyum install httpd-devel  find / -name apxs which apxs  (this file">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-09T09:48:44.473Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="httpd tomcat">
+<meta name="twitter:description" content="install apache on VM1yum install -y httpd start apachesudo systemctl start httpd starts at bootsudo systemctl enable httpd install apxsyum install httpd-devel  find / -name apxs which apxs  (this file">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/09/httpd-tomcat/" class="article-date">
+  <time datetime="2019-03-09T09:48:44.436Z" itemprop="datePublished">2019-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      httpd tomcat
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="install-apache-on-VM1"><a href="#install-apache-on-VM1" class="headerlink" title="install apache on VM1"></a>install apache on VM1</h2><p>yum install -y httpd</p>
+<h2 id="start-apache"><a href="#start-apache" class="headerlink" title="start apache"></a>start apache</h2><p>sudo systemctl start httpd</p>
+<h2 id="starts-at-boot"><a href="#starts-at-boot" class="headerlink" title="starts at boot"></a>starts at boot</h2><p>sudo systemctl enable httpd</p>
+<h2 id="install-apxs"><a href="#install-apxs" class="headerlink" title="install apxs"></a>install apxs</h2><p>yum install httpd-devel</p>
+<ul>
+<li>find / -name apxs</li>
+<li>which apxs  (this file path will be used in ./configure below)</li>
+</ul>
+<h2 id="install-gcc"><a href="#install-gcc" class="headerlink" title="install gcc"></a>install gcc</h2><p>yum install -y gcc*<br>yum install autoconf<br>yum install libtool</p>
+<h2 id="install-mod-jk"><a href="#install-mod-jk" class="headerlink" title="install mod_jk"></a>install mod_jk</h2><p>wget <a href="http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz" target="_blank" rel="noopener">http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz</a><br>tar -xf tomcat-connectors-1.2.46-src.tar.gz<br>cd tomcat-connectors-1.2.46-src/native<br>./buildconf.sh<br>./configure –with-apxs=/usr/bin/apxs<br>make &amp;&amp; make install<br>(find / -name mod_jk.so<br>/usr/lib64/httpd/modules/mod_jk.so)</p>
+<h2 id="Configure-httpd-conf"><a href="#Configure-httpd-conf" class="headerlink" title="Configure httpd.conf"></a>Configure httpd.conf</h2><p>Now that you’ve installed mod_jk, you need to configure it in your httpd.conf file so that you can use it.<br>You can find httpd.conf in the ‘conf’ directory of your Apache HTTPD home folder.<br>If httpd in installed by ‘yum install httpd’, this file is<br><code>/etc/httpd/conf/httpd.conf</code></p>
+<p>mod_jk requires two entities:</p>
+<ul>
+<li>mod_jk.xxx - The Apache HTTP Server module, depending on your operating system, it will be mod_jk.so, mod_jk.nlm or MOD_JK.SRVPGM (see the build section).</li>
+<li>workers.properties - A file that describes the host(s) and port(s) used by the workers (Tomcat processes). A sample workers.properties can be found under the conf directory in the source download.</li>
+</ul>
+<p>The configuration provided below, based on the Tomcat documentation, is the minimum configuration required for mod_jk to run correctly.</p>
+<p><code>#Load mod_jk module</code><br>LoadModule    jk_module  /usr/lib64/httpd/modules/mod_jk.so<br><code># Add the module (activate this lne for Apache 1.3)</code><br><code># AddModule     mod_jk.c</code><br><code># Where to find workers.properties</code><br>JkWorkersFile /etc/httpd/conf/workers.properties<br><code># Where to put jk shared memory</code><br>JkShmFile     /var/log/httpd/mod_jk.shm<br><code># Where to put jk logs</code><br>JkLogFile     /var/log/httpd/mod_jk.log<br><code># Set the jk log level [debug/error/info]</code><br>JkLogLevel    info<br><code># Send requests for context /examples to worker named worker1</code><br><code># 至于为什么 balancer，https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</code><br>JkMount  /playbook/* balancer</p>
+<h2 id="set-up-two-tomcat-on-VM2-VM3"><a href="#set-up-two-tomcat-on-VM2-VM3" class="headerlink" title="set up two tomcat on VM2, VM3"></a>set up two tomcat on VM2, VM3</h2><p>wget <a href="http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz" target="_blank" rel="noopener">http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz</a></p>
+<h2 id="Configure-workers-properties"><a href="#Configure-workers-properties" class="headerlink" title="Configure workers.properties"></a>Configure workers.properties</h2><p>The workers.properties file defines a list of Tomcat ‘workers’ to which Apache HTTPD can pass requests.<br>8009 is the ajp port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">worker.node1.host=192.168.77.131</span><br><span class="line">worker.node1.port=8009</span><br><span class="line"></span><br><span class="line">worker.node2.host=192.168.77.132</span><br><span class="line">worker.node2.port=8009</span><br></pre></td></tr></table></figure></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>start two tomcat<br>可以在两台tomcat里面都放一个playbook<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node1<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node2<br>systemctl restart httpd<br>现在访问<br><code>http://192.168.77.130/playbook/1.txt</code><br>会发现I am node1和I am node2交替出现<br>如果强制停止一台tomcat，整个服务不会中断</p>
+<h2 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h2><p>systemctl start httpd<br>systemctl restart/start/status httpd<br><a href="https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html</a><br><a href="https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration" target="_blank" rel="noopener">https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/workers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/workers.html</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/" data-id="cjsyoem2u0000zsjitpb5btcz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/03/09/spring-jpa/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">spring jpa</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/07/file-io/">IO</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
