@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>AES base64 | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="sample code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AES base64">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/03/12/AES+base64/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="sample code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-12T13:04:37.648Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AES base64">
+<meta name="twitter:description" content="sample code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AES+base64" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/12/AES+base64/" class="article-date">
+  <time datetime="2019-03-12T13:04:37.644Z" itemprop="datePublished">2019-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AES base64
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">https://aesencryption.net/</span><br><span class="line">https://www.clickssl.net/blog/128-bit-ssl-encryption-vs-256-bit-ssl-encryption</span><br><span class="line">https://www.quora.com/Is-AES256-more-secure-than-AES128-Whats-the-different</span><br><span class="line">https://en.wikipedia.org/wiki/Advanced_Encryption_Standard</span><br><span class="line">https://stackoverflow.com/questions/273396/aes-encryption-what-are-public-and-private-keys</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">import sun.misc.BASE64Decoder;</span><br><span class="line">import sun.misc.BASE64Encoder;</span><br><span class="line"></span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line">import javax.crypto.BadPaddingException;</span><br><span class="line">import javax.crypto.Cipher;</span><br><span class="line">import javax.crypto.IllegalBlockSizeException;</span><br><span class="line">import javax.crypto.NoSuchPaddingException;</span><br><span class="line">import javax.crypto.spec.SecretKeySpec;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.net.URLDecoder;</span><br><span class="line">import java.net.URLEncoder;</span><br><span class="line">import java.security.InvalidKeyException;</span><br><span class="line">import java.security.Key;</span><br><span class="line">import java.security.NoSuchAlgorithmException;</span><br><span class="line"></span><br><span class="line">public class AESEncryptionUtil &#123;</span><br><span class="line"></span><br><span class="line">// http://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx</span><br><span class="line"> private static String key = “customized key”;</span><br><span class="line"> public static BASE64Encoder enc = new BASE64Encoder();</span><br><span class="line"> public static BASE64Decoder dec = new BASE64Decoder();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> // eccrypt by AES, and encode by base64 to transfer by http</span><br><span class="line"> public static String encrypt(String clearText) throws Exception &#123;</span><br><span class="line"> String encodedEncryptText = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"> Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"></span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, aesKey);</span><br><span class="line"> byte[] encrypted = cipher.doFinal(clearText.getBytes(“UTF-8”));</span><br><span class="line"></span><br><span class="line">encodedEncryptText = enc.encode(encrypted);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return encodedEncryptText;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// encode by base64, decrypt by AES</span><br><span class="line"> public static String decrypt(String encodedEncryptText) throws Exception &#123;</span><br><span class="line"> String decrypted = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"></span><br><span class="line">Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"> cipher.init(Cipher.DECRYPT_MODE, aesKey);</span><br><span class="line"></span><br><span class="line">byte[] decodeBufferArray = dec.decodeBuffer(encodedEncryptText);</span><br><span class="line"></span><br><span class="line">decrypted = new String(cipher.doFinal(decodeBufferArray), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IOException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return decrypted;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line"> String a = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> a = encrypt(“mengxu1128@gmail.com”);</span><br><span class="line"> &#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(a);</span><br><span class="line"></span><br><span class="line">String b = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> b = decrypt(a);</span><br><span class="line"></span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(b);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/12/AES+base64/" data-id="cjt7birx600003cji3qt0axlt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/12/spring-jpa/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          spring jpa
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/09/mysql8-centos7-setup/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mysql8 centos7 setup</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/12/oauth2/">oauth2</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/12/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/12/AES+base64/">AES base64</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

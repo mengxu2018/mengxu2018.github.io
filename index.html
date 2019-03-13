@@ -62,6 +62,201 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/12/oauth2/" class="article-date">
+  <time datetime="2019-03-12T15:26:53.457Z" itemprop="datePublished">2019-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/12/oauth2/">oauth2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>Authentication is the process of verifying an identity (who they say they are)</li>
+<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
+</ul>
+<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
+<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
+<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
+<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
+<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
+<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/12/oauth2/" data-id="cjt7birxe00013cjijxxete20" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/12/spring-jpa/" class="article-date">
+  <time datetime="2019-03-12T13:05:15.568Z" itemprop="datePublished">2019-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/12/spring-jpa/">spring jpa</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
+<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
+</li>
+<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
+</li>
+<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
+</li>
+<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
+</li>
+<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
+</li>
+<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
+</li>
+<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
+</li>
+<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
+</li>
+</ul>
+<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/12/spring-jpa/" data-id="cjt1ctxkc0000fkjiiyy0yauf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-AES+base64" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/12/AES+base64/" class="article-date">
+  <time datetime="2019-03-12T13:04:37.644Z" itemprop="datePublished">2019-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/12/AES+base64/">AES base64</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">https://aesencryption.net/</span><br><span class="line">https://www.clickssl.net/blog/128-bit-ssl-encryption-vs-256-bit-ssl-encryption</span><br><span class="line">https://www.quora.com/Is-AES256-more-secure-than-AES128-Whats-the-different</span><br><span class="line">https://en.wikipedia.org/wiki/Advanced_Encryption_Standard</span><br><span class="line">https://stackoverflow.com/questions/273396/aes-encryption-what-are-public-and-private-keys</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">import sun.misc.BASE64Decoder;</span><br><span class="line">import sun.misc.BASE64Encoder;</span><br><span class="line"></span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line">import javax.crypto.BadPaddingException;</span><br><span class="line">import javax.crypto.Cipher;</span><br><span class="line">import javax.crypto.IllegalBlockSizeException;</span><br><span class="line">import javax.crypto.NoSuchPaddingException;</span><br><span class="line">import javax.crypto.spec.SecretKeySpec;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.net.URLDecoder;</span><br><span class="line">import java.net.URLEncoder;</span><br><span class="line">import java.security.InvalidKeyException;</span><br><span class="line">import java.security.Key;</span><br><span class="line">import java.security.NoSuchAlgorithmException;</span><br><span class="line"></span><br><span class="line">public class AESEncryptionUtil &#123;</span><br><span class="line"></span><br><span class="line">// http://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx</span><br><span class="line"> private static String key = “customized key”;</span><br><span class="line"> public static BASE64Encoder enc = new BASE64Encoder();</span><br><span class="line"> public static BASE64Decoder dec = new BASE64Decoder();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> // eccrypt by AES, and encode by base64 to transfer by http</span><br><span class="line"> public static String encrypt(String clearText) throws Exception &#123;</span><br><span class="line"> String encodedEncryptText = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"> Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"></span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, aesKey);</span><br><span class="line"> byte[] encrypted = cipher.doFinal(clearText.getBytes(“UTF-8”));</span><br><span class="line"></span><br><span class="line">encodedEncryptText = enc.encode(encrypted);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return encodedEncryptText;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// encode by base64, decrypt by AES</span><br><span class="line"> public static String decrypt(String encodedEncryptText) throws Exception &#123;</span><br><span class="line"> String decrypted = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"></span><br><span class="line">Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"> cipher.init(Cipher.DECRYPT_MODE, aesKey);</span><br><span class="line"></span><br><span class="line">byte[] decodeBufferArray = dec.decodeBuffer(encodedEncryptText);</span><br><span class="line"></span><br><span class="line">decrypted = new String(cipher.doFinal(decodeBufferArray), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IOException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return decrypted;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line"> String a = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> a = encrypt(“mengxu1128@gmail.com”);</span><br><span class="line"> &#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(a);</span><br><span class="line"></span><br><span class="line">String b = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> b = decrypt(a);</span><br><span class="line"></span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(b);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/12/AES+base64/" data-id="cjt7birx600003cji3qt0axlt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/09/mysql8-centos7-setup/" class="article-date">
+  <time datetime="2019-03-09T14:30:04.718Z" itemprop="datePublished">2019-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
+<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
+<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a> (这个仅仅是安装/etc/yum.repos.d)</li>
+<li>yum install mysql-community-server</li>
+</ul>
+<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
+<li>systemctl start mysqld.service ## use restart after update</li>
+<li>systemctl enable mysqld.service</li>
+</ul>
+<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
+<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
+<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>但是至此是不能从远程访问此mysqld</p>
+<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
+<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="cjrd1nlj80006sojiwmyfm9oe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/09/httpd-tomcat/" class="article-date">
@@ -111,60 +306,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/" data-id="cjsyoem2u0000zsjitpb5btcz" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/09/spring-jpa/" class="article-date">
-  <time datetime="2019-03-09T07:54:45.869Z" itemprop="datePublished">2019-03-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/09/spring-jpa/">spring jpa</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
-<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
-</li>
-<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
-</li>
-<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
-</li>
-<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
-</li>
-<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
-</li>
-<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
-</li>
-<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
-</li>
-<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/spring-jpa/" data-id="cjt1ctxkc0000fkjiiyy0yauf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -362,134 +503,6 @@
 
 
   
-    <article id="post-nodejs-module.export" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/26/nodejs-module.export/" class="article-date">
-  <time datetime="2019-01-26T05:21:16.408Z" itemprop="datePublished">2019-01-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="module-export"><a href="#module-export" class="headerlink" title="module.export"></a>module.export</h2><p>The exports variable is available within a module’s file-level scope, and is assigned the value of module.exports before the module is evaluated.</p>
-<p>It allows a shortcut, so that module.exports.f = … can be written more succinctly as exports.f = …. However, be aware that like any variable, if a new value is assigned to exports, it is no longer bound to module.exports:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports.hello = true; // Exported from require of module</span><br><span class="line">exports = &#123; hello: false &#125;;  // Not exported, only available in the module</span><br></pre></td></tr></table></figure>
-<p>When the  <code>module.exports</code> property is being completely replaced by a new object, it is common to also reassign <code>exports</code>:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module.exports = exports = <span class="keyword">function</span> <span class="function"><span class="title">Constructor</span></span>() &#123;</span><br><span class="line">  // ... etc.</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>简单说就是exports如果被新的object覆盖掉了，那就必须是modules.exports = {}， 否则可以直接简写 exports.xxx={}</p>
-<h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><p><em>foo.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const circle = require(<span class="string">'./circle.js'</span>);</span><br><span class="line">console.log(`The area of a circle of radius 4 is <span class="variable">$&#123;circle.area(4)&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
-<p><em>circle.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const &#123; PI &#125; = Math;</span><br><span class="line">module.exports.area = (r) =&gt; PI * r ** 2;   // the module can be ignored here</span><br><span class="line">module.exports.circumference = (r) =&gt; 2 * PI * r;</span><br></pre></td></tr></table></figure></p>
-<p><strong>上面这个例子里， 因为<code>exports</code>没有被赋新的object， 所以<code>modules</code>关键字可以省略</strong></p>
-<p><em>bar.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const Square = require(<span class="string">'./square.js'</span>);</span><br><span class="line">const mySquare = new Square(2);</span><br><span class="line">console.log(`The area of mySquare is <span class="variable">$&#123;mySquare.area()&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
-<p><em>square.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// assigning to exports will not modify module, must use module.exports</span><br><span class="line">// the module can not be ignored here</span><br><span class="line">module.exports = class Square &#123;</span><br><span class="line">    constructor(width) &#123;</span><br><span class="line">      this.width = width;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="title">area</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> this.width ** 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
-<p> <strong>上面这个例子里， 因为<code>exports</code>被赋新的object， 所以<code>modules</code>关键字不可以省略</strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="cjrd1nlj90007sojin3rqzr7y" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/23/puppeteer-centos7-setup/" class="article-date">
-  <time datetime="2019-01-23T15:41:46.474Z" itemprop="datePublished">2019-01-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
-<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
-<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/23/puppeteer-centos7-setup/" data-id="cjrd1nlja0008sojimx69hqoo" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
-  <time datetime="2019-01-21T04:55:37.309Z" itemprop="datePublished">2019-01-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="java"><a href="#java" class="headerlink" title="java"></a>java</h2><p>分组捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String line = &quot;This order was placed for QT3000! OK?&quot;;</span><br><span class="line">     Pattern pattern = Pattern.compile(&quot;(.*?)(\\d+)(.*)&quot;);</span><br><span class="line">     Matcher matcher = pattern.matcher(line);</span><br><span class="line"></span><br><span class="line">     while (matcher.find()) &#123;</span><br><span class="line">         System.out.println(&quot;group 1: &quot; + matcher.group(1));</span><br><span class="line">         System.out.println(&quot;group 2: &quot; + matcher.group(2));</span><br><span class="line">         System.out.println(&quot;group 3: &quot; + matcher.group(3));</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
-<p>开头结尾1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//匹配str中所有字符串hello，这时str中3个hello都能匹配上，通过下面打印的匹配上的字符串的位置可以看出</span><br><span class="line">Pattern p=Pattern.compile(&quot;hello&quot;);</span><br><span class="line">Matcher m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且该字符串是在开头的位置===========&quot;);</span><br><span class="line">// ^表示匹配字符串的开头，但是如何在[]里面则表示非，如[^a-f] 不匹配a-f</span><br><span class="line">// &quot;hello&quot;和&quot;^hello&quot;的区别就是：前者匹配时不管是不是在开头位置，只要能匹配就行，后者则是不但要能匹配而且还要是在开头的位置。这时str中3个hello只有第1个能匹配上。</span><br><span class="line">p=Pattern.compile(&quot;^hello&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">System.out.println(&quot;is:&quot; + m.matches());</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置xxx：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//这时str中两个java都能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且是该字符串是在末尾的位置===========&quot;);</span><br><span class="line">//这时str中两个java只有第2个才能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java$&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>开头结尾2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 这是整个匹配，直接是String的方法</span><br><span class="line">String test = &quot;http://yahoo.com&quot;;</span><br><span class="line">System.out.println(test.matches(&quot;^(http|https|ftp)://.*$&quot;));</span><br><span class="line"></span><br><span class="line">// 这个是编译过的表达式，也是整个匹配</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">System.out.println(&quot;m2:&quot; + m2.matches());</span><br><span class="line"></span><br><span class="line">// 这个是捕获group，取第一个group, index从1开始</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">if (m2.find()) &#123;</span><br><span class="line">    System.out.println(&quot;g1:&quot; + m2.group(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个是group(0)，没有小括号分组，从前到后匹配到什么算什么</span><br><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjrd1nljc000asojizx3r9qib" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -526,23 +539,23 @@
       <ul>
         
           <li>
+            <a href="/2019/03/12/oauth2/">oauth2</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/12/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/12/AES+base64/">AES base64</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/09/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/07/file-io/">IO</a>
-          </li>
-        
-          <li>
-            <a href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/31/ant-design-sample/">ant design sample</a>
           </li>
         
       </ul>
