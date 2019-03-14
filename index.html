@@ -62,6 +62,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vmware-vm-add-space" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/14/vmware-vm-add-space/" class="article-date">
+  <time datetime="2019-03-14T14:26:47.347Z" itemprop="datePublished">2019-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/14/vmware-vm-add-space/">虚拟机增加空间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="add-space"><a href="#add-space" class="headerlink" title="add space"></a>add space</h2><p>我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载到指定的目录</p>
+<p><img src="/images/add-space.PNG" alt="vm addspace"></p>
+<p>虚拟机设置里面先扩展好空间</p>
+<p><code>fdisk -l</code>查看磁盘占用情况<br>可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3</p>
+<p>输入<code>fdisk /dev/sda</code>,然后一步一步的回车，最后输入w保持修改<br>重启<code>reboot</code><br>这时在<code>/dev/</code>目录下，才能看到了新的分区比如<code>/dev/sda3</code><br><code>mkfs.ext2 /dev/sda3</code>  格式化<br>在根目录下创建disk3 (<code>mkdir /disk3</code>)<br><code>mount /dev/sda3 /disk43/</code>将分区mount到<code>/disk3/</code>上<br>在vi修改/etc/fstab文件,加入 <code>/dev/sda3   /disk3 ext2 defaults 0 0</code> 一行，并保存，实现开机自动mount</p>
+<p>至此，新增加的磁盘空间容量，即可在disk3上体现，并且重新开机自动mount该分区，追加磁盘空间的工作完毕。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><code>/dev/</code> is the part in the unix directory tree that contains all “device” files<br>So <code>/dev/sda9</code> means the ninth partition on the first drive.</p>
+<p><a href="https://blog.csdn.net/lyd135364/article/details/78623119" target="_blank" rel="noopener">https://blog.csdn.net/lyd135364/article/details/78623119</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="cjt8qinpc0000u0jivrzxbhaf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/12/oauth2/" class="article-date">
@@ -466,48 +510,11 @@
 
 
   
-    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/31/windows10-disable-update/" class="article-date">
-  <time datetime="2019-01-31T11:28:59.160Z" itemprop="datePublished">2019-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/31/windows10-disable-update/">win10 disable auto-update</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/windows10-disable-update/" data-id="cjrkjc6z50000zkjiv4k6ekay" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -539,6 +546,10 @@
       <ul>
         
           <li>
+            <a href="/2019/03/14/vmware-vm-add-space/">虚拟机增加空间</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/12/oauth2/">oauth2</a>
           </li>
         
@@ -552,10 +563,6 @@
         
           <li>
             <a href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/09/httpd-tomcat/">httpd tomcat</a>
           </li>
         
       </ul>
