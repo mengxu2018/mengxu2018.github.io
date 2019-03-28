@@ -62,6 +62,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/springboot-docker/" class="article-date">
+  <time datetime="2019-01-31T15:40:21.563Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/springboot-docker/">sprintboot docker deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/springboot-docker/" data-id="cjt8qkqog000i6cji4au3ggc7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/31/windows10-disable-update/" class="article-date">
@@ -430,45 +470,6 @@
 
 
   
-    <article id="post-k8s-deploy-application" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/06/k8s-deploy-application/" class="article-date">
-  <time datetime="2019-01-06T09:48:18.621Z" itemprop="datePublished">2019-01-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/06/k8s-deploy-application/">k8s deploy sample apps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Create-a-backend-and-frontend-app"><a href="#Create-a-backend-and-frontend-app" class="headerlink" title="Create a backend and frontend app"></a>Create a backend and frontend app</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/</span><br></pre></td></tr></table></figure>
-<p><em>please do not forget to change the type to NODEPORT for frontend application.</em><br><em>the deployment and service can be included in a single file or in separated file</em></p>
-<h3 id="Create-a-python-app-which-can-print-the-local-ip"><a href="#Create-a-python-app-which-can-print-the-local-ip" class="headerlink" title="Create a python app which can print the local ip"></a>Create a python app which can print the local ip</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://itnext.io/install-kubernetes-on-bare-metal-centos7-fba40e9bb3de</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjt8qkqnz00046cji2622lxch" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -505,6 +506,10 @@
       <ul>
         
           <li>
+            <a href="/2019/03/24/grpc/">grpc introduction</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/14/vmware-vm-add-space/">虚拟机增加空间</a>
           </li>
         
@@ -518,10 +523,6 @@
         
           <li>
             <a href="/2019/03/12/AES+base64/">AES base64</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
           </li>
         
       </ul>
