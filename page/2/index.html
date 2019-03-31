@@ -62,6 +62,81 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/17/elasticsearch-start/" class="article-date">
+  <time datetime="2019-02-17T07:55:39.066Z" itemprop="datePublished">2019-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.6.0.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.6.0-linux-x86_64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you want to access kibana remotely, please update `server.host` to real IP in</span></span><br><span class="line"><span class="comment"># `kibana-6.6.0-linux-x86_64/config/kibana.yml` like 192.168.77.140</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You should run elasticsearch in non-root user</span></span><br><span class="line">bin/elasticsearch -d</span><br><span class="line">bin/kibana or `nohup bin/kibana &amp;`</span><br><span class="line"></span><br><span class="line"><span class="comment"># now you can access http://192.168.77.140:5601</span></span><br></pre></td></tr></table></figure>
+<h2 id="elasticsearch-http-verb"><a href="#elasticsearch-http-verb" class="headerlink" title="elasticsearch http verb"></a>elasticsearch http verb</h2><p>elasticsearch 按照HTTP协议下RestFul框架的交互格式就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /uri 创建</span><br><span class="line">DELETE /uri/xxx 删除</span><br><span class="line">PUT /uri/xxx 更新或创建</span><br><span class="line">GET /uri/xxx 查看</span><br></pre></td></tr></table></figure></p>
+<h2 id="sample-case"><a href="#sample-case" class="headerlink" title="sample case"></a>sample case</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_doc/1?pretty</span><br><span class="line"></span><br><span class="line">DELETE /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/2?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /customer/_doc?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_search?q=Doe</span><br><span class="line"></span><br><span class="line">GET /customer/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这种更新是删除再增加，version变化了</span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这样更新是真的更新，version不变</span><br><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get all index</span><br><span class="line">curl &quot;localhost:9200/_cat/indices?v&quot;</span><br><span class="line"></span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=*&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=Fitzgerald&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line"></span><br><span class="line">//查询某个index</span><br><span class="line">GET /twitter/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询所有的index</span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;from&quot; : 0, &quot;size&quot; : 10,</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/02/17/elasticsearch-start/" data-id="cjtwon8wk0006wkjixuxyqi8n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/ant-design-sample/" class="article-date">
+  <time datetime="2019-01-31T15:57:44.951Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/ant-design-sample/">ant design sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用create-react-app创建的项目， react-router作为路由创建了sidebar, 用ant-design创建的表格，<br>后续会用springboot作为后台，增加crud的功能<br><a href="https://github.com/mengxu2018/ant-design-sample.git" target="_blank" rel="noopener">https://github.com/mengxu2018/ant-design-sample.git</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/ant-design-sample/" data-id="cjtwon8wf0002wkji266qqj9s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/31/springboot-docker/" class="article-date">
@@ -92,7 +167,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/springboot-docker/" data-id="cjt8qkqog000i6cji4au3ggc7" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/31/springboot-docker/" data-id="cjtwon8wz000iwkjigxsy7r3l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -129,7 +204,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/windows10-disable-update/" data-id="cjt8qkqoi000k6cji80509r5z" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/31/windows10-disable-update/" data-id="cjtwon8x1000kwkjif7lhrxv8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -177,7 +252,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="cjt8qkqo5000a6cjitw4vat6h" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="cjtwon8wx000gwkji5lx05p5z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -218,7 +293,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/23/puppeteer-centos7-setup/" data-id="cjt8qkqoc000e6cjio6jfdmvo" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/23/puppeteer-centos7-setup/" data-id="cjtwon8wy000hwkjiyb2ekl6s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -257,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjt8qkqof000g6cjiql3l017o" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjtwon8x0000jwkjicracoptu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -303,45 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjt8qkqo9000c6cji4a2c64wn" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/17/redis5-centos7-setup/" class="article-date">
-  <time datetime="2019-01-17T05:52:11.086Z" itemprop="datePublished">2019-01-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/redis5-centos7-setup/">redis5 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server</span><br></pre></td></tr></table></figure>
-<h1 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/redis5-centos7-setup/" data-id="cjt8qkqoe000f6cji2f2n2n95" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjtwon8wr000bwkjimzpxdz7j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -378,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjt8qkqnw00026cjiarcle540" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjtwon8wh0003wkji7ra1qtqy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -416,51 +453,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjt8qkqo000056cji56h83f5e" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-k8s-port-targetport-nodeport-service" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/08/k8s-port-targetport-nodeport-service/" class="article-date">
-  <time datetime="2019-01-08T13:29:44.764Z" itemprop="datePublished">2019-01-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>总的来说，port和nodePort都是service的端口，前者暴露给集群内客户访问服务，后者暴露给集群外客户访问服务。从这两个端口到来的数据都需要经过反向代理kube-proxy流入后端pod的targetPort，从而到达pod上的容器内。</em></p>
-<p><em>nodeport只有 type为NodePort类型的的service用</em></p>
-<p>容易混淆的概念：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1、NodePort和port</span><br><span class="line"></span><br><span class="line">前者是将服务暴露给外部用户使用并在node上、后者则是为内部组件相互通信提供服务的，他们是在service上的端口。</span><br><span class="line"></span><br><span class="line">2、targetPort</span><br><span class="line">targetPort是pod上的端口，用来将pod内的container与外部进行通信的端口</span><br><span class="line"></span><br><span class="line">3、port、NodePort、ContainerPort和targetPort在哪儿？</span><br><span class="line"></span><br><span class="line">port在service上，负责处理对内的通信，clusterIP:port</span><br><span class="line"></span><br><span class="line">NodePort在node上，负责对外通信，NodeIP:NodePort</span><br><span class="line"></span><br><span class="line">ContainerPort在容器上，用于被pod绑定</span><br><span class="line"></span><br><span class="line">targetPort在pod上、负责与kube-proxy代理的port和Nodeport数据进行通信</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">      kind: Service</span><br><span class="line">      metadata:</span><br><span class="line">        name: test-service</span><br><span class="line">      spec:</span><br><span class="line">        ports:</span><br><span class="line">        - port: 8080</span><br><span class="line">          targetPort: 8170</span><br><span class="line">          nodePort: 33333</span><br><span class="line">          protocol: TCP </span><br><span class="line">        selector:</span><br><span class="line">          component: test-service-app</span><br></pre></td></tr></table></figure>
-<p>The port is 8080 which represents that test-service can be accessed by other services in the cluster at port 8080.<br>The targetPort is 8170 which represents the test-service is actually running on port 8170 on pods<br>The nodePort is 33333 which represents that test-service can be accessed via kube-proxy on port 33333.<br><strong>pod运行在targetPort为8170不代表就可以通过这个端口访问，还是得通过port的8080来访问他(cluster内部)，或者nodePort的33333来访问（外部）</strong></p>
-<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h2><p><em>nodeport是外部机器访问的端口，这个是刚刚到kube-proxy的时候，还没有进入具体的pod</em><br><em>targetport是具体的port的监听端口，比如mysql的3306，就是dockerfile里面的expose端口</em><br><em>port是内部pod直接的访问端口，这个端口也是刚刚到kube-proxy的时候，还没有进入具体的pod，这个跟nodeport一个级别，<br>比如mysql的targetport虽然是3306，但是cluster里面的pod可能通过33306来访问mysql pod</em></p>
-<p><em>Kubernetes 分配给 Service 一个固定 IP，这是一个虚拟 IP （也称为 ClusterIP），并不是一个真实存在的IP,而是由 Kubernetes 虚拟出来的。虚拟 IP 的范围通过 Kubernetes API Service 的启动参数–service-cluster-ip-range=10.254.0.0/16 配置</em><br><em>虚拟 IP 属于 Kubernetes 内部的虚拟网络，外部是寻址不到的，在 Kubernetes 系统中，实际上是由 Kubernetes Proxy 组件负责实现虚拟 IP 路由和转发的，所以在 Kubernetes Node 中我们都运行了 Kubernetes Proxy，从而在容器覆盖网络之上又实现了 Kubernetes 层级的虚拟转发网络。</em></p>
-<p><em><a href="https://blog.csdn.net/xinghun_4/article/details/50492041" target="_blank" rel="noopener">https://blog.csdn.net/xinghun_4/article/details/50492041</a></em><br><em><a href="https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291" target="_blank" rel="noopener">https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291</a></em><br><em><a href="https://ieevee.com/tech/2017/01/20/k8s-service.html" target="_blank" rel="noopener">https://ieevee.com/tech/2017/01/20/k8s-service.html</a></em><br><em><a href="https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition" target="_blank" rel="noopener">https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition</a></em><br><em><a href="https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170" target="_blank" rel="noopener">https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170</a></em><br><em><a href="https://juejin.im/post/5bd6c14be51d455b7461cb46" target="_blank" rel="noopener">https://juejin.im/post/5bd6c14be51d455b7461cb46</a></em></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjt8qkqo300086cji1i6nu1cx" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjtwon8wd0001wkjivvmzb2lj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -506,6 +499,14 @@
       <ul>
         
           <li>
+            <a href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/31/java-log/">java log implemention</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/24/grpc/">grpc introduction</a>
           </li>
         
@@ -515,14 +516,6 @@
         
           <li>
             <a href="/2019/03/12/oauth2/">oauth2</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/12/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/12/AES+base64/">AES base64</a>
           </li>
         
       </ul>

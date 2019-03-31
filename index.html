@@ -62,6 +62,88 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
+  <time datetime="2019-03-31T09:17:18.510Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
+<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjtwon8wv000dwkjipaanpbw7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/java-log/" class="article-date">
+  <time datetime="2019-03-31T06:20:20.810Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/java-log/">java log implemention</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="logback-for-spring-data-jpa"><a href="#logback-for-spring-data-jpa" class="headerlink" title="logback for spring data jpa"></a>logback for spring data jpa</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;appender name=”STDOUT” class=”ch.qos.logback.core.ConsoleAppender”&gt;</span><br><span class="line"> &lt;encoder class=”ch.qos.logback.classic.encoder.PatternLayoutEncoder”&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n</span><br><span class="line"> &lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;appender name=”FILE” class=”ch.qos.logback.core.rolling.RollingFileAppender”&gt;</span><br><span class="line"> &lt;file&gt;$&#123;catalina.home&#125;/logs/playbook.log&lt;/file&gt;</span><br><span class="line"> &lt;rollingPolicy class=”ch.qos.logback.core.rolling.TimeBasedRollingPolicy”&gt;</span><br><span class="line"> &lt;! — daily rollover →</span><br><span class="line"> &lt;fileNamePattern&gt;$&#123;catalina.home&#125;/logs/playbook.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;</span><br><span class="line"> &lt;timeBasedFileNamingAndTriggeringPolicy</span><br><span class="line"> class=”ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP”&gt;</span><br><span class="line"> &lt;! — or whenever the file size reaches 50MB →</span><br><span class="line"> &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt;</span><br><span class="line"> &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span><br><span class="line"> &lt;! — keep 30 days’ worth of history →</span><br><span class="line"> &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line"> &lt;/rollingPolicy&gt;</span><br><span class="line"> &lt;encoder&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n&lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;logger name=”ch.qos.logback” level=”WARN” /&gt;</span><br><span class="line"> &lt;logger name=”com.demo.test” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework.beans” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.SQL” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.type.descriptor.sql” level=”TRACE” /&gt;</span><br><span class="line"> &lt;root level=”INFO”&gt;</span><br><span class="line"> &lt;appender-ref ref=”STDOUT” /&gt;</span><br><span class="line"> &lt;appender-ref ref=”FILE” /&gt;</span><br><span class="line"> &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>注意hibernate的log 需要 configure Hibernate to log via SLF4J,<br>System.setProperty(“org.jboss.logging.provider”, “slf4j”);<br>同时”hibernate.show_sql”设置为 “false”， 直接用logback,不要这种自带的控制台输出</p>
+<h2 id="tomcat-log"><a href="#tomcat-log" class="headerlink" title="tomcat log"></a>tomcat log</h2><p>所有的控制台输出都会重定向到tomcat/logs/catalina.out，但是maven tomcat7:run启动embended tomcat貌似没有这个文件<br>tocmat/logs/localhost.out 也会记录用户没有catch到的异常</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://tomcat.apache.org/tomcat-8.5-doc/logging.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.5-doc/logging.html</a><br><a href="https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback" target="_blank" rel="noopener">https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/java-log/" data-id="cjtwon8wj0005wkjiiqhv7mfv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/24/grpc/" class="article-date">
@@ -89,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/24/grpc/" data-id="cjtn0xt2n0000vkjifnxsyha6" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/24/grpc/" data-id="cjtwon8wi0004wkjipaalmefl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -133,7 +215,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="cjt8qkqoh000j6cjih2b6hqmm" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="cjtwon8x3000mwkjiali2t531" class="article-share-link">Share</a>
       
       
     </footer>
@@ -180,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/12/oauth2/" data-id="cjt8qkqob000d6cji6se8w3dp" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/12/oauth2/" data-id="cjtwon8ww000fwkjiaph9nmjm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -235,7 +317,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/12/spring-jpa/" data-id="cjt8qkqof000h6cjiaseinw3s" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/12/spring-jpa/" data-id="cjtwon8x2000lwkjiawsetgzx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -271,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/12/AES+base64/" data-id="cjt8qkqnm00006cjijg6e2g2p" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/12/AES+base64/" data-id="cjtwon8w70000wkjisl54sopd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -328,7 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="cjt8qkqo8000b6cji6uxyiedb" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="cjtwon8wt000cwkji4mb6f5ik" class="article-share-link">Share</a>
       
       
     </footer>
@@ -386,7 +468,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/" data-id="cjt8qkqo200076cji6kb6z1yg" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/09/httpd-tomcat/" data-id="cjtwon8wn0009wkjirtinlmcp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -422,82 +504,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/07/file-io/" data-id="cjt8qkqo100066cji7khllgag" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/17/elasticsearch-start/" class="article-date">
-  <time datetime="2019-02-17T07:55:39.066Z" itemprop="datePublished">2019-02-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.6.0.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.6.0-linux-x86_64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you want to access kibana remotely, please update `server.host` to real IP in</span></span><br><span class="line"><span class="comment"># `kibana-6.6.0-linux-x86_64/config/kibana.yml` like 192.168.77.140</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You should run elasticsearch in non-root user</span></span><br><span class="line">bin/elasticsearch -d</span><br><span class="line">bin/kibana or `nohup bin/kibana &amp;`</span><br><span class="line"></span><br><span class="line"><span class="comment"># now you can access http://192.168.77.140:5601</span></span><br></pre></td></tr></table></figure>
-<h2 id="elasticsearch-http-verb"><a href="#elasticsearch-http-verb" class="headerlink" title="elasticsearch http verb"></a>elasticsearch http verb</h2><p>elasticsearch 按照HTTP协议下RestFul框架的交互格式就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /uri 创建</span><br><span class="line">DELETE /uri/xxx 删除</span><br><span class="line">PUT /uri/xxx 更新或创建</span><br><span class="line">GET /uri/xxx 查看</span><br></pre></td></tr></table></figure></p>
-<h2 id="sample-case"><a href="#sample-case" class="headerlink" title="sample case"></a>sample case</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_doc/1?pretty</span><br><span class="line"></span><br><span class="line">DELETE /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/2?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /customer/_doc?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_search?q=Doe</span><br><span class="line"></span><br><span class="line">GET /customer/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这种更新是删除再增加，version变化了</span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这样更新是真的更新，version不变</span><br><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get all index</span><br><span class="line">curl &quot;localhost:9200/_cat/indices?v&quot;</span><br><span class="line"></span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=*&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=Fitzgerald&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line"></span><br><span class="line">//查询某个index</span><br><span class="line">GET /twitter/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询所有的index</span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;from&quot; : 0, &quot;size&quot; : 10,</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/02/17/elasticsearch-start/" data-id="cjt8qkqny00036cjiboklhje2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/31/ant-design-sample/" class="article-date">
-  <time datetime="2019-01-31T15:57:44.951Z" itemprop="datePublished">2019-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/31/ant-design-sample/">ant design sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>用create-react-app创建的项目， react-router作为路由创建了sidebar, 用ant-design创建的表格，<br>后续会用springboot作为后台，增加crud的功能<br><a href="https://github.com/mengxu2018/ant-design-sample.git" target="_blank" rel="noopener">https://github.com/mengxu2018/ant-design-sample.git</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/ant-design-sample/" data-id="cjt8qkqnt00016cjiyq1rz8s4" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/07/file-io/" data-id="cjtwon8wm0008wkjiilwj4qn0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -543,6 +550,14 @@
       <ul>
         
           <li>
+            <a href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/31/java-log/">java log implemention</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/24/grpc/">grpc introduction</a>
           </li>
         
@@ -552,14 +567,6 @@
         
           <li>
             <a href="/2019/03/12/oauth2/">oauth2</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/12/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/12/AES+base64/">AES base64</a>
           </li>
         
       </ul>
