@@ -5,15 +5,19 @@
   
 
   
-  <title>Archives: 2019/1 | No pains,no gains</title>
+  <title>first spark sample | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="No pains,no gains">
-<meta property="og:url" content="https://mengxu2018.github.io/archives/2019/01/page/2/index.html">
+  <meta name="description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="first spark sample">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/04/28/first-spark/index.html">
 <meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-28T06:11:32.407Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="No pains,no gains">
+<meta name="twitter:title" content="first spark sample">
+<meta name="twitter:description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -60,45 +64,56 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/01/06/k8s-deploy-application/" class="archive-article-date">
-  <time datetime="2019-01-06T09:48:18.621Z" itemprop="datePublished">Jan 6</time>
+        <section id="main"><article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/28/first-spark/" class="article-date">
+  <time datetime="2019-04-28T06:11:32.406Z" itemprop="datePublished">2019-04-28</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/06/k8s-deploy-application/">k8s deploy sample apps</a>
+    <h1 class="article-title" itemprop="name">
+      first spark sample
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
+      </header>
     
-    <a class="extend prev" rel="prev" href="/archives/2019/01/">&laquo; Prev</a><a class="page-number" href="/archives/2019/01/">1</a><span class="page-number current">2</span>
-  </nav>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
+<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
+<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
+<p>输出Lines with a: xxx, Lines with b: xxx</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/28/first-spark/" data-id="cjv0jml010000bkjiiwduxv0p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/15/oauth2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">oauth2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
