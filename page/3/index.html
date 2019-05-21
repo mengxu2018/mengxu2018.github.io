@@ -62,6 +62,91 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
+  <time datetime="2019-01-21T04:55:37.309Z" itemprop="datePublished">2019-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java"><a href="#java" class="headerlink" title="java"></a>java</h2><p>分组捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String line = &quot;This order was placed for QT3000! OK?&quot;;</span><br><span class="line">     Pattern pattern = Pattern.compile(&quot;(.*?)(\\d+)(.*)&quot;);</span><br><span class="line">     Matcher matcher = pattern.matcher(line);</span><br><span class="line"></span><br><span class="line">     while (matcher.find()) &#123;</span><br><span class="line">         System.out.println(&quot;group 1: &quot; + matcher.group(1));</span><br><span class="line">         System.out.println(&quot;group 2: &quot; + matcher.group(2));</span><br><span class="line">         System.out.println(&quot;group 3: &quot; + matcher.group(3));</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//匹配str中所有字符串hello，这时str中3个hello都能匹配上，通过下面打印的匹配上的字符串的位置可以看出</span><br><span class="line">Pattern p=Pattern.compile(&quot;hello&quot;);</span><br><span class="line">Matcher m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且该字符串是在开头的位置===========&quot;);</span><br><span class="line">// ^表示匹配字符串的开头，但是如何在[]里面则表示非，如[^a-f] 不匹配a-f</span><br><span class="line">// &quot;hello&quot;和&quot;^hello&quot;的区别就是：前者匹配时不管是不是在开头位置，只要能匹配就行，后者则是不但要能匹配而且还要是在开头的位置。这时str中3个hello只有第1个能匹配上。</span><br><span class="line">p=Pattern.compile(&quot;^hello&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">System.out.println(&quot;is:&quot; + m.matches());</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置xxx：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//这时str中两个java都能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且是该字符串是在末尾的位置===========&quot;);</span><br><span class="line">//这时str中两个java只有第2个才能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java$&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 这是整个匹配，直接是String的方法</span><br><span class="line">String test = &quot;http://yahoo.com&quot;;</span><br><span class="line">System.out.println(test.matches(&quot;^(http|https|ftp)://.*$&quot;));</span><br><span class="line"></span><br><span class="line">// 这个是编译过的表达式，也是整个匹配</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">System.out.println(&quot;m2:&quot; + m2.matches());</span><br><span class="line"></span><br><span class="line">// 这个是捕获group，取第一个group, index从1开始</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">if (m2.find()) &#123;</span><br><span class="line">    System.out.println(&quot;g1:&quot; + m2.group(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个是group(0)，没有小括号分组，从前到后匹配到什么算什么</span><br><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjtwon8x0000jwkjicracoptu" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T08:27:38.111Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
+<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
+<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
+</ul>
+<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
+<li>systemctl start mongod.service</li>
+<li>systemctl enable mongod.service</li>
+</ul>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjtwon8wr000bwkjimzpxdz7j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-docker-command" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/16/docker-command/" class="article-date">
@@ -365,7 +450,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -378,6 +463,14 @@
       <ul>
         
           <li>
+            <a href="/2019/05/21/maven-compiler/">maven compiler</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/28/first-dubbo/">first dubbo</a>
+          </li>
+        
+          <li>
             <a href="/2019/04/28/first-spark/">first spark sample</a>
           </li>
         
@@ -387,14 +480,6 @@
         
           <li>
             <a href="/2019/03/31/springboot-test/">springboot-test</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/31/java-log/">java log implemention</a>
           </li>
         
       </ul>
