@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>hadoop cluster setup | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑 参考官网修改配置文件https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation关于官网说的这两个文件，etc/hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hadoop cluster setup">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/05/26/hadoop-cluster-setup/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑 参考官网修改配置文件https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation关于官网说的这两个文件，etc/hadoop">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-26T08:57:47.245Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hadoop cluster setup">
+<meta name="twitter:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑 参考官网修改配置文件https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation关于官网说的这两个文件，etc/hadoop">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-hadoop-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/26/hadoop-cluster-setup/" class="article-date">
+  <time datetime="2019-05-26T08:57:47.221Z" itemprop="datePublished">2019-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      hadoop cluster setup
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><p>主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑</p>
+<h3 id="参考官网修改配置文件"><a href="#参考官网修改配置文件" class="headerlink" title="参考官网修改配置文件"></a>参考官网修改配置文件</h3><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation</a><br>关于官网说的这两个文件，etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml<br><code>core-site.xml</code>比官网多了hadoop.tmp.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/root/hadoop-3.1.2/tmp&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://k8s-master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>hdfs-site.xml</code>,比官网多了dfs.datanode.data.dir，dfs.datanode.data.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/name&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/data&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>多这个几个配置目录是在启动出错的时候可以方便手动删除目录里的文件，当然提前要创建好这个三个目录</p>
+<h3 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h3><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=”root”<br>export HDFS_DATANODE_USER=”root”<br>export HDFS_SECONDARYNAMENODE_USER=”root”<br>export YARN_RESOURCEMANAGER_USER=”root”<br>export YARN_NODEMANAGER_USER=”root”</p>
+<p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了</p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/26/hadoop-cluster-setup/" data-id="cjw4plpos00017gji918zxqmg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/26/aliyum-maven/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">aliyun maven</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/26/hadoop-cluster-setup/">hadoop cluster setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/26/aliyum-maven/">aliyun maven</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/21/maven-compiler/">maven compiler</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/28/first-dubbo/">first dubbo</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/28/first-spark/">first spark sample</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -62,6 +62,95 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs-module.export" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/26/nodejs-module.export/" class="article-date">
+  <time datetime="2019-01-26T05:21:16.408Z" itemprop="datePublished">2019-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="module-export"><a href="#module-export" class="headerlink" title="module.export"></a>module.export</h2><p>The exports variable is available within a module’s file-level scope, and is assigned the value of module.exports before the module is evaluated.</p>
+<p>It allows a shortcut, so that module.exports.f = … can be written more succinctly as exports.f = …. However, be aware that like any variable, if a new value is assigned to exports, it is no longer bound to module.exports:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports.hello = true; // Exported from require of module</span><br><span class="line">exports = &#123; hello: false &#125;;  // Not exported, only available in the module</span><br></pre></td></tr></table></figure>
+<p>When the  <code>module.exports</code> property is being completely replaced by a new object, it is common to also reassign <code>exports</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module.exports = exports = <span class="keyword">function</span> <span class="function"><span class="title">Constructor</span></span>() &#123;</span><br><span class="line">  // ... etc.</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>简单说就是exports如果被新的object覆盖掉了，那就必须是modules.exports = {}， 否则可以直接简写 exports.xxx={}</p>
+<h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><p><em>foo.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const circle = require(<span class="string">'./circle.js'</span>);</span><br><span class="line">console.log(`The area of a circle of radius 4 is <span class="variable">$&#123;circle.area(4)&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>circle.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const &#123; PI &#125; = Math;</span><br><span class="line">module.exports.area = (r) =&gt; PI * r ** 2;   // the module can be ignored here</span><br><span class="line">module.exports.circumference = (r) =&gt; 2 * PI * r;</span><br></pre></td></tr></table></figure></p>
+<p><strong>上面这个例子里， 因为<code>exports</code>没有被赋新的object， 所以<code>modules</code>关键字可以省略</strong></p>
+<p><em>bar.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const Square = require(<span class="string">'./square.js'</span>);</span><br><span class="line">const mySquare = new Square(2);</span><br><span class="line">console.log(`The area of mySquare is <span class="variable">$&#123;mySquare.area()&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>square.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// assigning to exports will not modify module, must use module.exports</span><br><span class="line">// the module can not be ignored here</span><br><span class="line">module.exports = class Square &#123;</span><br><span class="line">    constructor(width) &#123;</span><br><span class="line">      this.width = width;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="title">area</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> this.width ** 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
+<p> <strong>上面这个例子里， 因为<code>exports</code>被赋新的object， 所以<code>modules</code>关键字不可以省略</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="cjtwon8wx000gwkji5lx05p5z" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/23/puppeteer-centos7-setup/" class="article-date">
+  <time datetime="2019-01-23T15:41:46.474Z" itemprop="datePublished">2019-01-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/23/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
+<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/23/puppeteer-centos7-setup/" data-id="cjtwon8wy000hwkjiyb2ekl6s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
@@ -463,6 +552,14 @@
       <ul>
         
           <li>
+            <a href="/2019/05/26/hadoop-cluster-setup/">hadoop cluster setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/26/aliyum-maven/">aliyun maven</a>
+          </li>
+        
+          <li>
             <a href="/2019/05/21/maven-compiler/">maven compiler</a>
           </li>
         
@@ -472,14 +569,6 @@
         
           <li>
             <a href="/2019/04/28/first-spark/">first spark sample</a>
-          </li>
-        
-          <li>
-            <a href="/2019/04/15/oauth2/">oauth2</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/31/springboot-test/">springboot-test</a>
           </li>
         
       </ul>
