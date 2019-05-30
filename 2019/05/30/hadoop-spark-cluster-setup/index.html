@@ -10,11 +10,11 @@
   <meta name="description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apac">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop cluster setup">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/05/26/hadoop-spark-cluster-setup/index.html">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/05/30/hadoop-spark-cluster-setup/index.html">
 <meta property="og:site_name" content="No pains,no gains">
 <meta property="og:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apac">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-26T09:46:14.544Z">
+<meta property="og:updated_time" content="2019-05-30T11:36:42.188Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop cluster setup">
 <meta name="twitter:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apac">
@@ -66,8 +66,8 @@
       <div class="outer">
         <section id="main"><article id="post-hadoop-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/26/hadoop-spark-cluster-setup/" class="article-date">
-  <time datetime="2019-05-26T09:46:14.470Z" itemprop="datePublished">2019-05-26</time>
+    <a href="/2019/05/30/hadoop-spark-cluster-setup/" class="article-date">
+  <time datetime="2019-05-30T11:36:42.161Z" itemprop="datePublished">2019-05-30</time>
 </a>
     
   </div>
@@ -94,14 +94,14 @@
 <h3 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h3><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=”root”<br>export HDFS_DATANODE_USER=”root”<br>export HDFS_SECONDARYNAMENODE_USER=”root”<br>export YARN_RESOURCEMANAGER_USER=”root”<br>export YARN_NODEMANAGER_USER=”root”</p>
 <p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了</p>
 <h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p><code>web ui:</code> <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>web ui: <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a><br>Spark’s monitoring UI: (<a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a>)<br>monitor ui 在job运行过程可以访问</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -mkdir /user</span><br><span class="line">bin/hdfs dfs -mkdir /user/xuhang</span><br><span class="line">bin/hdfs dfs -put etc/hadoop/*.xml /user/xuhang</span><br></pre></td></tr></table></figure>
 <h2 id="start-spark-cluster"><a href="#start-spark-cluster" class="headerlink" title="start spark cluster"></a>start spark cluster</h2><p><a href="https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在master机器，k8s-master</span><br><span class="line">./sbin/start-master.sh</span><br><span class="line"></span><br><span class="line">在其他机器</span><br><span class="line">./sbin/start-slave.sh spark://k8s-master:7077</span><br></pre></td></tr></table></figure></p>
 <h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/30/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -109,6 +109,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/05/30/Spark-Client-Cluster-mode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spark Client和Cluster两种运行模式的工作流程
+        
+      </div>
+    </a>
   
   
     <a href="/2019/05/26/aliyum-maven/" id="article-nav-older" class="article-nav-link-wrap">
@@ -150,7 +159,15 @@
       <ul>
         
           <li>
-            <a href="/2019/05/26/hadoop-spark-cluster-setup/">hadoop cluster setup</a>
+            <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/30/Spark-Client-Cluster-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/30/hadoop-spark-cluster-setup/">hadoop cluster setup</a>
           </li>
         
           <li>
@@ -159,14 +176,6 @@
         
           <li>
             <a href="/2019/05/21/maven-compiler/">maven compiler</a>
-          </li>
-        
-          <li>
-            <a href="/2019/04/28/first-dubbo/">first dubbo</a>
-          </li>
-        
-          <li>
-            <a href="/2019/04/28/first-spark/">first spark sample</a>
           </li>
         
       </ul>
