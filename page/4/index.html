@@ -62,6 +62,89 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-k8s-port-targetport-nodeport-service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/08/k8s-port-targetport-nodeport-service/" class="article-date">
+  <time datetime="2019-01-08T13:29:44.764Z" itemprop="datePublished">2019-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>总的来说，port和nodePort都是service的端口，前者暴露给集群内客户访问服务，后者暴露给集群外客户访问服务。从这两个端口到来的数据都需要经过反向代理kube-proxy流入后端pod的targetPort，从而到达pod上的容器内。</em></p>
+<p><em>nodeport只有 type为NodePort类型的的service用</em></p>
+<p>容易混淆的概念：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1、NodePort和port</span><br><span class="line"></span><br><span class="line">前者是将服务暴露给外部用户使用并在node上、后者则是为内部组件相互通信提供服务的，他们是在service上的端口。</span><br><span class="line"></span><br><span class="line">2、targetPort</span><br><span class="line">targetPort是pod上的端口，用来将pod内的container与外部进行通信的端口</span><br><span class="line"></span><br><span class="line">3、port、NodePort、ContainerPort和targetPort在哪儿？</span><br><span class="line"></span><br><span class="line">port在service上，负责处理对内的通信，clusterIP:port</span><br><span class="line"></span><br><span class="line">NodePort在node上，负责对外通信，NodeIP:NodePort</span><br><span class="line"></span><br><span class="line">ContainerPort在容器上，用于被pod绑定</span><br><span class="line"></span><br><span class="line">targetPort在pod上、负责与kube-proxy代理的port和Nodeport数据进行通信</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">      kind: Service</span><br><span class="line">      metadata:</span><br><span class="line">        name: test-service</span><br><span class="line">      spec:</span><br><span class="line">        ports:</span><br><span class="line">        - port: 8080</span><br><span class="line">          targetPort: 8170</span><br><span class="line">          nodePort: 33333</span><br><span class="line">          protocol: TCP </span><br><span class="line">        selector:</span><br><span class="line">          component: test-service-app</span><br></pre></td></tr></table></figure>
+<p>The port is 8080 which represents that test-service can be accessed by other services in the cluster at port 8080.<br>The targetPort is 8170 which represents the test-service is actually running on port 8170 on pods<br>The nodePort is 33333 which represents that test-service can be accessed via kube-proxy on port 33333.<br><strong>pod运行在targetPort为8170不代表就可以通过这个端口访问，还是得通过port的8080来访问他(cluster内部)，或者nodePort的33333来访问（外部）</strong></p>
+<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h2><p><em>nodeport是外部机器访问的端口，这个是刚刚到kube-proxy的时候，还没有进入具体的pod</em><br><em>targetport是具体的port的监听端口，比如mysql的3306，就是dockerfile里面的expose端口</em><br><em>port是内部pod直接的访问端口，这个端口也是刚刚到kube-proxy的时候，还没有进入具体的pod，这个跟nodeport一个级别，<br>比如mysql的targetport虽然是3306，但是cluster里面的pod可能通过33306来访问mysql pod</em></p>
+<p><em>Kubernetes 分配给 Service 一个固定 IP，这是一个虚拟 IP （也称为 ClusterIP），并不是一个真实存在的IP,而是由 Kubernetes 虚拟出来的。虚拟 IP 的范围通过 Kubernetes API Service 的启动参数–service-cluster-ip-range=10.254.0.0/16 配置</em><br><em>虚拟 IP 属于 Kubernetes 内部的虚拟网络，外部是寻址不到的，在 Kubernetes 系统中，实际上是由 Kubernetes Proxy 组件负责实现虚拟 IP 路由和转发的，所以在 Kubernetes Node 中我们都运行了 Kubernetes Proxy，从而在容器覆盖网络之上又实现了 Kubernetes 层级的虚拟转发网络。</em></p>
+<p><em><a href="https://blog.csdn.net/xinghun_4/article/details/50492041" target="_blank" rel="noopener">https://blog.csdn.net/xinghun_4/article/details/50492041</a></em><br><em><a href="https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291" target="_blank" rel="noopener">https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291</a></em><br><em><a href="https://ieevee.com/tech/2017/01/20/k8s-service.html" target="_blank" rel="noopener">https://ieevee.com/tech/2017/01/20/k8s-service.html</a></em><br><em><a href="https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition" target="_blank" rel="noopener">https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition</a></em><br><em><a href="https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170" target="_blank" rel="noopener">https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170</a></em><br><em><a href="https://juejin.im/post/5bd6c14be51d455b7461cb46" target="_blank" rel="noopener">https://juejin.im/post/5bd6c14be51d455b7461cb46</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjtwon8wo000awkjirz5c9vhr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-k8s-deploy-application" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/06/k8s-deploy-application/" class="article-date">
+  <time datetime="2019-01-06T09:48:18.621Z" itemprop="datePublished">2019-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/06/k8s-deploy-application/">k8s deploy sample apps</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Create-a-backend-and-frontend-app"><a href="#Create-a-backend-and-frontend-app" class="headerlink" title="Create a backend and frontend app"></a>Create a backend and frontend app</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/</span><br></pre></td></tr></table></figure>
+<p><em>please do not forget to change the type to NODEPORT for frontend application.</em><br><em>the deployment and service can be included in a single file or in separated file</em></p>
+<h3 id="Create-a-python-app-which-can-print-the-local-ip"><a href="#Create-a-python-app-which-can-print-the-local-ip" class="headerlink" title="Create a python app which can print the local ip"></a>Create a python app which can print the local ip</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://itnext.io/install-kubernetes-on-bare-metal-centos7-fba40e9bb3de</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjtwon8wl0007wkji4b4zdmk2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-kubernetes-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/24/kubernetes-cluster-setup/" class="article-date">
@@ -170,6 +253,7 @@
 </li>
 </ul>
 <p>不过因为没有安全证书，所以chrome和ie禁止访问，只能通过Firefox增加exception来访问，后续可以研究下更好的访问dashboard方法</p>
+<h2 id="设置固定ip"><a href="#设置固定ip" class="headerlink" title="设置固定ip"></a>设置固定ip</h2><p><a href="https://blog.csdn.net/u014466635/article/details/80284792" target="_blank" rel="noopener">https://blog.csdn.net/u014466635/article/details/80284792</a></p>
 <h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec -it  curl-66959f6557-8m7tt  -- /bin/bash</span><br><span class="line">kubeadm reset</span><br><span class="line">kubectl describe pods</span><br><span class="line">kubectl get svc -n default  </span><br><span class="line">journalctl -u kubelet.service</span><br><span class="line">journalctl -xeu kubelet(查看日志)</span><br><span class="line">kubectl get pods --all-namespaces</span><br><span class="line">kubectl get pods -n kube-system -owide</span><br><span class="line">kubectl logs -n kube-system kubernetes-dashboard-56bcddb89b-wbcqg</span><br><span class="line">kubectl describe pod -n istio-system istio-cleanup-secrets-vmbxl</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -207,7 +291,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -220,23 +304,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/02/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/01/centos7-ssh免密码/">ssh password-less</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/01/hostname设置/">hostname设置</a>
+          </li>
+        
+          <li>
             <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
           </li>
         
           <li>
             <a href="/2019/05/30/Spark-Client-Cluster-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/30/hadoop-spark-cluster-setup/">hadoop cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/26/aliyum-maven/">aliyun maven</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/21/maven-compiler/">maven compiler</a>
           </li>
         
       </ul>

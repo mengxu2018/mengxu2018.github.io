@@ -5,19 +5,19 @@
   
 
   
-  <title>mongodb centos7 setup | No pains,no gains</title>
+  <title>hostname设置 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Install wget https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i https://repo.mongodb.or">
+  <meta name="description" content="hostnamectl set-hostname ‘k8smaster’这样设置后仅仅/etc/hostname里面有了 /etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名 如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mongodb centos7 setup">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/index.html">
+<meta property="og:title" content="hostname设置">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/01/hostname设置/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="Install wget https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i https://repo.mongodb.or">
+<meta property="og:description" content="hostnamectl set-hostname ‘k8smaster’这样设置后仅仅/etc/hostname里面有了 /etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名 如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-s">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-17T08:27:38.111Z">
+<meta property="og:updated_time" content="2019-06-01T03:26:03.350Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mongodb centos7 setup">
-<meta name="twitter:description" content="Install wget https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm rpm -i https://repo.mongodb.or">
+<meta name="twitter:title" content="hostname设置">
+<meta name="twitter:description" content="hostnamectl set-hostname ‘k8smaster’这样设置后仅仅/etc/hostname里面有了 /etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名 如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-s">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
-  <time datetime="2019-01-17T08:27:38.111Z" itemprop="datePublished">2019-01-17</time>
+    <a href="/2019/06/01/hostname设置/" class="article-date">
+  <time datetime="2019-06-01T03:26:03.349Z" itemprop="datePublished">2019-06-01</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mongodb centos7 setup
+      hostname设置
     </h1>
   
 
@@ -86,21 +86,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
-<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
-<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
-<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
-</ul>
-<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
-<li>systemctl start mongod.service</li>
-<li>systemctl enable mongod.service</li>
-</ul>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
+<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
+<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
+<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjtwon8wr000bwkjimzpxdz7j" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="cjwd96lq40001bsjibpwy5fkv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -109,19 +103,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/01/21/regular-expression-tutorial/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/01/centos7-ssh免密码/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          regular expression
+          ssh password-less
         
       </div>
     </a>
   
   
-    <a href="/2019/01/16/docker-command/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/05/30/centos-update-timezone/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">docker command</div>
+      <div class="article-nav-title">update timezone</div>
     </a>
   
 </nav>

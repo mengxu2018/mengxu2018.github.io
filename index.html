@@ -62,6 +62,140 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-hadoop-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/02/hadoop-spark-cluster-setup/" class="article-date">
+  <time datetime="2019-06-02T13:47:14.905Z" itemprop="datePublished">2019-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/02/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/spark-cluster.png" alt="spark architecture"></p>
+<h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><p>主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,<br>首先把三台机器的hostname和ip配置下，有些case会hostname访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.77.130  k8s-master</span><br><span class="line">192.168.77.131  node1</span><br><span class="line">192.168.77.132  node2</span><br></pre></td></tr></table></figure></p>
+<p>这个一般立即生效的</p>
+<h3 id="参考官网修改配置文件"><a href="#参考官网修改配置文件" class="headerlink" title="参考官网修改配置文件"></a>参考官网修改配置文件</h3><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation</a><br>关于官网说的这两个文件，etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml<br><code>core-site.xml</code>比官网多了hadoop.tmp.dir, 同时用k8s-master或者ip比较好，localhost会导致远程连接失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/root/hadoop-3.1.2/tmp&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://k8s-master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>hdfs-site.xml</code>,比官网多了dfs.datanode.data.dir，dfs.datanode.data.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/name&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/data&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>多这个几个配置目录是在启动出错的时候可以方便手动删除目录里的文件，当然提前要创建好这个三个目录</p>
+<h3 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h3><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=root<br>export HDFS_DATANODE_USER=root<br>export HDFS_SECONDARYNAMENODE_USER=root<br>export YARN_RESOURCEMANAGER_USER=root<br>export YARN_NODEMANAGER_USER=root</p>
+<p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了<br>比如可以在hadoop-3.1.2/etc/hadoop/hadoop-env.sh统一设置一次</p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>hadoop web ui: <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -mkdir /user</span><br><span class="line">bin/hdfs dfs -mkdir /user/xuhang</span><br><span class="line">bin/hdfs dfs -put etc/hadoop/*.xml /user/xuhang</span><br></pre></td></tr></table></figure>
+<h2 id="start-spark-cluster"><a href="#start-spark-cluster" class="headerlink" title="start spark cluster"></a>start spark cluster</h2><p><a href="https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在master机器，k8s-master</span><br><span class="line">./sbin/start-master.sh</span><br><span class="line"></span><br><span class="line">在其他机器</span><br><span class="line">./sbin/start-slave.sh spark://k8s-master:7077</span><br></pre></td></tr></table></figure></p>
+<h2 id="spark-ui"><a href="#spark-ui" class="headerlink" title="spark ui"></a>spark ui</h2><p><a href="http://k8s-master:8080/" target="_blank" rel="noopener">http://k8s-master:8080/</a><br>driver， work nodes</p>
+<p><a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a><br>monitor ui 在job运行过程可以访问</p>
+<h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/02/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos7-ssh免密码" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/01/centos7-ssh免密码/" class="article-date">
+  <time datetime="2019-06-01T08:29:15.853Z" itemprop="datePublished">2019-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/01/centos7-ssh免密码/">ssh password-less</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="pre"><a href="#pre" class="headerlink" title="pre"></a>pre</h3><p>一台client机器A，一台remote机器B<br>你要从A机器无密码登陆到B，都是root用户</p>
+<h3 id="A机器"><a href="#A机器" class="headerlink" title="A机器"></a>A机器</h3><p>home目录下面执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure></p>
+<p>可以看到在/root/.ssh下面生成三个文件</p>
+<h2 id="B机器"><a href="#B机器" class="headerlink" title="B机器"></a>B机器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">mkdir /root/.ssh/</span><br><span class="line">touch /root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>然后把A机器的/root/.ssh/id_rsa.pub的内容copy到B机器的/root/.ssh/authorized_keys里面</p>
+<p>修改权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 /root/.ssh/</span><br><span class="line">chmod 600 /root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>从A机器上面执行<code>ssh root@192.168.77.132</code>， 192.168.77.132是B机器的ip地址</p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-centos7" target="_blank" rel="noopener">https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-centos7</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/01/centos7-ssh免密码/" data-id="cjwd96lpv0000bsjiwbqahyj8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/01/hostname设置/" class="article-date">
+  <time datetime="2019-06-01T03:26:03.349Z" itemprop="datePublished">2019-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/01/hostname设置/">hostname设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
+<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
+<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
+<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="cjwd96lq40001bsjibpwy5fkv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/30/centos-update-timezone/" class="article-date">
@@ -130,53 +264,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/05/30/Spark-Client-Cluster-mode/" data-id="cjwasp10p0000q8jif9j4hsjh" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hadoop-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/30/hadoop-spark-cluster-setup/" class="article-date">
-  <time datetime="2019-05-30T11:36:42.161Z" itemprop="datePublished">2019-05-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/hadoop-spark-cluster-setup/">hadoop cluster setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><p>主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,<br>首先把三台机器的hostname和ip配置下，有些case会hostname访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.77.130  k8s-master</span><br><span class="line">192.168.77.131  node1</span><br><span class="line">192.168.77.132  node2</span><br></pre></td></tr></table></figure></p>
-<p>这个一般立即生效的</p>
-<h3 id="参考官网修改配置文件"><a href="#参考官网修改配置文件" class="headerlink" title="参考官网修改配置文件"></a>参考官网修改配置文件</h3><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation</a><br>关于官网说的这两个文件，etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml<br><code>core-site.xml</code>比官网多了hadoop.tmp.dir, 同时用k8s-master或者ip比较好，localhost会导致远程连接失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/root/hadoop-3.1.2/tmp&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://k8s-master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>hdfs-site.xml</code>,比官网多了dfs.datanode.data.dir，dfs.datanode.data.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/name&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/data&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
-<p>多这个几个配置目录是在启动出错的时候可以方便手动删除目录里的文件，当然提前要创建好这个三个目录</p>
-<h3 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h3><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=”root”<br>export HDFS_DATANODE_USER=”root”<br>export HDFS_SECONDARYNAMENODE_USER=”root”<br>export YARN_RESOURCEMANAGER_USER=”root”<br>export YARN_NODEMANAGER_USER=”root”</p>
-<p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了</p>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>web ui: <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a><br>Spark’s monitoring UI: (<a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a>)<br>monitor ui 在job运行过程可以访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -mkdir /user</span><br><span class="line">bin/hdfs dfs -mkdir /user/xuhang</span><br><span class="line">bin/hdfs dfs -put etc/hadoop/*.xml /user/xuhang</span><br></pre></td></tr></table></figure>
-<h2 id="start-spark-cluster"><a href="#start-spark-cluster" class="headerlink" title="start spark cluster"></a>start spark cluster</h2><p><a href="https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在master机器，k8s-master</span><br><span class="line">./sbin/start-master.sh</span><br><span class="line"></span><br><span class="line">在其他机器</span><br><span class="line">./sbin/start-slave.sh spark://k8s-master:7077</span><br></pre></td></tr></table></figure></p>
-<h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -395,85 +482,6 @@
 
 
   
-    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/springboot-test/" class="article-date">
-  <time datetime="2019-03-31T15:31:23.647Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="cjtx31m230000dwji6i6srgis" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
-  <time datetime="2019-03-31T09:17:18.510Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
-<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjtwon8wv000dwkjipaanpbw7" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -497,7 +505,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -510,23 +518,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/02/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/01/centos7-ssh免密码/">ssh password-less</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/01/hostname设置/">hostname设置</a>
+          </li>
+        
+          <li>
             <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
           </li>
         
           <li>
             <a href="/2019/05/30/Spark-Client-Cluster-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/30/hadoop-spark-cluster-setup/">hadoop cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/26/aliyum-maven/">aliyun maven</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/21/maven-compiler/">maven compiler</a>
           </li>
         
       </ul>
