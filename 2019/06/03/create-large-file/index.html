@@ -5,19 +5,19 @@
   
 
   
-  <title>springboot-test | No pains,no gains</title>
+  <title>随机生成大文件 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="codehttps://github.com/mengxu2018/springboot/tree/master/spring-boot-testhttps://spring.io/guides/gs/testing-web/">
+  <meta name="description" content="code123456789101112131415161718192021222324252627282930import java.io.IOException;import java.io.RandomAccessFile;import java.nio.ByteBuffer;import java.nio.channels.FileChannel;import java.util.Rando">
 <meta property="og:type" content="article">
-<meta property="og:title" content="springboot-test">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/03/31/springboot-test/index.html">
+<meta property="og:title" content="随机生成大文件">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/03/create-large-file/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="codehttps://github.com/mengxu2018/springboot/tree/master/spring-boot-testhttps://spring.io/guides/gs/testing-web/">
+<meta property="og:description" content="code123456789101112131415161718192021222324252627282930import java.io.IOException;import java.io.RandomAccessFile;import java.nio.ByteBuffer;import java.nio.channels.FileChannel;import java.util.Rando">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-31T15:31:23.647Z">
+<meta property="og:updated_time" content="2019-06-03T12:39:06.387Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="springboot-test">
-<meta name="twitter:description" content="codehttps://github.com/mengxu2018/springboot/tree/master/spring-boot-testhttps://spring.io/guides/gs/testing-web/">
+<meta name="twitter:title" content="随机生成大文件">
+<meta name="twitter:description" content="code123456789101112131415161718192021222324252627282930import java.io.IOException;import java.io.RandomAccessFile;import java.nio.ByteBuffer;import java.nio.channels.FileChannel;import java.util.Rando">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/springboot-test/" class="article-date">
-  <time datetime="2019-03-31T15:31:23.647Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/06/03/create-large-file/" class="article-date">
+  <time datetime="2019-06-03T12:39:06.357Z" itemprop="datePublished">2019-06-03</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      springboot-test
+      随机生成大文件
     </h1>
   
 
@@ -86,12 +86,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
+        <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.RandomAccessFile;</span><br><span class="line">import java.nio.ByteBuffer;</span><br><span class="line">import java.nio.channels.FileChannel;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        byte[] buffer = &quot;Help I am trapped in a fortune cookie factory\n&quot;.getBytes();</span><br><span class="line">        byte[] buffer2 = &quot;good morning boy&quot;.getBytes();</span><br><span class="line">        int number_of_lines = 400000*20;</span><br><span class="line"></span><br><span class="line">        Random rand = new Random();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FileChannel rwChannel = new RandomAccessFile(&quot;mylarge.txt&quot;, &quot;rw&quot;).getChannel();</span><br><span class="line">        ByteBuffer wrBuf = rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length * number_of_lines);</span><br><span class="line">        for (int i = 1; i &lt; number_of_lines; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            int n = rand.nextInt(50) + 1;</span><br><span class="line">            if (n % i == 0) &#123;</span><br><span class="line">                wrBuf.put(buffer);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                wrBuf.put(buffer2);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        rwChannel.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="cjtx31m230000dwji6i6srgis" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="cjwgfmapy000060jicn6iqgqo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -100,19 +100,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/04/15/oauth2/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/03/hadoop-spark-cluster-setup/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          oauth2
+          hadoop spark cluster setup
         
       </div>
     </a>
   
   
-    <a href="/2019/03/31/redis5-centos7-setup/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/01/centos7-ssh免密码/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">redis5 centos7 setup</div>
+      <div class="article-nav-title">ssh password-less</div>
     </a>
   
 </nav>
