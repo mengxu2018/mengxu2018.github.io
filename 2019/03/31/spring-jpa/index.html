@@ -5,19 +5,19 @@
   
 
   
-  <title>first spark sample | No pains,no gains</title>
+  <title>spring jpa | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
+  <meta name="description" content="spring jpa tips Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager  springboot是默认打开spring.jpa.open-in-view=true  spring data repository是默认开启事务的， entitymanager并没有,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="first spark sample">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/04/28/first-spark/index.html">
+<meta property="og:title" content="spring jpa">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/03/31/spring-jpa/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
+<meta property="og:description" content="spring jpa tips Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager  springboot是默认打开spring.jpa.open-in-view=true  spring data repository是默认开启事务的， entitymanager并没有,">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-28T06:11:32.407Z">
+<meta property="og:updated_time" content="2019-06-12T12:18:11.487Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="first spark sample">
-<meta name="twitter:description" content="intro这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn codehttps://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark buildmvn package deploy1234YOUR_SPARK_HOME/bin/spark-su">
+<meta name="twitter:title" content="spring jpa">
+<meta name="twitter:description" content="spring jpa tips Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager  springboot是默认打开spring.jpa.open-in-view=true  spring data repository是默认开启事务的， entitymanager并没有,">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/28/first-spark/" class="article-date">
-  <time datetime="2019-04-28T06:11:32.406Z" itemprop="datePublished">2019-04-28</time>
+    <a href="/2019/03/31/spring-jpa/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      first spark sample
+      spring jpa
     </h1>
   
 
@@ -86,16 +86,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
-<p>输出Lines with a: xxx, Lines with b: xxx</p>
+        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
+<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
+</li>
+<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
+</li>
+<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
+</li>
+<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
+</li>
+<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
+</li>
+<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
+</li>
+<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
+</li>
+<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
+</li>
+</ul>
+<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/28/first-spark/" data-id="cjv0jml010000bkjiiwduxv0p" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="cjtwon8x2000lwkjiawsetgzx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -104,19 +118,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/04/28/first-dubbo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/03/31/springboot-test/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          first dubbo
+          springboot-test
         
       </div>
     </a>
   
   
-    <a href="/2019/04/15/oauth2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/03/31/springboot-docker/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">oauth2</div>
+      <div class="article-nav-title">sprintboot docker deployment</div>
     </a>
   
 </nav>
@@ -153,11 +167,15 @@
       <ul>
         
           <li>
-            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
           </li>
         
           <li>
             <a href="/2019/06/03/create-large-file/">随机生成大文件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
           </li>
         
           <li>
@@ -166,10 +184,6 @@
         
           <li>
             <a href="/2019/06/01/hostname设置/">hostname设置</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
           </li>
         
       </ul>

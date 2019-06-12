@@ -62,10 +62,84 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/windows10-disable-update/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="cjtwon8x1000kwkjif7lhrxv8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/03/create-large-file/" class="article-date">
+  <time datetime="2019-06-03T14:51:52.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/03/create-large-file/">随机生成大文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.RandomAccessFile;</span><br><span class="line">import java.nio.ByteBuffer;</span><br><span class="line">import java.nio.channels.FileChannel;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        byte[] buffer = &quot;Help I am trapped in a fortune cookie factory\n&quot;.getBytes();</span><br><span class="line">        byte[] buffer2 = &quot;good morning boy&quot;.getBytes();</span><br><span class="line">        int number_of_lines = 400000*20;</span><br><span class="line"></span><br><span class="line">        Random rand = new Random();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FileChannel rwChannel = new RandomAccessFile(&quot;mylarge.txt&quot;, &quot;rw&quot;).getChannel();</span><br><span class="line">        ByteBuffer wrBuf = rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length * number_of_lines);</span><br><span class="line">        for (int i = 1; i &lt; number_of_lines; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            int n = rand.nextInt(50) + 1;</span><br><span class="line">            if (n % i == 0) &#123;</span><br><span class="line">                wrBuf.put(buffer);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                wrBuf.put(buffer2);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        rwChannel.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="cjwgfmapy000060jicn6iqgqo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hadoop-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/03/hadoop-spark-cluster-setup/" class="article-date">
-  <time datetime="2019-06-03T13:50:19.363Z" itemprop="datePublished">2019-06-03</time>
+  <time datetime="2019-06-03T14:51:52.000Z" itemprop="datePublished">2019-06-03</time>
 </a>
     
   </div>
@@ -116,47 +190,10 @@
 
 
   
-    <article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/03/create-large-file/" class="article-date">
-  <time datetime="2019-06-03T12:39:06.357Z" itemprop="datePublished">2019-06-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/03/create-large-file/">随机生成大文件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.RandomAccessFile;</span><br><span class="line">import java.nio.ByteBuffer;</span><br><span class="line">import java.nio.channels.FileChannel;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        byte[] buffer = &quot;Help I am trapped in a fortune cookie factory\n&quot;.getBytes();</span><br><span class="line">        byte[] buffer2 = &quot;good morning boy&quot;.getBytes();</span><br><span class="line">        int number_of_lines = 400000*20;</span><br><span class="line"></span><br><span class="line">        Random rand = new Random();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FileChannel rwChannel = new RandomAccessFile(&quot;mylarge.txt&quot;, &quot;rw&quot;).getChannel();</span><br><span class="line">        ByteBuffer wrBuf = rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length * number_of_lines);</span><br><span class="line">        for (int i = 1; i &lt; number_of_lines; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            int n = rand.nextInt(50) + 1;</span><br><span class="line">            if (n % i == 0) &#123;</span><br><span class="line">                wrBuf.put(buffer);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                wrBuf.put(buffer2);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        rwChannel.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="cjwgfmapy000060jicn6iqgqo" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-centos7-ssh免密码" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/01/centos7-ssh免密码/" class="article-date">
-  <time datetime="2019-06-01T08:29:15.853Z" itemprop="datePublished">2019-06-01</time>
+  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
 </a>
     
   </div>
@@ -200,7 +237,7 @@
     <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/01/hostname设置/" class="article-date">
-  <time datetime="2019-06-01T03:26:03.349Z" itemprop="datePublished">2019-06-01</time>
+  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
 </a>
     
   </div>
@@ -240,7 +277,7 @@
     <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/30/centos-update-timezone/" class="article-date">
-  <time datetime="2019-05-30T14:27:33.099Z" itemprop="datePublished">2019-05-30</time>
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
 </a>
     
   </div>
@@ -276,7 +313,7 @@
     <article id="post-Spark-Client-Cluster-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/30/Spark-Client-Cluster-mode/" class="article-date">
-  <time datetime="2019-05-30T11:41:53.903Z" itemprop="datePublished">2019-05-30</time>
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
 </a>
     
   </div>
@@ -317,7 +354,7 @@
     <article id="post-aliyum-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/26/aliyum-maven/" class="article-date">
-  <time datetime="2019-05-26T03:12:22.981Z" itemprop="datePublished">2019-05-26</time>
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
 </a>
     
   </div>
@@ -353,8 +390,8 @@
   
     <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/21/maven-compiler/" class="article-date">
-  <time datetime="2019-05-21T14:16:32.914Z" itemprop="datePublished">2019-05-21</time>
+    <a href="/2019/05/26/maven-compiler/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
 </a>
     
   </div>
@@ -365,7 +402,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/21/maven-compiler/">maven compiler</a>
+      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
     </h1>
   
 
@@ -383,7 +420,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/21/maven-compiler/" data-id="cjvxvke8s00019wji0b042fj9" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="cjvxvke8s00019wji0b042fj9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -395,8 +432,8 @@
   
     <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/28/first-dubbo/" class="article-date">
-  <time datetime="2019-04-28T09:36:18.826Z" itemprop="datePublished">2019-04-28</time>
+    <a href="/2019/04/26/first-dubbo/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
 </a>
     
   </div>
@@ -407,7 +444,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/28/first-dubbo/">first dubbo</a>
+      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
     </h1>
   
 
@@ -422,48 +459,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/28/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/28/first-spark/" class="article-date">
-  <time datetime="2019-04-28T06:11:32.406Z" itemprop="datePublished">2019-04-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/28/first-spark/">first spark sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
-<p>输出Lines with a: xxx, Lines with b: xxx</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/28/first-spark/" data-id="cjv0jml010000bkjiiwduxv0p" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
       
       
     </footer>
@@ -509,11 +505,15 @@
       <ul>
         
           <li>
-            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
           </li>
         
           <li>
             <a href="/2019/06/03/create-large-file/">随机生成大文件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
           </li>
         
           <li>
@@ -522,10 +522,6 @@
         
           <li>
             <a href="/2019/06/01/hostname设置/">hostname设置</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
           </li>
         
       </ul>

@@ -5,19 +5,19 @@
   
 
   
-  <title>first dubbo | No pains,no gains</title>
+  <title>sprintboot docker deployment | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttp://dubbo.apache.org/en-us/blog/dubbo-101.html codehttps://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic run直接ide运行server，然后运行client">
+  <meta name="description" content="build code123git clone https://github.com/mengxu2018/springboot.gitcd springboot/spring-boot-crudmvn package # will generate spring-boot-crud.jar under target directory build docker image12docker buil">
 <meta property="og:type" content="article">
-<meta property="og:title" content="first dubbo">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/04/28/first-dubbo/index.html">
+<meta property="og:title" content="sprintboot docker deployment">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/03/31/springboot-docker/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttp://dubbo.apache.org/en-us/blog/dubbo-101.html codehttps://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic run直接ide运行server，然后运行client">
+<meta property="og:description" content="build code123git clone https://github.com/mengxu2018/springboot.gitcd springboot/spring-boot-crudmvn package # will generate spring-boot-crud.jar under target directory build docker image12docker buil">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-28T09:36:18.826Z">
+<meta property="og:updated_time" content="2019-06-12T12:17:55.626Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="first dubbo">
-<meta name="twitter:description" content="introhttp://dubbo.apache.org/en-us/blog/dubbo-101.html codehttps://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic run直接ide运行server，然后运行client">
+<meta name="twitter:title" content="sprintboot docker deployment">
+<meta name="twitter:description" content="build code123git clone https://github.com/mengxu2018/springboot.gitcd springboot/spring-boot-crudmvn package # will generate spring-boot-crud.jar under target directory build docker image12docker buil">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/28/first-dubbo/" class="article-date">
-  <time datetime="2019-04-28T09:36:18.826Z" itemprop="datePublished">2019-04-28</time>
+    <a href="/2019/03/31/springboot-docker/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      first dubbo
+      sprintboot docker deployment
     </h1>
   
 
@@ -86,14 +86,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/28/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjtwon8wz000iwkjigxsy7r3l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +103,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/05/21/maven-compiler/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/03/31/spring-jpa/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          maven compiler
+          spring jpa
         
       </div>
     </a>
   
   
-    <a href="/2019/04/28/first-spark/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/03/26/java-log/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">first spark sample</div>
+      <div class="article-nav-title">java log implemention</div>
     </a>
   
 </nav>
@@ -151,11 +152,15 @@
       <ul>
         
           <li>
-            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
           </li>
         
           <li>
             <a href="/2019/06/03/create-large-file/">随机生成大文件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
           </li>
         
           <li>
@@ -164,10 +169,6 @@
         
           <li>
             <a href="/2019/06/01/hostname设置/">hostname设置</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/30/centos-update-timezone/">update timezone</a>
           </li>
         
       </ul>
