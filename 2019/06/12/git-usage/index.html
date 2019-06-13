@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>git 分支介绍 | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="local branchYou can view a list of all the local branches on your machine by running git branch:123$ git branchmasternew-feature Each local branch has a file under .git/refs/heads/:12$ ls -F .git/refs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git 分支介绍">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/12/git-usage/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="local branchYou can view a list of all the local branches on your machine by running git branch:123$ git branchmasternew-feature Each local branch has a file under .git/refs/heads/:12$ ls -F .git/refs">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-12T12:27:10.444Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git 分支介绍">
+<meta name="twitter:description" content="local branchYou can view a list of all the local branches on your machine by running git branch:123$ git branchmasternew-feature Each local branch has a file under .git/refs/heads/:12$ ls -F .git/refs">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-git-usage" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/git-usage/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      git 分支介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="local-branch"><a href="#local-branch" class="headerlink" title="local branch"></a>local branch</h2><p>You can view a list of all the local branches on your machine by running git branch:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">master</span><br><span class="line">new-feature</span><br></pre></td></tr></table></figure></p>
+<p>Each local branch has a file under .git/refs/heads/:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -F .git/refs/heads/</span><br><span class="line">master new-feature</span><br></pre></td></tr></table></figure></p>
+<p>There are two types of local branches on your machine: non-tracking local branches, and tracking local branches.</p>
+<h3 id="Non-tracking-local-branches"><a href="#Non-tracking-local-branches" class="headerlink" title="Non-tracking local branches"></a>Non-tracking local branches</h3><p>Non-tracking local branches are not associated with any other branch. You create one by running <code>git branch &lt;branchname&gt;</code>.</p>
+<h3 id="Tracking-local-branches"><a href="#Tracking-local-branches" class="headerlink" title="Tracking local branches"></a>Tracking local branches</h3><p>Tracking local branches are associated with another branch, usually a remote-tracking branch. You create one by running <code>git branch - track &lt;branchname&gt; [&lt;start-point&gt;]</code>.<br>You can view which one of your local branches are tracking branches using <code>git branch -vv</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -vv</span><br><span class="line">master b31f87c85 [origin/master] Example commit message</span><br><span class="line">new-feature b760e04ed Another example commit message</span><br></pre></td></tr></table></figure></p>
+<p>From this command’s output, you can see that the local branch master is tracking the <code>remote-tracking</code> branch <code>origin/master</code>, and the local branch new-feature is not tracking anything.<br>Another way to see which branches are tracking branches is by having a look at <code>.git/config</code>.<br>Tracking local branches are useful. They allow you to run git pull and git push, without specifying which upstream branch to use. If the branch is not set up to track another branch, you’ll get an error like this one:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout new-feature</span><br><span class="line">$ git pull</span><br><span class="line">There is no tracking information for the current branch.</span><br><span class="line">Please specify which branch you want to merge with.</span><br><span class="line">See git-pull(1) for details</span><br><span class="line">git pull &lt;remote&gt; &lt;branch&gt;</span><br><span class="line">If you wish to set tracking information for this branch you can do so with:</span><br><span class="line">git branch - set-upstream new-feature &lt;remote&gt;/&lt;branch&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Remote-tracking-branches-still-on-your-machine"><a href="#Remote-tracking-branches-still-on-your-machine" class="headerlink" title="Remote-tracking branches (still on your machine)"></a>Remote-tracking branches (still on your machine)</h2><p>You can view a list of all the remote-tracking branches on your machine by running <code>git branch -r</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -r</span><br><span class="line">bitbucket/master</span><br><span class="line">origin/master</span><br><span class="line">origin/new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Each remote-tracking branch has a file under <code>.git/refs/&lt;remote&gt;/</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ tree -F .git/refs/remotes/</span><br><span class="line">.git/refs/remotes/</span><br><span class="line">├── bitbucket/</span><br><span class="line">│ └── master</span><br><span class="line">└── origin/</span><br><span class="line">├── master</span><br><span class="line">└── new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Think of your remote-tracking branches as your local cache for what the remote machines contain. You can update your remote-tracking branches using <code>git fetch</code>, which <code>git pull</code> uses behind the scenes.<br>Even though all the data for a remote-tracking branch is stored locally on your machine (like a cache), it’s still never called a local branch. (At least, I wouldn’t call it that!) It’s just called a remote-tracking branch.</p>
+<h2 id="Branches-on-a-remote-machine"><a href="#Branches-on-a-remote-machine" class="headerlink" title="Branches on a remote machine:"></a>Branches on a remote machine:</h2><p>You can view all the remote branches (that is, the branches on the remote machine), by running <code>git remote show &lt;remote&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ git remote show origin</span><br><span class="line">* remote origin</span><br><span class="line">Fetch URL: git@github.com:Flimm/example.git</span><br><span class="line">Push URL: git@github.com:Flimm/example.git</span><br><span class="line">HEAD branch: master</span><br><span class="line">Remote branches:</span><br><span class="line">io-socket-ip new (next fetch will store in remotes/origin)</span><br><span class="line">master tracked</span><br><span class="line">new-branch tracked</span><br><span class="line">Local ref configured for &apos;git pull&apos;:</span><br><span class="line">master merges with remote master</span><br><span class="line">new-branch merges with remote new-branch</span><br><span class="line">Local ref configured for &apos;git push&apos;:</span><br><span class="line">master pushes to master (up to date)</span><br><span class="line">new-branch pushes to new-branch (fast-forwardable)</span><br></pre></td></tr></table></figure></p>
+<p>This git remote command queries the remote machine over the network about its branches. It does not update the remote-tracking branches on your local machine, use <code>git fetch</code> or <code>git pull</code> for that.</p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>git pull [<options>] [<repository> [<refspec>…​]]</refspec></repository></options></p>
+<p>git merge [-n] [ - stat] [ - no-commit] [ - squash] [ - [no-]edit]<br> [-s <strategy>] [-X <strategy-option>] [-S[<keyid>]]<br> [ - [no-]allow-unrelated-histories]<br> [ - [no-]rerere-autoupdate] [-m <msg>] [-F <file>] [<commit>…​]<br>从官方的文档来看，git merge是没有repository参数的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull origin next</span><br></pre></td></tr></table></figure></commit></file></msg></keyid></strategy-option></strategy></p>
+<p>这个pull的直接就是远程的分支, 他是下面两个命令的结合体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git merge origin/next</span><br></pre></td></tr></table></figure></p>
+<p>这个先把远程的所有分支fetch过来，然后把远程跟踪分支merge到当前分支，origin/next这种分支是存在本地的,虽然叫远程跟踪分支<br>把远程的分支fetch过来可以看到如下， fetch就是把远程的东西拿到本地的仓库，也就是origin/develop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C:\git\testgit&gt;git fetch</span><br><span class="line">remote: Enumerating objects: 5, done.</span><br><span class="line">remote: Counting objects: 100% (5/5), done.</span><br><span class="line">remote: Compressing objects: 100% (3/3), done.</span><br><span class="line">remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0</span><br><span class="line">Unpacking objects: 100% (3/3), done.</span><br><span class="line">From https://gitprod.statestr.com/e587214/testgit</span><br><span class="line">8ce7bef..0605953 develop -&gt; origin/develop</span><br></pre></td></tr></table></figure></p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777" target="_blank" rel="noopener">https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/git-usage/" data-id="cjwukwkw90001agjid3bq4j9g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/06/12/windows10-disable-update/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">win10 disable auto-update</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/hive-vs-hbase/">hive vs hbase</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/create-large-file/">随机生成大文件</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -5,21 +5,19 @@
   
 
   
-  <title>虚拟机增加空间 | No pains,no gains</title>
+  <title>hive vs hbase | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="add space我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录  虚拟机设置里面先扩展好空间 fdisk -l查看磁盘占用情况可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3 输入fdisk /dev/sda,然后一步一步的回车，最后输入w保持修改重启reboot这时在/dev/目录下">
+  <meta name="description" content="Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。 Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；H">
 <meta property="og:type" content="article">
-<meta property="og:title" content="虚拟机增加空间">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/index.html">
+<meta property="og:title" content="hive vs hbase">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="add space我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录  虚拟机设置里面先扩展好空间 fdisk -l查看磁盘占用情况可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3 输入fdisk /dev/sda,然后一步一步的回车，最后输入w保持修改重启reboot这时在/dev/目录下">
+<meta property="og:description" content="Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。 Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；H">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://mengxu2018.github.io/images/add-space.PNG">
-<meta property="og:updated_time" content="2019-06-12T12:17:39.593Z">
+<meta property="og:updated_time" content="2019-06-12T12:28:45.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="虚拟机增加空间">
-<meta name="twitter:description" content="add space我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录  虚拟机设置里面先扩展好空间 fdisk -l查看磁盘占用情况可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3 输入fdisk /dev/sda,然后一步一步的回车，最后输入w保持修改重启reboot这时在/dev/目录下">
-<meta name="twitter:image" content="https://mengxu2018.github.io/images/add-space.PNG">
+<meta name="twitter:title" content="hive vs hbase">
+<meta name="twitter:description" content="Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。 Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；H">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -66,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-vmware-vm-add-space" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-hive-vs-hbase" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/14/vmware-vm-add-space/" class="article-date">
-  <time datetime="2019-03-14T14:51:52.000Z" itemprop="datePublished">2019-03-14</time>
+    <a href="/2019/06/12/hive-vs-hbase/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
 </a>
     
   </div>
@@ -80,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      虚拟机增加空间
+      hive vs hbase
     </h1>
   
 
@@ -88,19 +86,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="add-space"><a href="#add-space" class="headerlink" title="add space"></a>add space</h2><p>我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录</p>
-<p><img src="/images/add-space.PNG" alt="vm addspace"></p>
-<p>虚拟机设置里面先扩展好空间</p>
-<p><code>fdisk -l</code>查看磁盘占用情况<br>可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3</p>
-<p>输入<code>fdisk /dev/sda</code>,然后一步一步的回车，最后输入w保持修改<br>重启<code>reboot</code><br>这时在<code>/dev/</code>目录下，才能看到了新的分区比如<code>/dev/sda3</code><br><code>mkfs.ext2 /dev/sda3</code>  格式化<br>在根目录下创建disk3 (<code>mkdir /disk3</code>)<br><code>mount /dev/sda3 /disk43/</code>将分区mount到<code>/disk3/</code>上<br>在vi修改/etc/fstab文件,加入 <code>/dev/sda3   /disk3 ext2 defaults 0 0</code> 一行，并保存，实现开机自动mount</p>
-<p>至此，新增加的磁盘空间容量，即可在disk3上体现，并且重新开机自动mount该分区，追加磁盘空间的工作完毕。</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><code>/dev/</code> is the part in the unix directory tree that contains all “device” files<br>So <code>/dev/sda9</code> means the ninth partition on the first drive.</p>
-<p><a href="https://blog.csdn.net/lyd135364/article/details/78623119" target="_blank" rel="noopener">https://blog.csdn.net/lyd135364/article/details/78623119</a></p>
+        <ol>
+<li>Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。</li>
+<li>Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；HBase处理数据是基于列的而不是基于行的模式，适合海量数据的随机访问。</li>
+<li>HBase的表是疏松的存储的，因此用户可以给行定义各种不同的列；而Hive表是稠密型，即定义多少列，每一行有存储固定列数的数据。</li>
+<li>Hive使用Hadoop来分析处理数据，而Hadoop系统是批处理系统，因此不能保证处理的低迟延问题；而HBase是近实时系统，支持实时查询。</li>
+<li>Hive不提供row-level的更新，它适用于大量append-only数据集（如日志）的批任务处理。而基于HBase的查询，支持和row-level的更新。</li>
+<li>Hive提供完整的SQL实现，通常被用来做一些基于历史数据的挖掘、分析。而HBase不适用与有join，多级索引，表关系复杂的应用场景。</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="cjtwon8x3000mwkjiali2t531" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="cjwukwkw40000agji83kqvno8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -109,19 +107,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/03/21/AES+base64/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/12/windows10-disable-update/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          AES base64
+          win10 disable auto-update
         
       </div>
     </a>
   
   
-    <a href="/2019/03/09/mysql8-centos7-setup/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/03/hadoop-spark-cluster-setup/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mysql8 centos7 setup</div>
+      <div class="article-nav-title">hadoop spark cluster setup</div>
     </a>
   
 </nav>
