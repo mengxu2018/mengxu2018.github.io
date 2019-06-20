@@ -15,7 +15,7 @@
 <meta property="og:description" content="准备机器 可以通过vmware创建1台centos虚拟机，我用的是7.6版本，可以从官网下载centos 接下来所有的操作都是基于root用户，且需要配置科学上网，否则会遇到安装失败, 因为中间可能会访问到google地址  配置网卡 安装完成之后执行nmcli d会发现网卡是禁用的，ipconfig命令执行不了 关于网络配置可以参考CentOS 7 minimal 版本安装后网络配置 简单来说">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://mengxu2018.github.io/images/Kubernetes.png">
-<meta property="og:updated_time" content="2019-06-01T03:20:23.450Z">
+<meta property="og:updated_time" content="2019-06-17T02:17:55.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kubernetes cluster setup">
 <meta name="twitter:description" content="准备机器 可以通过vmware创建1台centos虚拟机，我用的是7.6版本，可以从官网下载centos 接下来所有的操作都是基于root用户，且需要配置科学上网，否则会遇到安装失败, 因为中间可能会访问到google地址  配置网卡 安装完成之后执行nmcli d会发现网卡是禁用的，ipconfig命令执行不了 关于网络配置可以参考CentOS 7 minimal 版本安装后网络配置 简单来说">
@@ -100,7 +100,7 @@
 </ul>
 </li>
 <li>需要提醒的是nmtui打开的界面里面，通过tab切换按钮，通过空格而不是回车选择checkbox</li>
-<li>网卡启动之后yum install -y net-tools安装网络工具</li>
+<li>网卡启动之后yum install -y net-tools安装网络工d具</li>
 <li>ipconfig得到ip地址之后，强烈建议使用MobaXterm连接vm， 这个比putty好用很多，免费版就够用</li>
 </ul>
 <h2 id="禁用防火墙"><a href="#禁用防火墙" class="headerlink" title="禁用防火墙"></a>禁用防火墙</h2><p><em>本地开发或者学习环境，为了简单，直接disable防火墙</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure></p>
@@ -232,6 +232,10 @@
       <ul>
         
           <li>
+            <a href="/2019/06/16/postgres安装/">postgres安装</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/13/Hadoop早期Architecture/">old Hadoop Architecture</a>
           </li>
         
@@ -240,15 +244,11 @@
           </li>
         
           <li>
-            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
-          </li>
-        
-          <li>
             <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
           </li>
         
           <li>
-            <a href="/2019/06/12/hive-vs-hbase/">hive vs hbase</a>
+            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
           </li>
         
       </ul>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>postgres安装 | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="安装https://www.postgresql.org/download/linux/redhat/官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本yum install postgresql10123/usr/pgsql-10/bin/postgresql-10-setup initdbsystemctl enable postgresql-10systemctl sta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="postgres安装">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/16/postgres安装/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="安装https://www.postgresql.org/download/linux/redhat/官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本yum install postgresql10123/usr/pgsql-10/bin/postgresql-10-setup initdbsystemctl enable postgresql-10systemctl sta">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-16T06:50:46.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="postgres安装">
+<meta name="twitter:description" content="安装https://www.postgresql.org/download/linux/redhat/官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本yum install postgresql10123/usr/pgsql-10/bin/postgresql-10-setup initdbsystemctl enable postgresql-10systemctl sta">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-postgres安装" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/postgres安装/" class="article-date">
+  <time datetime="2019-06-16T14:51:52.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      postgres安装
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="noopener">https://www.postgresql.org/download/linux/redhat/</a><br>官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本<code>yum install postgresql10</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/pgsql-10/bin/postgresql-10-setup initdb</span><br><span class="line">systemctl enable postgresql-10</span><br><span class="line">systemctl start postgresql-10</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>注意配置文件在/var/lib/pgsql/10/data不在/usr/pgsql-10<br>可以通过netstat -nlt查看ip的绑定情况，如果修改了/usr/pgsql-10的listen相关的配置，<br>会发现5432仍然listen在127.0.0.1,而不是远程任意ip地址可以访问<br><a href="https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了" target="_blank" rel="noopener">https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了</a></p>
+<p>pg_hba.conf的配置必须是trust，否则远程客户端比如datagrip还是不能登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host    all             all              0.0.0.0/0                       trust</span><br><span class="line">host    all             all              ::/0                            trust</span><br></pre></td></tr></table></figure></p>
+<p>同时注意postgres安装的时候会默认安装一个linux的用户postgres,<br>可以su - postgres之后然后psql命令进入shell的sql界面，<br>然后修改密码ALTER USER postgres WITH PASSWORD ‘xuhang’，<br>最后可以客户端用xuhang这个密码登陆</p>
+<h2 id="其他ref"><a href="#其他ref" class="headerlink" title="其他ref"></a>其他ref</h2><p><a href="https://www.postgresql.org/docs/10/auth-pg-hba-conf.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/10/auth-pg-hba-conf.html</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>直接看下面步骤进行安装for quick，进入root用户<br>yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="noopener">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a><br>yum install postgresql10<br>yum install postgresql10-server<br>/usr/pgsql-10/bin/postgresql-10-setup initdb<br>systemctl enable postgresql-10<br>systemctl start postgresql-10<br>安装好下面开始配置<br>su - postgres<br>psql<br>ALTER USER postgres WITH PASSWORD ‘xuhang’</p>
+<p>append<br><code>`
+host    all             all              0.0.0.0/0                       trust
+host    all             all              ::/0                            trust</code><br>to <code>/var/lib/pgsql/10/data/pg_hba.conf</code></p>
+<p>update to <code>listen_addresses = &#39;*&#39;</code><br>in <code>postgresql.conf</code></p>
+<p>systemctl restart postgresql-10<br>可以客户端登陆了，默认数据库postgres，默认用户名postgres，密码是alter修改过的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/16/postgres安装/" data-id="cjx4oeolx00005sjilb37cxsi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/06/13/Hadoop早期Architecture/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">old Hadoop Architecture</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/16/postgres安装/">postgres安装</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/13/Hadoop早期Architecture/">old Hadoop Architecture</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
