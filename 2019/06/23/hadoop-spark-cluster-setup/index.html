@@ -10,13 +10,14 @@
   <meta name="description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop spark cluster setup">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/03/hadoop-spark-cluster-setup/index.html">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/hadoop-spark-cluster-setup/index.html">
 <meta property="og:site_name" content="No pains,no gains">
 <meta property="og:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apa">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://mengxu2018.github.io/images/spark-cluster.png">
 <meta property="og:image" content="https://mengxu2018.github.io/images/yarn.png">
-<meta property="og:updated_time" content="2019-06-13T13:57:14.311Z">
+<meta property="og:image" content="https://mengxu2018.github.io/images/workcount-rdd-stage.png">
+<meta property="og:updated_time" content="2019-06-23T10:15:47.363Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop spark cluster setup">
 <meta name="twitter:description" content="伪分布式搭建主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,首先把三台机器的hostname和ip配置下，有些case会hostname访问123192.168.77.130  k8s-master192.168.77.131  node1192.168.77.132  node2 这个一般立即生效的 参考官网修改配置文件https://hadoop.apa">
@@ -69,8 +70,8 @@
       <div class="outer">
         <section id="main"><article id="post-hadoop-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/03/hadoop-spark-cluster-setup/" class="article-date">
-  <time datetime="2019-06-03T14:51:52.000Z" itemprop="datePublished">2019-06-03</time>
+    <a href="/2019/06/23/hadoop-spark-cluster-setup/" class="article-date">
+  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
 </a>
     
   </div>
@@ -108,8 +109,13 @@
 <p><a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a><br>monitor ui 在job运行过程可以访问,如果想事后访问请参考history log章节</p>
 <h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>java version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples;/* SimpleApp.java */</span><br><span class="line">import org.apache.spark.api.java.function.FilterFunction;</span><br><span class="line">import org.apache.spark.sql.SparkSession;</span><br><span class="line">import org.apache.spark.sql.Dataset;</span><br><span class="line"></span><br><span class="line">public class SimpleApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        if (args.length &lt; 1) &#123;</span><br><span class="line">            System.err.println(&quot;Usage: JavaWordCount &lt;file&gt;&quot;);</span><br><span class="line">            System.exit(1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        SparkSession spark = SparkSession.builder().appName(&quot;Simple Application&quot;).getOrCreate();</span><br><span class="line">        Dataset&lt;String&gt; logData = spark.read().textFile(args[0]).cache();</span><br><span class="line">        logData.show();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FilterFunction&lt;String&gt; f1 = s -&gt; s.contains(&quot;a&quot;);</span><br><span class="line">        FilterFunction&lt;String&gt; f2 = s -&gt; s.contains(&quot;b&quot;);</span><br><span class="line"></span><br><span class="line">        Dataset&lt;String&gt; newDs = logData.filter(f1);</span><br><span class="line">        System.out.println(&quot;start to print new ds&quot;);</span><br><span class="line">        newDs.show();</span><br><span class="line">        System.out.println(&quot;stop to print new ds&quot;);</span><br><span class="line">        long numAs = newDs.count();</span><br><span class="line">        long numBs = logData.filter(f2).count();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;my Lines with a: &quot; + numAs + &quot;, lines with b: &quot; + numBs);</span><br><span class="line"></span><br><span class="line">        spark.stop();</span><br><span class="line">        System.out.println(&quot;hello world&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="saprk-history-log"><a href="#saprk-history-log" class="headerlink" title="saprk history log"></a>saprk history log</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> mkdir /tmp/spark-events(by default)</span><br><span class="line"></span><br><span class="line"> ./bin/spark-submit   --class org.apache.spark.examples.SimpleApp</span><br><span class="line">                      --master spark://192.168.77.130:7077</span><br><span class="line">                      --deploy-mode client</span><br><span class="line">                      --executor-memory 700M</span><br><span class="line">                      --conf spark.eventLog.enabled=true  (enable history log)</span><br><span class="line">                      /root/spark/spark-example-java-1.0.jar</span><br><span class="line">                      hdfs://k8s-master:9000/user/xuhang/core-site.xml;</span><br><span class="line">./sbin/start-history-server.sh</span><br></pre></td></tr></table></figure>
+<h2 id="saprk-history-log"><a href="#saprk-history-log" class="headerlink" title="saprk history log"></a>saprk history log</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> mkdir /tmp/spark-events(by default)</span><br><span class="line"></span><br><span class="line"> ./bin/spark-submit   --class org.apache.spark.examples.SimpleApp --master spark://192.168.77.130:7077 --deploy-mode client --executor-memory 700M --conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml</span><br><span class="line">./sbin/start-history-server.sh</span><br></pre></td></tr></table></figure>
 <p><code>http://k8s-master:18080</code> by default<br>ref: <a href="https://spark.apache.org/docs/latest/monitoring.html" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/monitoring.html</a></p>
+<h2 id="run-on-other-machine-client-mode"><a href="#run-on-other-machine-client-mode" class="headerlink" title="run on other machine(client mode)"></a>run on other machine(client mode)</h2><p>client mode可以在任意局域网机器运行<br>with client mode, you can run the spark submit on any machine, just make sure in the same local network.<br>for instance, in centostest node,<br>mkdir /tmp/spark-events<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br><a href="http://centostest:18080/" target="_blank" rel="noopener">http://centostest:18080/</a>  (view history on the machine running the submit binary)</p>
+<h2 id="run-cluster-mode"><a href="#run-cluster-mode" class="headerlink" title="run cluster mode"></a>run cluster mode</h2><p> ./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode cluster –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br> 上面的命令可能会jar包找不到的错误<br>注意：standalone 模式的 cluster模式 要把jar 文件传到hdfs上面去，因为driver在集群中的任意一节点执行。</p>
+<h2 id="stage"><a href="#stage" class="headerlink" title="stage"></a>stage</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; lines = spark.read().textFile(args[0]).javaRDD();</span><br><span class="line">JavaRDD&lt;String&gt; words = lines.flatMap(s -&gt; Arrays.asList(SPACE.split(s)).iterator());</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; ones = words.mapToPair(s -&gt; new Tuple2&lt;&gt;(s, 1));</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; counts = ones.reduceByKey((i1, i2) -&gt; i1 + i2);</span><br><span class="line">List&lt;Tuple2&lt;String, Integer&gt;&gt; output = counts.collect();</span><br></pre></td></tr></table></figure>
+<p>对于这个程序有两个stage，一个到mapToPair结束，第二个到collect结束，点开可以看到DAG<br><img src="/images/workcount-rdd-stage.png" alt="stage"></p>
+<h2 id="指定分区数目"><a href="#指定分区数目" class="headerlink" title="指定分区数目"></a>指定分区数目</h2><p>spark.default.parallelism<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –driver-memory=2g   –executor-memory 2000M   –conf spark.eventLog.enabled=true –conf spark.default.parallelism=4 /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/mylarge4.txt</p>
 <h2 id="Yarn的组件及架构"><a href="#Yarn的组件及架构" class="headerlink" title="Yarn的组件及架构"></a>Yarn的组件及架构</h2><ul>
 <li>ResourceManager：Global（全局）的进程</li>
 <li>NodeManager：运行在每个节点上的进程</li>
@@ -118,11 +124,12 @@
 <li>Container：节点上一组CPU和内存资源<br>Container是Yarn对计算机计算资源的抽象，它其实就是一组CPU和内存资源，所有的应用都会运行在Container中。ApplicationMaster是对运行在Yarn中某个应用的抽象，它其实就是某个类型应用的实例，ApplicationMaster是应用级别的，它的主要功能就是向ResourceManager（全局的）申请计算资源（Containers）并且和NodeManager交互来执行和监控具体的task。Scheduler是ResourceManager专门进行资源管理的一个组件，负责分配NodeManager上的Container资源，NodeManager也会不断发送自己Container使用情况给ResourceManager。<br>ResourceManager和NodeManager两个进程主要负责系统管理方面的任务。ResourceManager有一个Scheduler，负责各个集群中应用的资源分配。对于每种类型的每个应用，都会对应一个ApplicationMaster实例，ApplicationMaster通过和ResourceManager沟通获得Container资源来运行具体的job，并跟踪这个job的运行状态、监控运行进度。<br>因为application master需要向ResourceManager（全局的）申请计算资源（Containers），他应该是跑在每个node manager上面<br><a href="https://mapr.com/docs/60/MapROverview/c_application_master.html" target="_blank" rel="noopener">https://mapr.com/docs/60/MapROverview/c_application_master.html</a><br><a href="https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好" target="_blank" rel="noopener">https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好</a>)</li>
 </ul>
 <h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>关于Hadoop本身，有namenode, datanode, resource manager, node manager四个节点，<br>关于这个4个节点，可以搭建真正的分布式测试下，同时搞起zookeeper防止单点故障<br>namenode, datanode是hdfs，resource manager, node manager是yarn</p>
+<h2 id="note"><a href="#note" class="headerlink" title="note"></a>note</h2><p>spark-submit –class com.cjh.test.WordCount –conf spark.default.parallelism=12 –conf spark.executor.memory=800m –conf spark.executor.cores=2 –conf spark.cores.max=6 my.jar<br>如果要多个参数在命令行，需要多个–conf</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/03/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/23/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -131,19 +138,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/12/hive-vs-hbase/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          hive vs hbase
+          centos重启网卡失效
         
       </div>
     </a>
   
   
-    <a href="/2019/06/03/create-large-file/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/23/spark-stage/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">随机生成大文件</div>
+      <div class="article-nav-title">spark stage</div>
     </a>
   
 </nav>
@@ -180,23 +187,23 @@
       <ul>
         
           <li>
-            <a href="/2019/06/16/postgres安装/">postgres安装</a>
+            <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
-            <a href="/2019/06/13/Hadoop早期Architecture/">old Hadoop Architecture</a>
+            <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
           </li>
         
           <li>
-            <a href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
           </li>
         
           <li>
-            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+            <a href="/2019/06/23/spark-stage/">spark stage</a>
           </li>
         
           <li>
-            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
+            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>

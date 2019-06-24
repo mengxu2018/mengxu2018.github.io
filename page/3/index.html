@@ -62,6 +62,188 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/15/oauth2/" class="article-date">
+  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>Authentication is the process of verifying an identity (who they say they are)</li>
+<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
+</ul>
+<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
+<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
+<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
+<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
+<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
+<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
+<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
+<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="cjtwon8ww000fwkjiaph9nmjm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/springboot-docker/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjtwon8wz000iwkjigxsy7r3l" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/spring-jpa/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/spring-jpa/">spring jpa</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
+<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
+</li>
+<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
+</li>
+<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
+</li>
+<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
+</li>
+<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
+</li>
+<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
+</li>
+<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
+</li>
+<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
+</li>
+</ul>
+<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="cjtwon8x2000lwkjiawsetgzx" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/springboot-test/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="cjtx31m230000dwji6i6srgis" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
@@ -162,6 +344,43 @@
 
 
   
+    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/26/grpc/" class="article-date">
+  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="cjtwon8wi0004wkjipaalmefl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/26/java-log/" class="article-date">
@@ -193,43 +412,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="cjtwon8wj0005wkjiiqhv7mfv" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/grpc/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="cjtwon8wi0004wkjipaalmefl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -319,183 +501,11 @@
 
 
   
-    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/09/mysql8-centos7-setup/" class="article-date">
-  <time datetime="2019-03-09T14:51:52.000Z" itemprop="datePublished">2019-03-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
-<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
-<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a> (这个仅仅是安装/etc/yum.repos.d)</li>
-<li>yum install mysql-community-server</li>
-</ul>
-<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
-<li>systemctl start mysqld.service ## use restart after update</li>
-<li>systemctl enable mysqld.service</li>
-</ul>
-<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
-<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
-<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
-<p>但是至此是不能从远程访问此mysqld</p>
-<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="cjtwon8wt000cwkji4mb6f5ik" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-file-io" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/07/file-io/" class="article-date">
-  <time datetime="2019-03-07T14:51:52.000Z" itemprop="datePublished">2019-03-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/07/file-io/">IO</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="sample-code-charset-related"><a href="#sample-code-charset-related" class="headerlink" title="sample code, charset related"></a>sample code, charset related</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import com.google.common.io.Files;</span><br><span class="line"></span><br><span class="line">import java.io.*;</span><br><span class="line">import java.nio.charset.Charset;</span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* https://www.zhihu.com/question/27562173</span><br><span class="line">* https://www.oracle.com/technetwork/articles/javase/supplementary-142654.html</span><br><span class="line">*</span><br><span class="line">* https://www.baeldung.com/java-write-to-file</span><br><span class="line">*/</span><br><span class="line">public class Test &#123;</span><br><span class="line">   public  static void main(String[] s) throws IOException &#123;</span><br><span class="line">       // print os default charset</span><br><span class="line">       Charset.defaultCharset().name();</span><br><span class="line">       System.out.println( Charset.defaultCharset().name());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // below ascii charset will be garbled code.</span><br><span class="line">       FileOutputStream fos = new FileOutputStream(&quot;c:/temp/abc.txt&quot;);</span><br><span class="line">       fos.write(&quot;我的&quot;.getBytes(StandardCharsets.US_ASCII));</span><br><span class="line"></span><br><span class="line">       // below will be right</span><br><span class="line">       fos.write(&quot;中国&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        *</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        */</span><br><span class="line">       Writer out = new BufferedWriter(new OutputStreamWriter(</span><br><span class="line">               new FileOutputStream(&quot;c:\\temp\\test.txt&quot;), StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">       out.append(&quot;Website UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;你是 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;我的 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out.flush();</span><br><span class="line">       out.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        * append a String to the existing file:</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        * but this way can not specify charset</span><br><span class="line">        */</span><br><span class="line">       Writer out2 = new BufferedWriter(new FileWriter(&quot;c:/temp/test2.txt&quot;, true));</span><br><span class="line"></span><br><span class="line">       out2.append(&quot;Website2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;你是2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;我的2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out2.flush();</span><br><span class="line">       out2.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // java 7 write string to file</span><br><span class="line">       Files.write(&quot;我的&quot;, new File(&quot;c:/temp/test3.txt&quot;), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/07/file-io/" data-id="cjtwon8wm0008wkjiilwj4qn0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/17/elasticsearch-start/" class="article-date">
-  <time datetime="2019-02-17T14:51:52.000Z" itemprop="datePublished">2019-02-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.6.0.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.6.0-linux-x86_64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you want to access kibana remotely, please update `server.host` to real IP in</span></span><br><span class="line"><span class="comment"># `kibana-6.6.0-linux-x86_64/config/kibana.yml` like 192.168.77.140</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You should run elasticsearch in non-root user</span></span><br><span class="line">bin/elasticsearch -d</span><br><span class="line">bin/kibana or `nohup bin/kibana &amp;`</span><br><span class="line"></span><br><span class="line"><span class="comment"># now you can access http://192.168.77.140:5601</span></span><br></pre></td></tr></table></figure>
-<h2 id="elasticsearch-http-verb"><a href="#elasticsearch-http-verb" class="headerlink" title="elasticsearch http verb"></a>elasticsearch http verb</h2><p>elasticsearch 按照HTTP协议下RestFul框架的交互格式就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /uri 创建</span><br><span class="line">DELETE /uri/xxx 删除</span><br><span class="line">PUT /uri/xxx 更新或创建</span><br><span class="line">GET /uri/xxx 查看</span><br></pre></td></tr></table></figure></p>
-<h2 id="sample-case"><a href="#sample-case" class="headerlink" title="sample case"></a>sample case</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_doc/1?pretty</span><br><span class="line"></span><br><span class="line">DELETE /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/2?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /customer/_doc?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_search?q=Doe</span><br><span class="line"></span><br><span class="line">GET /customer/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这种更新是删除再增加，version变化了</span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这样更新是真的更新，version不变</span><br><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get all index</span><br><span class="line">curl &quot;localhost:9200/_cat/indices?v&quot;</span><br><span class="line"></span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=*&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=Fitzgerald&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line"></span><br><span class="line">//查询某个index</span><br><span class="line">GET /twitter/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询所有的index</span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;from&quot; : 0, &quot;size&quot; : 10,</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/02/17/elasticsearch-start/" data-id="cjtwon8wk0006wkjixuxyqi8n" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/31/puppeteer-centos7-setup/" class="article-date">
-  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/31/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
-<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
-<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/puppeteer-centos7-setup/" data-id="cjtwon8wy000hwkjiyb2ekl6s" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -527,23 +537,23 @@
       <ul>
         
           <li>
-            <a href="/2019/06/16/postgres安装/">postgres安装</a>
+            <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
-            <a href="/2019/06/13/Hadoop早期Architecture/">old Hadoop Architecture</a>
+            <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
           </li>
         
           <li>
-            <a href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
           </li>
         
           <li>
-            <a href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+            <a href="/2019/06/23/spark-stage/">spark stage</a>
           </li>
         
           <li>
-            <a href="/2019/06/12/git-usage/">git 分支介绍</a>
+            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>
