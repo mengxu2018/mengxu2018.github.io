@@ -5,19 +5,19 @@
   
 
   
-  <title>spark stage | No pains,no gains</title>
+  <title>spark 权威指南 笔记 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+  <meta name="description" content="page 29In specifying this action, we started a Spark job that runs our filter transformation (a narrowtransformation), then an aggregation (a wide transformation) that performs the counts on a perpart">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark stage">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/spark-stage/index.html">
+<meta property="og:title" content="spark 权威指南 笔记">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/26/spark-definitive-guide/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta property="og:description" content="page 29In specifying this action, we started a Spark job that runs our filter transformation (a narrowtransformation), then an aggregation (a wide transformation) that performs the counts on a perpart">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-23T03:21:21.667Z">
+<meta property="og:updated_time" content="2019-06-26T15:27:39.016Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark stage">
-<meta name="twitter:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta name="twitter:title" content="spark 权威指南 笔记">
+<meta name="twitter:description" content="page 29In specifying this action, we started a Spark job that runs our filter transformation (a narrowtransformation), then an aggregation (a wide transformation) that performs the counts on a perpart">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-spark-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+    <a href="/2019/06/26/spark-definitive-guide/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      spark stage
+      spark 权威指南 笔记
     </h1>
   
 
@@ -86,14 +86,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
+        <h2 id="page-29"><a href="#page-29" class="headerlink" title="page 29"></a>page 29</h2><p>In specifying this action, we started a Spark job that runs our filter transformation (a narrow<br>transformation), then an aggregation (a wide transformation) that performs the counts on a per<br>partition basis, and then a collect, which brings our result to a native object in the respective<br>language. You can see all of this by inspecting the Spark UI, a tool included in Spark with which you<br>can monitor the Spark jobs running on a cluster.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val myRange = spark.range(1000).toDF(&quot;number&quot;)</span><br><span class="line">val divisBy2 = myRange.where(&quot;number % 2 = 0&quot;)</span><br><span class="line">divisBy2.count()</span><br></pre></td></tr></table></figure></p>
+<p>一开始很疑惑为什么count会是wide transformation还包括collect，可以需要看执行计划还有spark ui去加深理解，<br>写代码rdd的count和dataset的count去比较<br>尤其是dataset部分</p>
+<p><a href="https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds" target="_blank" rel="noopener">https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds</a><br>这篇文章也说了count在rdd和dataframe不一样</p>
+<p>spark dataframe的count方法和rdd的count action不是一个意思，<br><a href="https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2" target="_blank" rel="noopener">https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-definitive-guide/" data-id="cjxdebpdr0003usjiy5cw17zv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +103,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/26/spark-shuffle/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          centos重启网卡失效
+          spark shuffle
         
       </div>
     </a>
   
   
-    <a href="/2019/06/23/hadoop-spark-cluster-setup/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/26/concurrent_parallel/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">hadoop spark cluster setup</div>
+      <div class="article-nav-title">并发并行</div>
     </a>
   
 </nav>

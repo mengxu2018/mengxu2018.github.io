@@ -62,6 +62,127 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spark-shuffle" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/spark-shuffle/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>the <code>Spark SQL</code> module contains the following default configuration: <code>spark.sql.shuffle.partitions</code> set to 200.</p>
+<p>可以看到下面的执行计划有200个分区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; flightData2015.sort(&quot;count&quot;).explain()</span><br><span class="line">== Physical Plan ==</span><br><span class="line">*(2) Sort [count#12 ASC NULLS FIRST], true, 0</span><br><span class="line">+- Exchange rangepartitioning(count#12 ASC NULLS FIRST, 200)</span><br><span class="line">   +- *(1) FileScan csv [DEST_COUNTRY_NAME#10,ORIGIN_COUNTRY_NAME#11,count#12] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/root/spark/data/testdata/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;DEST_COUNTRY_NAME:string,ORIGIN_COUNTRY_NAME:string,count:int&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/shuffle-1.PNG" alt="shuffle-1"></p>
+<p>spark sql是高级的api，不是spark.default.parallelism?这个属性有关的rdd的底层api<br>这种高级api的spark.sql.shuffle.partitions是在shuffle的时候分区</p>
+<p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
+<p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
+<p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxdebpdt0005usjiq5zwku0k" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/spark-definitive-guide/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="page-29"><a href="#page-29" class="headerlink" title="page 29"></a>page 29</h2><p>In specifying this action, we started a Spark job that runs our filter transformation (a narrow<br>transformation), then an aggregation (a wide transformation) that performs the counts on a per<br>partition basis, and then a collect, which brings our result to a native object in the respective<br>language. You can see all of this by inspecting the Spark UI, a tool included in Spark with which you<br>can monitor the Spark jobs running on a cluster.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val myRange = spark.range(1000).toDF(&quot;number&quot;)</span><br><span class="line">val divisBy2 = myRange.where(&quot;number % 2 = 0&quot;)</span><br><span class="line">divisBy2.count()</span><br></pre></td></tr></table></figure></p>
+<p>一开始很疑惑为什么count会是wide transformation还包括collect，可以需要看执行计划还有spark ui去加深理解，<br>写代码rdd的count和dataset的count去比较<br>尤其是dataset部分</p>
+<p><a href="https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds" target="_blank" rel="noopener">https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds</a><br>这篇文章也说了count在rdd和dataframe不一样</p>
+<p>spark dataframe的count方法和rdd的count action不是一个意思，<br><a href="https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2" target="_blank" rel="noopener">https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-definitive-guide/" data-id="cjxdebpdr0003usjiy5cw17zv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-concurrent_parallel" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/concurrent_parallel/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/concurrent_parallel/">并发并行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行<br>tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面<br>所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算</p>
+<p>关于并发并行还需要学习</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="cjxdebpdn0002usjik6alqe5t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-spark-submit-application-example" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/24/spark-submit-application-example/" class="article-date">
@@ -95,6 +216,7 @@
 <li>task : A unit of work within a stage, corresponding to one RDD partition。即 stage 下的一个任务执行单元，一般来说，一个 rdd 有多少个 partition，就会有多少个 task，因为每一个 task 只是处理一个 partition 上的数据</li>
 </ul>
 <p>我们这个例子恰好两个分区，也就是2个task， stage也恰好两个<br>下面是第一个stage的2个task<br><img src="/images/stage0-task.PNG" alt="stage0-task.PNG"><br>下面是第二个stage的2个task<br><img src="/images/stage1-task.PNG" alt="stage1-task.PNG"><br>可以看到shuffle read和shuffle write都存在<br>shuffle write：发生在shuffle之前，把要shuffle的数据写到磁盘<br>为什么：为了保证数据的安全性，避免占用大量的内存<br>shuffle read：发生在shuffle之后，下游RDD读取上游RDD的数据的过程<br>具体关于shuffle需要单独学习</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p>可以把parallelism=3或者更大的value，这样可以看到更多的task运行，如果设置为3，总共一个stage有3个task运行，<br>两个stage，总共就会有6个task，不过如果不设置的话会跟cpu核心的数量差不多，或者2到4倍</p>
 
       
     </div>
@@ -139,6 +261,45 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/06/23/centos重启网卡失效/" data-id="cjxag3gpp0001b0jituxjh1if" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/23/spark-stage/" class="article-date">
+  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/23/spark-stage/">spark stage</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
+<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
+<p>action的操作比如collect一般算在最后一个stage里面</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -210,45 +371,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/06/23/hadoop-spark-cluster-setup/" data-id="cjwaklfgb0000igji6gn8gs3u" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/spark-stage/">spark stage</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -345,45 +467,6 @@ host    all             all              ::/0                            trust</
 
 
   
-    <article id="post-Hadoop早期Architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/13/Hadoop早期Architecture/" class="article-date">
-  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/13/Hadoop早期Architecture/">old Hadoop Architecture</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于yarn之前的hadooop架构请参考下面这个文章<br><a href="https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works" target="_blank" rel="noopener">https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works</a><br>mapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的</p>
-<p>yarn架构<br><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/</a><br>新旧 Hadoop MapReduce 框架比对<br>让我们来对新旧 MapReduce 框架做详细的分析和对比，可以看到有以下几点显著变化：</p>
-<p>首先客户端不变，其调用 API 及接口大部分保持兼容，这也是为了对开发使用者透明化，使其不必对原有代码做大的改变 ( 详见 2.3 Demo 代码开发及详解)，但是原框架中核心的 JobTracker 和 TaskTracker 不见了，取而代之的是 ResourceManager, ApplicationMaster 与 NodeManager 三个部分。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/13/Hadoop早期Architecture/" data-id="cjwuq96t400015oji3n937nv8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/13/ibm小型机/" class="article-date">
@@ -414,87 +497,6 @@ host    all             all              ::/0                            trust</
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="cjwuq96sx00005ojibifihj77" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hive-vs-hbase" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/12/hive-vs-hbase/" class="article-date">
-  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/12/hive-vs-hbase/">hive vs hbase</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。</li>
-<li>Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；HBase处理数据是基于列的而不是基于行的模式，适合海量数据的随机访问。</li>
-<li>HBase的表是疏松的存储的，因此用户可以给行定义各种不同的列；而Hive表是稠密型，即定义多少列，每一行有存储固定列数的数据。</li>
-<li>Hive使用Hadoop来分析处理数据，而Hadoop系统是批处理系统，因此不能保证处理的低迟延问题；而HBase是近实时系统，支持实时查询。</li>
-<li>Hive不提供row-level的更新，它适用于大量append-only数据集（如日志）的批任务处理。而基于HBase的查询，支持和row-level的更新。</li>
-<li>Hive提供完整的SQL实现，通常被用来做一些基于历史数据的挖掘、分析。而HBase不适用与有join，多级索引，表关系复杂的应用场景。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="cjwukwkw40000agji83kqvno8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/12/windows10-disable-update/" class="article-date">
-  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="cjtwon8x1000kwkjif7lhrxv8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -540,23 +542,23 @@ host    all             all              ::/0                            trust</
       <ul>
         
           <li>
+            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
             <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/spark-stage/">spark stage</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>

@@ -5,19 +5,19 @@
   
 
   
-  <title>spark stage | No pains,no gains</title>
+  <title>Spark Client和Cluster两种运行模式的工作流程 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+  <meta name="description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark stage">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/spark-stage/index.html">
+<meta property="og:title" content="Spark Client和Cluster两种运行模式的工作流程">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta property="og:description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-23T03:21:21.667Z">
+<meta property="og:updated_time" content="2019-06-12T12:18:25.020Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark stage">
-<meta name="twitter:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta name="twitter:title" content="Spark Client和Cluster两种运行模式的工作流程">
+<meta name="twitter:description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      spark stage
+      Spark Client和Cluster两种运行模式的工作流程
     </h1>
   
 
@@ -86,14 +86,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
+        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
+<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
+<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="cjxdebpds0004usjibl6gxgs2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +104,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/30/centos-update-timezone/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          centos重启网卡失效
+          update timezone
         
       </div>
     </a>
   
   
-    <a href="/2019/06/23/hadoop-spark-cluster-setup/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/05/26/aliyum-maven/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">hadoop spark cluster setup</div>
+      <div class="article-nav-title">aliyun maven</div>
     </a>
   
 </nav>

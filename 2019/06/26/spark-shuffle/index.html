@@ -5,19 +5,21 @@
   
 
   
-  <title>spark stage | No pains,no gains</title>
+  <title>spark shuffle | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+  <meta name="description" content="the Spark SQL module contains the following default configuration: spark.sql.shuffle.partitions set to 200. 可以看到下面的执行计划有200个分区12345scala&amp;gt; flightData2015.sort(&amp;quot;count&amp;quot;).explain()== Physical">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark stage">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/spark-stage/index.html">
+<meta property="og:title" content="spark shuffle">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/26/spark-shuffle/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta property="og:description" content="the Spark SQL module contains the following default configuration: spark.sql.shuffle.partitions set to 200. 可以看到下面的执行计划有200个分区12345scala&amp;gt; flightData2015.sort(&amp;quot;count&amp;quot;).explain()== Physical">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-23T03:21:21.667Z">
+<meta property="og:image" content="https://mengxu2018.github.io/images/shuffle-1.PNG">
+<meta property="og:updated_time" content="2019-06-26T14:09:16.750Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark stage">
-<meta name="twitter:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta name="twitter:title" content="spark shuffle">
+<meta name="twitter:description" content="the Spark SQL module contains the following default configuration: spark.sql.shuffle.partitions set to 200. 可以看到下面的执行计划有200个分区12345scala&amp;gt; flightData2015.sort(&amp;quot;count&amp;quot;).explain()== Physical">
+<meta name="twitter:image" content="https://mengxu2018.github.io/images/shuffle-1.PNG">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-spark-shuffle" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+    <a href="/2019/06/26/spark-shuffle/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
 </a>
     
   </div>
@@ -78,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      spark stage
+      spark shuffle
     </h1>
   
 
@@ -86,14 +88,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
+        <p>the <code>Spark SQL</code> module contains the following default configuration: <code>spark.sql.shuffle.partitions</code> set to 200.</p>
+<p>可以看到下面的执行计划有200个分区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; flightData2015.sort(&quot;count&quot;).explain()</span><br><span class="line">== Physical Plan ==</span><br><span class="line">*(2) Sort [count#12 ASC NULLS FIRST], true, 0</span><br><span class="line">+- Exchange rangepartitioning(count#12 ASC NULLS FIRST, 200)</span><br><span class="line">   +- *(1) FileScan csv [DEST_COUNTRY_NAME#10,ORIGIN_COUNTRY_NAME#11,count#12] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/root/spark/data/testdata/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;DEST_COUNTRY_NAME:string,ORIGIN_COUNTRY_NAME:string,count:int&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/shuffle-1.PNG" alt="shuffle-1"></p>
+<p>spark sql是高级的api，不是spark.default.parallelism?这个属性有关的rdd的底层api<br>这种高级api的spark.sql.shuffle.partitions是在shuffle的时候分区</p>
+<p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
+<p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
+<p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxdebpdt0005usjiq5zwku0k" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +108,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          centos重启网卡失效
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/23/hadoop-spark-cluster-setup/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/26/spark-definitive-guide/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">hadoop spark cluster setup</div>
+      <div class="article-nav-title">spark 权威指南 笔记</div>
     </a>
   
 </nav>

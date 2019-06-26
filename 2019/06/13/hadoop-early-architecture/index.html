@@ -5,19 +5,19 @@
   
 
   
-  <title>Spark Client和Cluster两种运行模式的工作流程 | No pains,no gains</title>
+  <title>old Hadoop Architecture | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
+  <meta name="description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark Client和Cluster两种运行模式的工作流程">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/05/30/Spark-Client-Cluster-mode/index.html">
+<meta property="og:title" content="old Hadoop Architecture">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
+<meta property="og:description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-12T12:18:25.020Z">
+<meta property="og:updated_time" content="2019-06-13T12:41:08.753Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark Client和Cluster两种运行模式的工作流程">
-<meta name="twitter:description" content="伪分布式搭建 client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。 cluster模式：In cluster mo">
+<meta name="twitter:title" content="old Hadoop Architecture">
+<meta name="twitter:description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Spark-Client-Cluster-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-hadoop-early-architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/30/Spark-Client-Cluster-mode/" class="article-date">
-  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
+    <a href="/2019/06/13/hadoop-early-architecture/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Spark Client和Cluster两种运行模式的工作流程
+      old Hadoop Architecture
     </h1>
   
 
@@ -86,16 +86,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
-<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
-<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
-</ul>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
+        <p>关于yarn之前的hadooop架构请参考下面这个文章<br><a href="https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works" target="_blank" rel="noopener">https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works</a><br>mapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的</p>
+<p>yarn架构<br><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/</a><br>新旧 Hadoop MapReduce 框架比对<br>让我们来对新旧 MapReduce 框架做详细的分析和对比，可以看到有以下几点显著变化：</p>
+<p>首先客户端不变，其调用 API 及接口大部分保持兼容，这也是为了对开发使用者透明化，使其不必对原有代码做大的改变 ( 详见 2.3 Demo 代码开发及详解)，但是原框架中核心的 JobTracker 和 TaskTracker 不见了，取而代之的是 ResourceManager, ApplicationMaster 与 NodeManager 三个部分。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/Spark-Client-Cluster-mode/" data-id="cjwasp10p0000q8jif9j4hsjh" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="cjxdebpdl0001usji9i5twene" class="article-share-link">Share</a>
       
       
     </footer>
@@ -104,19 +102,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/01/centos7-ssh免密码/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/13/ibm小型机/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          ssh password-less
+          IBM 的 POWER 处理器比较 X86 处理器
         
       </div>
     </a>
   
   
-    <a href="/2019/05/30/centos-update-timezone/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/12/git-usage/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">update timezone</div>
+      <div class="article-nav-title">git 分支介绍</div>
     </a>
   
 </nav>
@@ -153,23 +151,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
             <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/spark-stage/">spark stage</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>

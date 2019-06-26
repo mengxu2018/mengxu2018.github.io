@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://mengxu2018.github.io/images/2-stage-4-task.PNG">
 <meta property="og:image" content="https://mengxu2018.github.io/images/stage0-task.PNG">
 <meta property="og:image" content="https://mengxu2018.github.io/images/stage1-task.PNG">
-<meta property="og:updated_time" content="2019-06-24T13:56:43.733Z">
+<meta property="og:updated_time" content="2019-06-24T14:10:24.469Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark word count in practice">
 <meta name="twitter:description" content="cluster ui spark-master-ui.PNG 测试文件为了减少内存的损耗，可以xuhang mengmeng xuhangxuhang xuhang xuhangmengxuhangmengmeng liudehuaxuhang mengmeng xuhang这个复制无数遍到200M，这样就是hdfs两个block，一个block=128MB 测试代码以reducebyKey为分界">
@@ -103,6 +103,7 @@
 <li>task : A unit of work within a stage, corresponding to one RDD partition。即 stage 下的一个任务执行单元，一般来说，一个 rdd 有多少个 partition，就会有多少个 task，因为每一个 task 只是处理一个 partition 上的数据</li>
 </ul>
 <p>我们这个例子恰好两个分区，也就是2个task， stage也恰好两个<br>下面是第一个stage的2个task<br><img src="/images/stage0-task.PNG" alt="stage0-task.PNG"><br>下面是第二个stage的2个task<br><img src="/images/stage1-task.PNG" alt="stage1-task.PNG"><br>可以看到shuffle read和shuffle write都存在<br>shuffle write：发生在shuffle之前，把要shuffle的数据写到磁盘<br>为什么：为了保证数据的安全性，避免占用大量的内存<br>shuffle read：发生在shuffle之后，下游RDD读取上游RDD的数据的过程<br>具体关于shuffle需要单独学习</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p>可以把parallelism=3或者更大的value，这样可以看到更多的task运行，如果设置为3，总共一个stage有3个task运行，<br>两个stage，总共就会有6个task，不过如果不设置的话会跟cpu核心的数量差不多，或者2到4倍</p>
 
       
     </div>
@@ -115,6 +116,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/06/26/concurrent_parallel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          并发并行
+        
+      </div>
+    </a>
   
   
     <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-older" class="article-nav-link-wrap">
@@ -156,23 +166,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
             <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/spark-stage/">spark stage</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>

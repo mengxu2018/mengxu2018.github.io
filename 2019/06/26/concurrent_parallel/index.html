@@ -5,19 +5,19 @@
   
 
   
-  <title>old Hadoop Architecture | No pains,no gains</title>
+  <title>并发并行 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
+  <meta name="description" content="tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算 关于并发并行还需要学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="old Hadoop Architecture">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/13/Hadoop早期Architecture/index.html">
+<meta property="og:title" content="并发并行">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
+<meta property="og:description" content="tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算 关于并发并行还需要学习">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-13T12:41:08.753Z">
+<meta property="og:updated_time" content="2019-06-26T13:17:07.100Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="old Hadoop Architecture">
-<meta name="twitter:description" content="关于yarn之前的hadooop架构请参考下面这个文章https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-worksmapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的 yarn架构h">
+<meta name="twitter:title" content="并发并行">
+<meta name="twitter:description" content="tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算 关于并发并行还需要学习">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Hadoop早期Architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-concurrent_parallel" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/13/Hadoop早期Architecture/" class="article-date">
-  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
+    <a href="/2019/06/26/concurrent_parallel/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      old Hadoop Architecture
+      并发并行
     </h1>
   
 
@@ -86,14 +86,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>关于yarn之前的hadooop架构请参考下面这个文章<br><a href="https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works" target="_blank" rel="noopener">https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works</a><br>mapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的</p>
-<p>yarn架构<br><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/</a><br>新旧 Hadoop MapReduce 框架比对<br>让我们来对新旧 MapReduce 框架做详细的分析和对比，可以看到有以下几点显著变化：</p>
-<p>首先客户端不变，其调用 API 及接口大部分保持兼容，这也是为了对开发使用者透明化，使其不必对原有代码做大的改变 ( 详见 2.3 Demo 代码开发及详解)，但是原框架中核心的 JobTracker 和 TaskTracker 不见了，取而代之的是 ResourceManager, ApplicationMaster 与 NodeManager 三个部分。</p>
+        <p>tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行<br>tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面<br>所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算</p>
+<p>关于并发并行还需要学习</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/13/Hadoop早期Architecture/" data-id="cjwuq96t400015oji3n937nv8" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="cjxdebpdn0002usjik6alqe5t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +101,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/16/postgres安装/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/26/spark-definitive-guide/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          postgres安装
+          spark 权威指南 笔记
         
       </div>
     </a>
   
   
-    <a href="/2019/06/13/ibm小型机/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/24/spark-submit-application-example/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">IBM 的 POWER 处理器比较 X86 处理器</div>
+      <div class="article-nav-title">spark word count in practice</div>
     </a>
   
 </nav>
@@ -151,23 +150,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
             <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/spark-stage/">spark stage</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>

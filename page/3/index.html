@@ -62,6 +62,128 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/26/maven-compiler/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
+<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
+<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="cjvxvke8s00019wji0b042fj9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-spark/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
+<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
+<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
+<p>输出Lines with a: xxx, Lines with b: xxx</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="cjv0jml010000bkjiiwduxv0p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-dubbo/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/04/15/oauth2/" class="article-date">
@@ -103,46 +225,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="cjtwon8ww000fwkjiaph9nmjm" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/springboot-docker/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
-<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
-<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjtwon8wz000iwkjigxsy7r3l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -198,6 +280,46 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="cjtwon8x2000lwkjiawsetgzx" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/springboot-docker/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjtwon8wz000iwkjigxsy7r3l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -286,9 +408,9 @@
 
 
   
-    <article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/26/httpd-tomcat/" class="article-date">
+    <a href="/2019/03/26/java-log/" class="article-date">
   <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
 </a>
     
@@ -300,7 +422,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/httpd-tomcat/">httpd tomcat</a>
+      <a class="article-title" href="/2019/03/26/java-log/">java log implemention</a>
     </h1>
   
 
@@ -308,33 +430,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="install-apache-on-VM1"><a href="#install-apache-on-VM1" class="headerlink" title="install apache on VM1"></a>install apache on VM1</h2><p>yum install -y httpd</p>
-<h2 id="start-apache"><a href="#start-apache" class="headerlink" title="start apache"></a>start apache</h2><p>sudo systemctl start httpd</p>
-<h2 id="starts-at-boot"><a href="#starts-at-boot" class="headerlink" title="starts at boot"></a>starts at boot</h2><p>sudo systemctl enable httpd</p>
-<h2 id="install-apxs"><a href="#install-apxs" class="headerlink" title="install apxs"></a>install apxs</h2><p>yum install httpd-devel</p>
-<ul>
-<li>find / -name apxs</li>
-<li>which apxs  (this file path will be used in ./configure below)</li>
-</ul>
-<h2 id="install-gcc"><a href="#install-gcc" class="headerlink" title="install gcc"></a>install gcc</h2><p>yum install -y gcc*<br>yum install autoconf<br>yum install libtool</p>
-<h2 id="install-mod-jk"><a href="#install-mod-jk" class="headerlink" title="install mod_jk"></a>install mod_jk</h2><p>wget <a href="http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz" target="_blank" rel="noopener">http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz</a><br>tar -xf tomcat-connectors-1.2.46-src.tar.gz<br>cd tomcat-connectors-1.2.46-src/native<br>./buildconf.sh<br>./configure –with-apxs=/usr/bin/apxs<br>make &amp;&amp; make install<br>(find / -name mod_jk.so<br>/usr/lib64/httpd/modules/mod_jk.so)</p>
-<h2 id="Configure-httpd-conf"><a href="#Configure-httpd-conf" class="headerlink" title="Configure httpd.conf"></a>Configure httpd.conf</h2><p>Now that you’ve installed mod_jk, you need to configure it in your httpd.conf file so that you can use it.<br>You can find httpd.conf in the ‘conf’ directory of your Apache HTTPD home folder.<br>If httpd in installed by ‘yum install httpd’, this file is<br><code>/etc/httpd/conf/httpd.conf</code></p>
-<p>mod_jk requires two entities:</p>
-<ul>
-<li>mod_jk.xxx - The Apache HTTP Server module, depending on your operating system, it will be mod_jk.so, mod_jk.nlm or MOD_JK.SRVPGM (see the build section).</li>
-<li>workers.properties - A file that describes the host(s) and port(s) used by the workers (Tomcat processes). A sample workers.properties can be found under the conf directory in the source download.</li>
-</ul>
-<p>The configuration provided below, based on the Tomcat documentation, is the minimum configuration required for mod_jk to run correctly.</p>
-<p><code>#Load mod_jk module</code><br>LoadModule    jk_module  /usr/lib64/httpd/modules/mod_jk.so<br><code># Add the module (activate this lne for Apache 1.3)</code><br><code># AddModule     mod_jk.c</code><br><code># Where to find workers.properties</code><br>JkWorkersFile /etc/httpd/conf/workers.properties<br><code># Where to put jk shared memory</code><br>JkShmFile     /var/log/httpd/mod_jk.shm<br><code># Where to put jk logs</code><br>JkLogFile     /var/log/httpd/mod_jk.log<br><code># Set the jk log level [debug/error/info]</code><br>JkLogLevel    info<br><code># Send requests for context /examples to worker named worker1</code><br><code># 至于为什么 balancer，https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</code><br>JkMount  /playbook/* balancer</p>
-<h2 id="set-up-two-tomcat-on-VM2-VM3"><a href="#set-up-two-tomcat-on-VM2-VM3" class="headerlink" title="set up two tomcat on VM2, VM3"></a>set up two tomcat on VM2, VM3</h2><p>wget <a href="http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz" target="_blank" rel="noopener">http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz</a></p>
-<h2 id="Configure-workers-properties"><a href="#Configure-workers-properties" class="headerlink" title="Configure workers.properties"></a>Configure workers.properties</h2><p>The workers.properties file defines a list of Tomcat ‘workers’ to which Apache HTTPD can pass requests.<br>8009 is the ajp port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">worker.node1.host=192.168.77.131</span><br><span class="line">worker.node1.port=8009</span><br><span class="line"></span><br><span class="line">worker.node2.host=192.168.77.132</span><br><span class="line">worker.node2.port=8009</span><br></pre></td></tr></table></figure></p>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>start two tomcat<br>可以在两台tomcat里面都放一个playbook<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node1<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node2<br>systemctl restart httpd<br>现在访问<br><code>http://192.168.77.130/playbook/1.txt</code><br>会发现I am node1和I am node2交替出现<br>如果强制停止一台tomcat，整个服务不会中断</p>
-<h2 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h2><p>systemctl start httpd<br>systemctl restart/start/status httpd<br><a href="https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html</a><br><a href="https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration" target="_blank" rel="noopener">https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/workers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/workers.html</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</a></p>
+        <h2 id="logback-for-spring-data-jpa"><a href="#logback-for-spring-data-jpa" class="headerlink" title="logback for spring data jpa"></a>logback for spring data jpa</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;appender name=”STDOUT” class=”ch.qos.logback.core.ConsoleAppender”&gt;</span><br><span class="line"> &lt;encoder class=”ch.qos.logback.classic.encoder.PatternLayoutEncoder”&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n</span><br><span class="line"> &lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;appender name=”FILE” class=”ch.qos.logback.core.rolling.RollingFileAppender”&gt;</span><br><span class="line"> &lt;file&gt;$&#123;catalina.home&#125;/logs/playbook.log&lt;/file&gt;</span><br><span class="line"> &lt;rollingPolicy class=”ch.qos.logback.core.rolling.TimeBasedRollingPolicy”&gt;</span><br><span class="line"> &lt;! — daily rollover →</span><br><span class="line"> &lt;fileNamePattern&gt;$&#123;catalina.home&#125;/logs/playbook.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;</span><br><span class="line"> &lt;timeBasedFileNamingAndTriggeringPolicy</span><br><span class="line"> class=”ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP”&gt;</span><br><span class="line"> &lt;! — or whenever the file size reaches 50MB →</span><br><span class="line"> &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt;</span><br><span class="line"> &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span><br><span class="line"> &lt;! — keep 30 days’ worth of history →</span><br><span class="line"> &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line"> &lt;/rollingPolicy&gt;</span><br><span class="line"> &lt;encoder&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n&lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;logger name=”ch.qos.logback” level=”WARN” /&gt;</span><br><span class="line"> &lt;logger name=”com.demo.test” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework.beans” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.SQL” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.type.descriptor.sql” level=”TRACE” /&gt;</span><br><span class="line"> &lt;root level=”INFO”&gt;</span><br><span class="line"> &lt;appender-ref ref=”STDOUT” /&gt;</span><br><span class="line"> &lt;appender-ref ref=”FILE” /&gt;</span><br><span class="line"> &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>注意hibernate的log 需要 configure Hibernate to log via SLF4J,<br>System.setProperty(“org.jboss.logging.provider”, “slf4j”);<br>同时”hibernate.show_sql”设置为 “false”， 直接用logback,不要这种自带的控制台输出</p>
+<h2 id="tomcat-log"><a href="#tomcat-log" class="headerlink" title="tomcat log"></a>tomcat log</h2><p>所有的控制台输出都会重定向到tomcat/logs/catalina.out，但是maven tomcat7:run启动embended tomcat貌似没有这个文件<br>tocmat/logs/localhost.out 也会记录用户没有catch到的异常</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://tomcat.apache.org/tomcat-8.5-doc/logging.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.5-doc/logging.html</a><br><a href="https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback" target="_blank" rel="noopener">https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/httpd-tomcat/" data-id="cjtwon8wn0009wkjirtinlmcp" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="cjtwon8wj0005wkjiiqhv7mfv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -381,126 +485,6 @@
 
 
   
-    <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/java-log/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/java-log/">java log implemention</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="logback-for-spring-data-jpa"><a href="#logback-for-spring-data-jpa" class="headerlink" title="logback for spring data jpa"></a>logback for spring data jpa</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;appender name=”STDOUT” class=”ch.qos.logback.core.ConsoleAppender”&gt;</span><br><span class="line"> &lt;encoder class=”ch.qos.logback.classic.encoder.PatternLayoutEncoder”&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n</span><br><span class="line"> &lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;appender name=”FILE” class=”ch.qos.logback.core.rolling.RollingFileAppender”&gt;</span><br><span class="line"> &lt;file&gt;$&#123;catalina.home&#125;/logs/playbook.log&lt;/file&gt;</span><br><span class="line"> &lt;rollingPolicy class=”ch.qos.logback.core.rolling.TimeBasedRollingPolicy”&gt;</span><br><span class="line"> &lt;! — daily rollover →</span><br><span class="line"> &lt;fileNamePattern&gt;$&#123;catalina.home&#125;/logs/playbook.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;</span><br><span class="line"> &lt;timeBasedFileNamingAndTriggeringPolicy</span><br><span class="line"> class=”ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP”&gt;</span><br><span class="line"> &lt;! — or whenever the file size reaches 50MB →</span><br><span class="line"> &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt;</span><br><span class="line"> &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span><br><span class="line"> &lt;! — keep 30 days’ worth of history →</span><br><span class="line"> &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line"> &lt;/rollingPolicy&gt;</span><br><span class="line"> &lt;encoder&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n&lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;logger name=”ch.qos.logback” level=”WARN” /&gt;</span><br><span class="line"> &lt;logger name=”com.demo.test” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework.beans” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.SQL” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.type.descriptor.sql” level=”TRACE” /&gt;</span><br><span class="line"> &lt;root level=”INFO”&gt;</span><br><span class="line"> &lt;appender-ref ref=”STDOUT” /&gt;</span><br><span class="line"> &lt;appender-ref ref=”FILE” /&gt;</span><br><span class="line"> &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>注意hibernate的log 需要 configure Hibernate to log via SLF4J,<br>System.setProperty(“org.jboss.logging.provider”, “slf4j”);<br>同时”hibernate.show_sql”设置为 “false”， 直接用logback,不要这种自带的控制台输出</p>
-<h2 id="tomcat-log"><a href="#tomcat-log" class="headerlink" title="tomcat log"></a>tomcat log</h2><p>所有的控制台输出都会重定向到tomcat/logs/catalina.out，但是maven tomcat7:run启动embended tomcat貌似没有这个文件<br>tocmat/logs/localhost.out 也会记录用户没有catch到的异常</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://tomcat.apache.org/tomcat-8.5-doc/logging.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.5-doc/logging.html</a><br><a href="https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback" target="_blank" rel="noopener">https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="cjtwon8wj0005wkjiiqhv7mfv" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-AES+base64" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/21/AES+base64/" class="article-date">
-  <time datetime="2019-03-21T14:51:52.000Z" itemprop="datePublished">2019-03-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/21/AES+base64/">AES base64</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">https://aesencryption.net/</span><br><span class="line">https://www.clickssl.net/blog/128-bit-ssl-encryption-vs-256-bit-ssl-encryption</span><br><span class="line">https://www.quora.com/Is-AES256-more-secure-than-AES128-Whats-the-different</span><br><span class="line">https://en.wikipedia.org/wiki/Advanced_Encryption_Standard</span><br><span class="line">https://stackoverflow.com/questions/273396/aes-encryption-what-are-public-and-private-keys</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">import sun.misc.BASE64Decoder;</span><br><span class="line">import sun.misc.BASE64Encoder;</span><br><span class="line"></span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line">import javax.crypto.BadPaddingException;</span><br><span class="line">import javax.crypto.Cipher;</span><br><span class="line">import javax.crypto.IllegalBlockSizeException;</span><br><span class="line">import javax.crypto.NoSuchPaddingException;</span><br><span class="line">import javax.crypto.spec.SecretKeySpec;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.net.URLDecoder;</span><br><span class="line">import java.net.URLEncoder;</span><br><span class="line">import java.security.InvalidKeyException;</span><br><span class="line">import java.security.Key;</span><br><span class="line">import java.security.NoSuchAlgorithmException;</span><br><span class="line"></span><br><span class="line">public class AESEncryptionUtil &#123;</span><br><span class="line"></span><br><span class="line">// http://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx</span><br><span class="line"> private static String key = “customized key”;</span><br><span class="line"> public static BASE64Encoder enc = new BASE64Encoder();</span><br><span class="line"> public static BASE64Decoder dec = new BASE64Decoder();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> // eccrypt by AES, and encode by base64 to transfer by http</span><br><span class="line"> public static String encrypt(String clearText) throws Exception &#123;</span><br><span class="line"> String encodedEncryptText = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"> Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"></span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, aesKey);</span><br><span class="line"> byte[] encrypted = cipher.doFinal(clearText.getBytes(“UTF-8”));</span><br><span class="line"></span><br><span class="line">encodedEncryptText = enc.encode(encrypted);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return encodedEncryptText;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// encode by base64, decrypt by AES</span><br><span class="line"> public static String decrypt(String encodedEncryptText) throws Exception &#123;</span><br><span class="line"> String decrypted = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"></span><br><span class="line">Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"> cipher.init(Cipher.DECRYPT_MODE, aesKey);</span><br><span class="line"></span><br><span class="line">byte[] decodeBufferArray = dec.decodeBuffer(encodedEncryptText);</span><br><span class="line"></span><br><span class="line">decrypted = new String(cipher.doFinal(decodeBufferArray), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IOException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return decrypted;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line"> String a = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> a = encrypt(“mengxu1128@gmail.com”);</span><br><span class="line"> &#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(a);</span><br><span class="line"></span><br><span class="line">String b = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> b = decrypt(a);</span><br><span class="line"></span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(b);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/21/AES+base64/" data-id="cjtwon8w70000wkjisl54sopd" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-vmware-vm-add-space" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/14/vmware-vm-add-space/" class="article-date">
-  <time datetime="2019-03-14T14:51:52.000Z" itemprop="datePublished">2019-03-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/14/vmware-vm-add-space/">虚拟机增加空间</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="add-space"><a href="#add-space" class="headerlink" title="add space"></a>add space</h2><p>我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录</p>
-<p><img src="/images/add-space.PNG" alt="vm addspace"></p>
-<p>虚拟机设置里面先扩展好空间</p>
-<p><code>fdisk -l</code>查看磁盘占用情况<br>可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3</p>
-<p>输入<code>fdisk /dev/sda</code>,然后一步一步的回车，最后输入w保持修改<br>重启<code>reboot</code><br>这时在<code>/dev/</code>目录下，才能看到了新的分区比如<code>/dev/sda3</code><br><code>mkfs.ext2 /dev/sda3</code>  格式化<br>在根目录下创建disk3 (<code>mkdir /disk3</code>)<br><code>mount /dev/sda3 /disk43/</code>将分区mount到<code>/disk3/</code>上<br>在vi修改/etc/fstab文件,加入 <code>/dev/sda3   /disk3 ext2 defaults 0 0</code> 一行，并保存，实现开机自动mount</p>
-<p>至此，新增加的磁盘空间容量，即可在disk3上体现，并且重新开机自动mount该分区，追加磁盘空间的工作完毕。</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><code>/dev/</code> is the part in the unix directory tree that contains all “device” files<br>So <code>/dev/sda9</code> means the ninth partition on the first drive.</p>
-<p><a href="https://blog.csdn.net/lyd135364/article/details/78623119" target="_blank" rel="noopener">https://blog.csdn.net/lyd135364/article/details/78623119</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="cjtwon8x3000mwkjiali2t531" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -537,23 +521,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
           </li>
         
           <li>
             <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/hadoop-spark-cluster-setup/">hadoop spark cluster setup</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/spark-stage/">spark stage</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/21/spark-basic/">spark basic</a>
           </li>
         
       </ul>
