@@ -62,6 +62,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-postgres安装" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/postgres安装/" class="article-date">
+  <time datetime="2019-06-16T14:51:52.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/16/postgres安装/">postgres安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="noopener">https://www.postgresql.org/download/linux/redhat/</a><br>官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本<code>yum install postgresql10</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/pgsql-10/bin/postgresql-10-setup initdb</span><br><span class="line">systemctl enable postgresql-10</span><br><span class="line">systemctl start postgresql-10</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>注意配置文件在/var/lib/pgsql/10/data不在/usr/pgsql-10<br>可以通过netstat -nlt查看ip的绑定情况，如果修改了/usr/pgsql-10的listen相关的配置，<br>会发现5432仍然listen在127.0.0.1,而不是远程任意ip地址可以访问<br><a href="https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了" target="_blank" rel="noopener">https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了</a></p>
+<p>pg_hba.conf的配置必须是trust，否则远程客户端比如datagrip还是不能登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host    all             all              0.0.0.0/0                       trust</span><br><span class="line">host    all             all              ::/0                            trust</span><br></pre></td></tr></table></figure></p>
+<p>同时注意postgres安装的时候会默认安装一个linux的用户postgres,<br>可以su - postgres之后然后psql命令进入shell的sql界面，<br>然后修改密码ALTER USER postgres WITH PASSWORD ‘xuhang’，<br>最后可以客户端用xuhang这个密码登陆</p>
+<h2 id="其他ref"><a href="#其他ref" class="headerlink" title="其他ref"></a>其他ref</h2><p><a href="https://www.postgresql.org/docs/10/auth-pg-hba-conf.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/10/auth-pg-hba-conf.html</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>直接看下面步骤进行安装for quick，进入root用户<br>yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="noopener">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a><br>yum install postgresql10<br>yum install postgresql10-server<br>/usr/pgsql-10/bin/postgresql-10-setup initdb<br>systemctl enable postgresql-10<br>systemctl start postgresql-10<br>安装好下面开始配置<br>su - postgres<br>psql<br>ALTER USER postgres WITH PASSWORD ‘xuhang’</p>
+<p>append<br><code>`
+host    all             all              0.0.0.0/0                       trust
+host    all             all              ::/0                            trust</code><br>to <code>/var/lib/pgsql/10/data/pg_hba.conf</code></p>
+<p>update to <code>listen_addresses = &#39;*&#39;</code><br>in <code>postgresql.conf</code></p>
+<p>systemctl restart postgresql-10<br>可以客户端登陆了，默认数据库postgres，默认用户名postgres，密码是alter修改过的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/16/postgres安装/" data-id="cjx4oeolx00005sjilb37cxsi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hadoop-early-architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/13/hadoop-early-architecture/" class="article-date">
@@ -92,6 +139,45 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="cjxdebpdl0001usji9i5twene" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/13/ibm小型机/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="硬件体系"><a href="#硬件体系" class="headerlink" title="硬件体系"></a>硬件体系</h2><p>从处理能力来说，单Hz的处理能力x86已经超过了Power系列，这是毋庸置疑的。但是Power有其明显的优点。它采用了标准的SMP结构，也就是说对于内存来说所有CPU访问的速度都是一致的，而x86采用了NUMA结构，这就是说CPU和内存是分区的，每个CPU访问自己的这部分内存特别快，但是如果需要访问其它部分那就要走QPI总线（现在已经在不断改进了），这也客观上造成了随着CPU数量的增多，处理能力的增长Power系列的线性程度远好于x86（这也是为什么很少会用4路以上的x86服务器）。而且作为小型机，封闭系统，其设计更加完整紧凑，综合起来性能强于x86</p>
+<h2 id="软件体系"><a href="#软件体系" class="headerlink" title="软件体系"></a>软件体系</h2><p>硬件体系是自己的，操作系统也是自己的（AIX等），所以整合起来Power系列的整体稳定性要强于x86服务器，而且运维也方便（特别是对于一些外围硬件，如果使用IBM更加容易用），抗压能力也强（小型机90%的CPU占用率，运行几个星期可能都OK，x86几天就估计出问题了）<br>但是Power系列的小型机的价格太高了，而且已经赶不上技术的变化了，由于Google的崛起，云计算的兴盛，现在的分布式系统的成熟度越来越高，系统已经越来越不依赖几台小型机来提供稳定可靠性，而是通过集群来提供，性能也能够通过分布式的处理来解决。所以x86的使用越来越广泛，而最新的一些低成本但是能够带来高效能的新技术都在x86体系下得到应用（x86市场占有率高，也开放），而Power系列由于其封闭的特性，反而难以得到应用，所以Power系列的小型机优势越来越不明显，已经在逐渐退出历史舞台了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AIX is an open operating system from IBM that is based on a version of UNIX.<br>ibm小型机的系统是AIX， 所以相关的软件也要on aix， 比如oracle on aix,<br>不过ibm小型机也可以安装linux,因为linux也可以运行在power处理器， Power ISA指令集</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="cjwuq96sx00005ojibifihj77" class="article-share-link">Share</a>
       
       
     </footer>
@@ -355,42 +441,6 @@
 
 
   
-    <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/30/centos-update-timezone/" class="article-date">
-  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/centos-update-timezone/">update timezone</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line"></span><br><span class="line">hwclock -w  写入硬件，避免重启失效</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/centos-update-timezone/" data-id="cjwasp10v0001q8jiv8pi9y0s" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/30/spark-driver-mode/" class="article-date">
@@ -423,43 +473,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="cjxdebpds0004usjibl6gxgs2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-aliyum-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/26/aliyum-maven/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/aliyum-maven/">aliyun maven</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>put below in pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">       &lt;repository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/repository&gt;</span><br><span class="line"></span><br><span class="line">   &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">   &lt;pluginRepositories&gt;</span><br><span class="line">       &lt;pluginRepository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/pluginRepository&gt;</span><br><span class="line">   &lt;/pluginRepositories&gt;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="cjw4plpoj00007gjixp12rb7n" class="article-share-link">Share</a>
       
       
     </footer>
@@ -505,23 +518,23 @@
       <ul>
         
           <li>
+            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/28/spark-definitive-guide/">spark 权威指南 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
           </li>
         
           <li>
-            <a href="/2019/06/26/spark-definitive-guide/">spark 权威指南 笔记</a>
-          </li>
-        
-          <li>
             <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
           </li>
         
       </ul>
