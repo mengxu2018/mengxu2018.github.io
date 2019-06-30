@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/26/grpc/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
+    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
+      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
     </h1>
   
 
@@ -84,12 +84,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
+        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
+<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="cjtwon8wi0004wkjipaalmefl" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjtwon8wv000dwkjipaanpbw7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -130,6 +135,43 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="cjtwon8wj0005wkjiiqhv7mfv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/26/grpc/" class="article-date">
+  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="cjtwon8wi0004wkjipaalmefl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -445,47 +487,6 @@
 
 
   
-    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/31/puppeteer-centos7-setup/" class="article-date">
-  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/31/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
-<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
-<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/31/puppeteer-centos7-setup/" data-id="cjtwon8wy000hwkjiyb2ekl6s" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -522,11 +523,11 @@
       <ul>
         
           <li>
-            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+            <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
           </li>
         
           <li>
-            <a href="/2019/06/28/spark-definitive-guide/">spark 权威指南 笔记</a>
+            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
           </li>
         
           <li>

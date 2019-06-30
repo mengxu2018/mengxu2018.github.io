@@ -62,6 +62,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/30/spark-driver-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
+<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
+<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="cjxdebpds0004usjibl6gxgs2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/30/centos-update-timezone/" class="article-date">
@@ -177,6 +218,45 @@
 
 
   
+    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-dubbo/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/04/26/first-spark/" class="article-date">
@@ -209,45 +289,6 @@
     </div>
     <footer class="article-footer">
       <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="cjv0jml010000bkjiiwduxv0p" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-dubbo/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjvxvke8m00009wjic2pr7h8p" class="article-share-link">Share</a>
       
       
     </footer>
@@ -439,48 +480,6 @@
 
 
   
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
-<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjtwon8wv000dwkjipaanpbw7" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -517,11 +516,11 @@
       <ul>
         
           <li>
-            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+            <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
           </li>
         
           <li>
-            <a href="/2019/06/28/spark-definitive-guide/">spark 权威指南 笔记</a>
+            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
           </li>
         
           <li>
