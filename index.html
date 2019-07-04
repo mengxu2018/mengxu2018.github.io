@@ -88,7 +88,7 @@
 <p><a href="https://www.zhihu.com/question/23079001" target="_blank" rel="noopener">https://www.zhihu.com/question/23079001</a><br>这个文章讲了为什么多个rdd的DAG没有耗光内存,<br>比如rdd是不可变的，多个rdd的内存加起来不是很大了吗</p>
 <p>iterator rdd<br><a href="https://www.jianshu.com/p/c05d33b4d70d" target="_blank" rel="noopener">https://www.jianshu.com/p/c05d33b4d70d</a></p>
 <p>rdd的不可变<br><a href="https://www.zybuluo.com/BrandonLin/note/448121" target="_blank" rel="noopener">https://www.zybuluo.com/BrandonLin/note/448121</a><br>一个rdd计算出另外一个rdd，之前的rdd就被丢弃了，不可能dag里面的每个rdd都占据着内存<br>而且各个rdd的内存也有共同的部分，只是在api层面不可变<br>如果用户没有要求Spark cache该RDD的结果，那么这个过程占用的内存是很小的，一个元素处理完毕后就落地或扔掉了（概念上如此，实现上有buffer），并不会长久地占用内存。</p>
-<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a></p>
+<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a><br><a href="https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java" target="_blank" rel="noopener">https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java</a></p>
 
       
     </div>
