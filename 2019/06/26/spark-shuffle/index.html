@@ -15,7 +15,7 @@
 <meta property="og:description" content="the Spark SQL module contains the following default configuration: spark.sql.shuffle.partitions set to 200. 可以看到下面的执行计划有200个分区12345scala&amp;gt; flightData2015.sort(&amp;quot;count&amp;quot;).explain()== Physical">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://mengxu2018.github.io/images/shuffle-1.PNG">
-<meta property="og:updated_time" content="2019-06-26T14:09:16.750Z">
+<meta property="og:updated_time" content="2019-07-04T12:40:40.320Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark shuffle">
 <meta name="twitter:description" content="the Spark SQL module contains the following default configuration: spark.sql.shuffle.partitions set to 200. 可以看到下面的执行计划有200个分区12345scala&amp;gt; flightData2015.sort(&amp;quot;count&amp;quot;).explain()== Physical">
@@ -95,11 +95,12 @@
 <p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
 <p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
 <p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>所以shuffle 不一定是跨jvm或者node的操作，也可能一个stage，8个machine，8个task都shuffle 了，但是下一个stage只有一个task，在一个node上面运行，这个task的shuffle从当前的机器加上另外7台机器的数据 ，新的task应该还是之前的jvm，不是新启动一个jvm，还是在当前的executor上面</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxdebpdt0005usjiq5zwku0k" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxotav650017ooji87y1v6g3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -108,19 +109,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/27/hive-work-with-spark/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/26/concurrent_parallel/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          hive 和spark的关系
+          并发并行
         
       </div>
     </a>
   
   
-    <a href="/2019/06/26/concurrent_parallel/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/24/spark-submit-application-example/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">并发并行</div>
+      <div class="article-nav-title">spark word count in practice</div>
     </a>
   
 </nav>
@@ -144,7 +145,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -157,6 +158,10 @@
       <ul>
         
           <li>
+            <a href="/2019/07/03/spark-rdd/">spark rdd</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
           </li>
         
@@ -166,10 +171,6 @@
         
           <li>
             <a href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
           </li>
         
           <li>

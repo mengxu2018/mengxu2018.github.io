@@ -5,19 +5,15 @@
   
 
   
-  <title>spark stage | No pains,no gains</title>
+  <title>Archives: 2019/7 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
-<meta property="og:type" content="article">
-<meta property="og:title" content="spark stage">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/spark-stage/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="No pains,no gains">
+<meta property="og:url" content="https://mengxu2018.github.io/archives/2019/07/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-23T03:21:21.667Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark stage">
-<meta name="twitter:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta name="twitter:title" content="No pains,no gains">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,63 +60,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      spark stage
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2019/07/03/spark-rdd/" class="archive-article-date">
+  <time datetime="2019-07-03T13:22:40.000Z" itemprop="datePublished">Jul 3</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/07/03/spark-rdd/">spark rdd</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjxotav5y0013oojilv5m1sll" class="article-share-link">Share</a>
-      
-      
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          centos重启网卡失效
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/06/21/spark-basic/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">spark basic</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         

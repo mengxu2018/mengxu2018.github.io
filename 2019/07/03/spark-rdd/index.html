@@ -5,19 +5,19 @@
   
 
   
-  <title>spark stage | No pains,no gains</title>
+  <title>spark rdd | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+  <meta name="description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark stage">
-<meta property="og:url" content="https://mengxu2018.github.io/2019/06/23/spark-stage/index.html">
+<meta property="og:title" content="spark rdd">
+<meta property="og:url" content="https://mengxu2018.github.io/2019/07/03/spark-rdd/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta property="og:description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-23T03:21:21.667Z">
+<meta property="og:updated_time" content="2019-07-04T15:15:09.993Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark stage">
-<meta name="twitter:description" content="introhttps://mapr.com/blog/how-spark-runs-your-applications/Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM proces">
+<meta name="twitter:title" content="spark rdd">
+<meta name="twitter:description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-spark-rdd" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+    <a href="/2019/07/03/spark-rdd/" class="article-date">
+  <time datetime="2019-07-03T13:22:40.000Z" itemprop="datePublished">2019-07-03</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      spark stage
+      spark rdd
     </h1>
   
 
@@ -86,14 +86,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
+        <p>RDD这种抽象是整个Spark的核心，具有如下特定：<br>immutable: 不可变（只读）<br>resilient: 弹性（容错）<br>distributed:分布式（数据存储在整个集群的各个机器上)<br>In-Memory:数据位于内存中(Spark提供了其他的持久化选项）<br>Lazy evaluated:有Action触发时才会执行真正的操作<br>Cacheable:内存不足以容纳数据时，可以缓存到磁盘<br>Typed:每个RDD都有类型，例如RDD[String],RDD[(int,String)]<br>patitioned:RDD的数据划分为多个Partition，分布在集群中，每个JVM（Executor）一个Partition。</p>
+<p><a href="https://www.zhihu.com/question/23079001" target="_blank" rel="noopener">https://www.zhihu.com/question/23079001</a><br>这个文章讲了为什么多个rdd的DAG没有耗光内存,<br>比如rdd是不可变的，多个rdd的内存加起来不是很大了吗</p>
+<p>iterator rdd<br><a href="https://www.jianshu.com/p/c05d33b4d70d" target="_blank" rel="noopener">https://www.jianshu.com/p/c05d33b4d70d</a></p>
+<p>rdd的不可变<br><a href="https://www.zybuluo.com/BrandonLin/note/448121" target="_blank" rel="noopener">https://www.zybuluo.com/BrandonLin/note/448121</a><br>一个rdd计算出另外一个rdd，之前的rdd就被丢弃了，不可能dag里面的每个rdd都占据着内存<br>而且各个rdd的内存也有共同的部分，只是在api层面不可变<br>如果用户没有要求Spark cache该RDD的结果，那么这个过程占用的内存是很小的，一个元素处理完毕后就落地或扔掉了（概念上如此，实现上有buffer），并不会长久地占用内存。</p>
+<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjxotav5y0013oojilv5m1sll" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/03/spark-rdd/" data-id="cjxotav5p000wooji6ky11jpj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -102,19 +104,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/23/centos重启网卡失效/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          centos重启网卡失效
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/21/spark-basic/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/30/spark-definitive-guide/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">spark basic</div>
+      <div class="article-nav-title">spark 权威指南 笔记</div>
     </a>
   
 </nav>

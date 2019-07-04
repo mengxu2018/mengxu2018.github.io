@@ -62,6 +62,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spark-rdd" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/03/spark-rdd/" class="article-date">
+  <time datetime="2019-07-03T13:22:40.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/03/spark-rdd/">spark rdd</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RDD这种抽象是整个Spark的核心，具有如下特定：<br>immutable: 不可变（只读）<br>resilient: 弹性（容错）<br>distributed:分布式（数据存储在整个集群的各个机器上)<br>In-Memory:数据位于内存中(Spark提供了其他的持久化选项）<br>Lazy evaluated:有Action触发时才会执行真正的操作<br>Cacheable:内存不足以容纳数据时，可以缓存到磁盘<br>Typed:每个RDD都有类型，例如RDD[String],RDD[(int,String)]<br>patitioned:RDD的数据划分为多个Partition，分布在集群中，每个JVM（Executor）一个Partition。</p>
+<p><a href="https://www.zhihu.com/question/23079001" target="_blank" rel="noopener">https://www.zhihu.com/question/23079001</a><br>这个文章讲了为什么多个rdd的DAG没有耗光内存,<br>比如rdd是不可变的，多个rdd的内存加起来不是很大了吗</p>
+<p>iterator rdd<br><a href="https://www.jianshu.com/p/c05d33b4d70d" target="_blank" rel="noopener">https://www.jianshu.com/p/c05d33b4d70d</a></p>
+<p>rdd的不可变<br><a href="https://www.zybuluo.com/BrandonLin/note/448121" target="_blank" rel="noopener">https://www.zybuluo.com/BrandonLin/note/448121</a><br>一个rdd计算出另外一个rdd，之前的rdd就被丢弃了，不可能dag里面的每个rdd都占据着内存<br>而且各个rdd的内存也有共同的部分，只是在api层面不可变<br>如果用户没有要求Spark cache该RDD的结果，那么这个过程占用的内存是很小的，一个元素处理完毕后就落地或扔掉了（概念上如此，实现上有buffer），并不会长久地占用内存。</p>
+<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/03/spark-rdd/" data-id="cjxotav5p000wooji6ky11jpj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-spark-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/30/spark-definitive-guide/" class="article-date">
@@ -96,11 +137,18 @@
 <p>看执行计划<br><a href="http://k8s-master:18080/history/app-20190628102443-0003/SQL/execution/?id=1" target="_blank" rel="noopener">http://k8s-master:18080/history/app-20190628102443-0003/SQL/execution/?id=1</a><br><img src="/images/page-299-stage2.PNG" alt="stage"></p>
 <p>这个是第二个stage，为什么会输出12个row？<br>我们知道groupby导致下一个stage，但是上一个stage不可能把几十万行数据都shuffle出去没必要，<br>他会在当前的分区执行一次groupby，这就是聚合，这样每个分区都是3行数据，<br>4个分区就是12行数据，这个12行数据会在最后一个stage里面运行，<br>我发现最后一个stage就三个task有shuffle read，可能因为把同样的key发送到了同一个task上面了，一共就三个key（group by之后就3个key)</p>
 <p>下面是书上说的<br>Notice that in Figure 18-5 the number of output rows is six. This convienently lines up with<br>the number of output rows（这个就是3） multiplied by the number of partitions（这个是4) at aggregation time. This is because Spark performs an<br>aggregation for each partition (in this case a hash-based aggregation) before shuffling the data aroundin preparation for the final stage.</p>
+<h2 id="page-264"><a href="#page-264" class="headerlink" title="page 264"></a>page 264</h2><p>Regardless of the number of partitions, that<br>entire stage is computed in parallel. The final result aggregates those partitions individually, brings<br>them all to a single partition before finally sending the final result to the driver. We’ll see this<br>configuration several times over the course of this part of the book.</p>
+<p>Tasks<br>Stages in Spark consist of tasks. <code>Each task corresponds to a combination of blocks of data and a set
+of transformations that will run on a single executor</code>. If there is one big partition in our dataset, we<br>will have one task. If there are 1,000 little partitions, we will have 1,000 tasks that can be executed in<br>parallel. A task is just a unit of computation applied to a unit of data (the partition). Partitioning your<br>data into a greater number of partitions means that more can be executed in parallel. This is not a<br>panacea, but it is a simple place to begin with optimization.</p>
+<h2 id="page-133"><a href="#page-133" class="headerlink" title="page 133"></a>page 133</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val df = spark.read.format(&quot;csv&quot;)</span><br><span class="line">.option(&quot;header&quot;, &quot;true&quot;)</span><br><span class="line">.option(&quot;inferSchema&quot;, &quot;true&quot;)</span><br><span class="line">.load(&quot;/FileStore/tables/retail-data/all/online_retail_dataset-92e8e.csv&quot;)</span><br></pre></td></tr></table></figure>
+<p>这个dateframe一共541909行数据</p>
+<pre><code>df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().count()
+</code></pre><p>这个返回25900,说明分组之后的行是这么多<br>df.groupBy(“InvoiceNo”, “CustomerId”).count().show()<br>这个可以看分组后的数据，这个count返回的是个dataset，所以可以继续执行count这个action<br>这个job有两个stage，<br>第一个stage有8个task，分别读取8分之1的数据，然后shuffle write， write的行书就是25907，<br>第二个stage读取这些数据，上面8个分区的数据都是重复的group后的结果，所以继续汇总下，就是剩下25900行数据</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/" data-id="cjxdebpdr0003usjiy5cw17zv" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/" data-id="cjxotav5x0012oojioch5zktj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -142,7 +190,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/29/deep-learning-baisc/" data-id="cjxgy7qq200049kjicytrj5y5" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/29/deep-learning-baisc/" data-id="cjxotav4m000aoojiic76a7cd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -182,7 +230,45 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/27/hive-work-with-spark/" data-id="cjxg7d4ps00009kji6yzwv1ww" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/27/hive-work-with-spark/" data-id="cjxotav4w000koojiru4nmviw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-concurrent_parallel" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/concurrent_parallel/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/concurrent_parallel/">并发并行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行<br>tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面<br>所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算</p>
+<p>关于并发并行还需要学习</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="cjxotav4j0008oojiu5sz2lo0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -221,49 +307,12 @@
 <p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
 <p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
 <p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>所以shuffle 不一定是跨jvm或者node的操作，也可能一个stage，8个machine，8个task都shuffle 了，但是下一个stage只有一个task，在一个node上面运行，这个task的shuffle从当前的机器加上另外7台机器的数据 ，新的task应该还是之前的jvm，不是新启动一个jvm，还是在当前的executor上面</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxdebpdt0005usjiq5zwku0k" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-concurrent_parallel" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/26/concurrent_parallel/" class="article-date">
-  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/26/concurrent_parallel/">并发并行</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行<br>tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面<br>所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算</p>
-<p>关于并发并行还需要学习</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="cjxdebpdn0002usjik6alqe5t" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjxotav650017ooji87y1v6g3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -311,85 +360,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/24/spark-submit-application-example/" data-id="cjxag3gp40000b0jisrwna18x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-centos重启网卡失效" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/centos重启网卡失效/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>systemctl stop NetworkManager<br>systemctl restart network</p>
-<p>上面两个命令可以解决</p>
-<p><a href="https://zhuanlan.zhihu.com/p/29810657" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29810657</a><br><a href="https://blog.csdn.net/chun_xiaolin001/article/details/81632626" target="_blank" rel="noopener">https://blog.csdn.net/chun_xiaolin001/article/details/81632626</a><br><a href="https://blog.csdn.net/Renirvana/article/details/79167286" target="_blank" rel="noopener">https://blog.csdn.net/Renirvana/article/details/79167286</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/centos重启网卡失效/" data-id="cjxag3gpp0001b0jituxjh1if" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/spark-stage/">spark stage</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjx8d6tnt0001h4jigzotrpcm" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/24/spark-submit-application-example/" data-id="cjxotav5z0014oojiqho26qrr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -460,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="cjxg7d4q600019kjiqru4urq1" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="cjxotav6d001doojie3v77edr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -470,10 +441,10 @@
 
 
   
-    <article id="post-spark-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-centos重启网卡失效" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/21/spark-basic/" class="article-date">
-  <time datetime="2019-06-21T14:51:52.000Z" itemprop="datePublished">2019-06-21</time>
+    <a href="/2019/06/23/centos重启网卡失效/" class="article-date">
+  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
 </a>
     
   </div>
@@ -484,7 +455,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/21/spark-basic/">spark basic</a>
+      <a class="article-title" href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
     </h1>
   
 
@@ -492,15 +463,53 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="分区和cpu核心数目"><a href="#分区和cpu核心数目" class="headerlink" title="分区和cpu核心数目"></a>分区和cpu核心数目</h2><p>分区数目一般是cpu核心数目的2到4倍<br>加入有50GB的数据存放在hdfs上面，除以128MB，差不多是160，但是我们的cpu总核心数目才50，<br>所以160个分区对应50个cores也是可以的，这样一个core差不多要运行3个task</p>
-<p>如果cpu核心有160，那么每个分区对应一个task，这样最快</p>
-<p>分区数目不能太多，太多了就太多的task，这样节点压力会很大</p>
-<p>每一个分区被一个task执行，如果160个分区也就是160个task，分布在50个cpu核心</p>
+        <p>systemctl stop NetworkManager<br>systemctl restart network</p>
+<p>上面两个命令可以解决</p>
+<p><a href="https://zhuanlan.zhihu.com/p/29810657" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29810657</a><br><a href="https://blog.csdn.net/chun_xiaolin001/article/details/81632626" target="_blank" rel="noopener">https://blog.csdn.net/chun_xiaolin001/article/details/81632626</a><br><a href="https://blog.csdn.net/Renirvana/article/details/79167286" target="_blank" rel="noopener">https://blog.csdn.net/Renirvana/article/details/79167286</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/21/spark-basic/" data-id="cjx8d6tnp0000h4jinz1u82xe" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/23/centos重启网卡失效/" data-id="cjxotav4d0003oojizixz5scs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/23/spark-stage/" class="article-date">
+  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/23/spark-stage/">spark stage</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
+<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
+<p>action的操作比如collect一般算在最后一个stage里面</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjxotav5y0013oojilv5m1sll" class="article-share-link">Share</a>
       
       
     </footer>
@@ -533,7 +542,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -546,6 +555,10 @@
       <ul>
         
           <li>
+            <a href="/2019/07/03/spark-rdd/">spark rdd</a>
+          </li>
+        
+          <li>
             <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
           </li>
         
@@ -555,10 +568,6 @@
         
           <li>
             <a href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/26/spark-shuffle/">spark shuffle</a>
           </li>
         
           <li>
