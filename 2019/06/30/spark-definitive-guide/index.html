@@ -8,6 +8,7 @@
   <title>spark 权威指南 笔记 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="page 29In specifying this action, we started a Spark job that runs our filter transformation (a narrowtransformation), then an aggregation (a wide transformation) that performs the counts on a perpart">
+<meta name="keywords" content="spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark 权威指南 笔记">
 <meta property="og:url" content="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/index.html">
@@ -16,7 +17,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://mengxu2018.github.io/images/count_stage.PNG">
 <meta property="og:image" content="https://mengxu2018.github.io/images/page-299-stage2.PNG">
-<meta property="og:updated_time" content="2019-07-04T12:40:06.265Z">
+<meta property="og:updated_time" content="2019-07-20T13:30:31.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark 权威指南 笔记">
 <meta name="twitter:description" content="page 29In specifying this action, we started a Spark job that runs our filter transformation (a narrowtransformation), then an aggregation (a wide transformation) that performs the counts on a perpart">
@@ -105,16 +106,17 @@
 <p>Tasks<br>Stages in Spark consist of tasks. <code>Each task corresponds to a combination of blocks of data and a set
 of transformations that will run on a single executor</code>. If there is one big partition in our dataset, we<br>will have one task. If there are 1,000 little partitions, we will have 1,000 tasks that can be executed in<br>parallel. A task is just a unit of computation applied to a unit of data (the partition). Partitioning your<br>data into a greater number of partitions means that more can be executed in parallel. This is not a<br>panacea, but it is a simple place to begin with optimization.</p>
 <h2 id="page-133"><a href="#page-133" class="headerlink" title="page 133"></a>page 133</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val df = spark.read.format(&quot;csv&quot;)</span><br><span class="line">.option(&quot;header&quot;, &quot;true&quot;)</span><br><span class="line">.option(&quot;inferSchema&quot;, &quot;true&quot;)</span><br><span class="line">.load(&quot;/FileStore/tables/retail-data/all/online_retail_dataset-92e8e.csv&quot;)</span><br></pre></td></tr></table></figure>
-<p>这个dateframe一共541909行数据</p>
-<pre><code>df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().count()
-</code></pre><p>这个返回25900,说明分组之后的行是这么多<br>df.groupBy(“InvoiceNo”, “CustomerId”).count().show()<br>这个可以看分组后的数据，这个count返回的是个dataset，所以可以继续执行count这个action<br>这个job有两个stage，<br>第一个stage有8个task，分别读取8分之1的数据，然后shuffle write， write的行书就是25907，<br>第二个stage读取这些数据，上面8个分区的数据都是重复的group后的结果，所以继续汇总下，就是剩下25900行数据</p>
+<p>这个dateframe一共541909行数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().count()</span><br><span class="line">``` </span><br><span class="line">这个返回25900,说明分组之后的行是这么多</span><br><span class="line">df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().show()</span><br><span class="line">这个可以看分组后的数据，这个count返回的是个dataset，所以可以继续执行count这个action</span><br><span class="line">这个job有两个stage，</span><br><span class="line">第一个stage有8个task，分别读取8分之1的数据，然后shuffle write， write的行书就是25907，</span><br><span class="line">第二个stage读取这些数据，上面8个分区的数据都是重复的group后的结果，所以继续汇总下，就是剩下25900行数据</span><br><span class="line"></span><br><span class="line">## page 57</span><br><span class="line">Overview of Structured Spark Types</span><br><span class="line">Spark is effectively a programming language of its own. Internally, Spark uses an engine called</span><br><span class="line">Catalyst that maintains its own type information through the planning and processing of work. In</span><br><span class="line">doing so, this opens up a wide variety of execution optimizations that make significant differences.</span><br><span class="line">Spark types map directly to the different language APIs that Spark maintains and there exists a lookup</span><br><span class="line">table for each of these in Scala, Java, Python, SQL, and R. Even if we use Spark’s Structured APIs</span><br><span class="line">from Python or R, the majority of our manipulations will operate strictly on Spark types, not Python</span><br><span class="line">types. For example, the following code does not perform addition in Scala or Python; it actually</span><br><span class="line">performs addition purely in Spark:</span><br><span class="line">下面是spark的dataset类型的编译时候就报错的解释例子</span><br></pre></td></tr></table></figure></p>
+<p>case class Person(name : String , age : Int)<br>val personRDD = sc.makeRDD(Seq(Person(“A”,10),Person(“B”,20)))<br>val personDF = sqlContext.createDataframe(personRDD)<br>val ds:Dataset[Person] = personDF.as[Person]<br>ds.filter(p =&gt; p.age &gt; 25)<br>ds.filter(p =&gt; p.salary &gt; 25)<br> // error : value salary is not a member of person<br>ds.rdd // returns RDD[Person]<br><code>`</code></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/" data-id="cjxotav5x0012oojioch5zktj" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/" data-id="cjyk7oqlu003i6kjipg2wvdb7" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
     </footer>
   </div>
   
@@ -149,9 +151,23 @@ of transformations that will run on a single executor</code>. If there is one bi
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 13.33px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -170,23 +186,23 @@ of transformations that will run on a single executor</code>. If there is one bi
       <ul>
         
           <li>
-            <a href="/2019/07/03/spark-rdd/">spark rdd</a>
+            <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
-            <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
+            <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
           </li>
         
           <li>
-            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
           </li>
         
           <li>
-            <a href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
+            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
           </li>
         
           <li>
-            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>

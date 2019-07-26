@@ -8,13 +8,14 @@
   <title>spark rdd | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
+<meta name="keywords" content="spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark rdd">
 <meta property="og:url" content="https://mengxu2018.github.io/2019/07/03/spark-rdd/index.html">
 <meta property="og:site_name" content="No pains,no gains">
 <meta property="og:description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-04T15:20:51.146Z">
+<meta property="og:updated_time" content="2019-07-20T13:30:30.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark rdd">
 <meta name="twitter:description" content="RDD这种抽象是整个Spark的核心，具有如下特定：immutable: 不可变（只读）resilient: 弹性（容错）distributed:分布式（数据存储在整个集群的各个机器上)In-Memory:数据位于内存中(Spark提供了其他的持久化选项）Lazy evaluated:有Action触发时才会执行真正的操作Cacheable:内存不足以容纳数据时，可以缓存到磁盘Typed:每个RD">
@@ -90,19 +91,35 @@
 <p><a href="https://www.zhihu.com/question/23079001" target="_blank" rel="noopener">https://www.zhihu.com/question/23079001</a><br>这个文章讲了为什么多个rdd的DAG没有耗光内存,<br>比如rdd是不可变的，多个rdd的内存加起来不是很大了吗</p>
 <p>iterator rdd<br><a href="https://www.jianshu.com/p/c05d33b4d70d" target="_blank" rel="noopener">https://www.jianshu.com/p/c05d33b4d70d</a></p>
 <p>rdd的不可变<br><a href="https://www.zybuluo.com/BrandonLin/note/448121" target="_blank" rel="noopener">https://www.zybuluo.com/BrandonLin/note/448121</a><br>一个rdd计算出另外一个rdd，之前的rdd就被丢弃了，不可能dag里面的每个rdd都占据着内存<br>而且各个rdd的内存也有共同的部分，只是在api层面不可变<br>如果用户没有要求Spark cache该RDD的结果，那么这个过程占用的内存是很小的，一个元素处理完毕后就落地或扔掉了（概念上如此，实现上有buffer），并不会长久地占用内存。</p>
-<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a><br><a href="https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java" target="_blank" rel="noopener">https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java</a></p>
+<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a><br><a href="https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java" target="_blank" rel="noopener">https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val textFile = sc.textFile(&quot;hdfs://…&quot;)</span><br><span class="line">val counts = textFile.flatMap(line =&gt; line.split(&quot; &quot;))</span><br><span class="line"> .filter(_.length &gt;= 2)</span><br><span class="line"> .map(word =&gt; (word, 1))</span><br><span class="line"> .reduceByKey(_ + _)</span><br><span class="line">counts.saveAsTextFile(&quot;hdfs://…&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>上面这个例子textFile会生成一个haddoprdd，然后就是MapPartitionsRDD,<br>textFile是一个HadoopRDD经过map后的MapPartitionsRDD，<br>经过flatMap后仍然是一个MapPartitionsRDD，<br>经过filter方法之后生成了一个新的MapPartitionsRDD，<br>经过map函数之后，继续是一个MapPartitionsRDD，<br>最后经过reduceByKey变成了ShuffleRDD。<br>rdd中主要就是compute方法还有iterator概念<br>def compute(split: Partition, context: TaskContext): Iterator[T]</p>
+<p>RDD 抽象类要求其所有子类都必须实现 compute 方法，该方法接受的参数之一是一个Partition 对象，目的是计算该分区中的数据。<br>最后actioins执行的时候会一层一层向parent来执行迭代器里面的操作<br>再两个例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val lines = spark.textFile(&quot;hdfs://&lt;input&gt;&quot;)</span><br><span class="line">val errors = lines.filter(_.startsWith(&quot;ERROR&quot;))</span><br><span class="line">val messages = errors.map(_.split(&quot; &quot;)(1))</span><br><span class="line">messages.saveAsTextFile(&quot;hdfs://&lt;output&gt;&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>Spark在运行时动态构造了一个复合Iterator。就上述示例来说，构造出来的Iterator的逻辑概念上大致长这样：<br>所以并不是每个transformation都会生成一份新数据，而是串行化的执行(起码在一个stage里面)<br>下面是伪代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">new Iterator[String] &#123;</span><br><span class="line"> private var head: String = _</span><br><span class="line"> private var headDefined: Boolean = false</span><br><span class="line">def hasNext: Boolean = headDefined || &#123;</span><br><span class="line"> do &#123;</span><br><span class="line"> try head = readOneLineFromHDFS(…) // (1) read from HDFS</span><br><span class="line"> catch &#123;</span><br><span class="line"> case _: EOFException =&gt; return false</span><br><span class="line"> &#125;</span><br><span class="line"> &#125; while (!head.startsWith(&quot;ERROR&quot;)) // (2) filter closure</span><br><span class="line"> true</span><br><span class="line"> &#125;</span><br><span class="line">def next: String = if (hasNext) &#123;</span><br><span class="line"> headDefined = false</span><br><span class="line"> head.split(&quot; &quot;)(1) // (3) map closure</span><br><span class="line"> &#125; else &#123;</span><br><span class="line"> throw new NoSuchElementException(&quot;…&quot;)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可不可以认为，想map mapPartition这样的操作实际上在运行的时候后都是逐行处理数据的？<br>yes<br>Spark的计算执行可以认为是一个这样的过程：从一个RDD读取数据，做处理，然后依照action的不同把结果发回用户空间。这个过程中可能会有很多中间临时的RDD，假如你对这些RDD设置了cache，那么在它所在的计算环节结束后的中间结果就会被缓存起来，缓存有个缓存管理器，spark里被称作blockmanager。注意哦，这里还有一个误区是，很多初学的同学认为调用了cache或者persist的那一刻就是在缓存了，这是完全不对的，真正的缓存执行指挥在action被触发，job被提交开始计算，在计算的中间过程中才会执行。<br>我的理解是当action执行结束过才会把中间结果缓存起来，因为spark知道了你要缓存的是哪个rdd，所以他把那个rdd的结果都做上标记，结束后一起缓存起来<br>数据是作为流一条条从管道的开始一路走到结束。最为直观的好处就是：不需要加载全量数据集，上一次的计算结果可以马上丢弃。全量数据集其实是一个很恐怖的东西，全世界都在避免它，所以某种意义上来看，如果没有Shuffle过程，Spark所需要内存其实非常小，一条数据又能占多大空间。第二，如果不是Pipeline的方式，而是马上触发全量操作，势必需要一个中间容器来保存结果，其实这里就又回到MapReduce的老路，效率很低。</p>
+<p>MapPartitionsRDD的compute方法的作用了：在有前置依赖的条件下，在父RDD的Iterable接口上给遍历每个元素的时候再套上一个方法</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/03/spark-rdd/" data-id="cjxotav5p000wooji6ky11jpj" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/03/spark-rdd/" data-id="cjyk7oqlw003n6kji9sd606mc" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/07/06/spark-source-code-debug/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          spark source code debug
+        
+      </div>
+    </a>
   
   
     <a href="/2019/06/30/spark-definitive-guide/" id="article-nav-older" class="article-nav-link-wrap">
@@ -123,9 +140,23 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 13.33px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -144,23 +175,23 @@
       <ul>
         
           <li>
-            <a href="/2019/07/03/spark-rdd/">spark rdd</a>
+            <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
-            <a href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
+            <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
           </li>
         
           <li>
-            <a href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
           </li>
         
           <li>
-            <a href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
+            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
           </li>
         
           <li>
-            <a href="/2019/06/26/concurrent_parallel/">并发并行</a>
+            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>
