@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="No pains,no gains">
 <meta property="og:description" content="1.稠密索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。 2.稀疏索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。特性：每个存储块的每一个键">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T14:38:42.353Z">
+<meta property="og:updated_time" content="2019-07-28T02:45:01.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kakfa索引">
 <meta name="twitter:description" content="1.稠密索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。 2.稀疏索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。特性：每个存储块的每一个键">
@@ -90,7 +90,7 @@
         <p>1.稠密索引<br>定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。<br>特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。</p>
 <p>2.稀疏索引<br>定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。<br>特性：每个存储块的每一个键对应的指针都指向每个数据块的第一条记录，当要查找指定建 K 时，先采用二分查找找到 &lt;=K 的键 S，如果 S=K，则命中记录，如果 S&lt;k，则顺序查找 =K 的键，复杂度大于 log2n，小于 n。</p>
 <p>比较：<br>稀疏索引占用的索引存储空间比较小，但是查找时间较长；<br>稠密索引查找时间较短，索引存储空间较大。</p>
-<p>kafka用的是稀疏索引</p>
+<p>kafka用的是稀疏索引<br>通过index中offset与物理偏移映射,用二分查找能快速定位msg,并且通过分多个Segment,每个index文件很小,查找速度更快。</p>
 <p><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory" target="_blank" rel="noopener">https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory</a><br><a href="https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html" target="_blank" rel="noopener">https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html</a><br><a href="https://blog.csdn.net/idber/article/details/8096941" target="_blank" rel="noopener">https://blog.csdn.net/idber/article/details/8096941</a></p>
 
       
