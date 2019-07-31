@@ -62,6 +62,138 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spark-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/21/spark-basic/" class="article-date">
+  <time datetime="2019-06-21T14:51:52.000Z" itemprop="datePublished">2019-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/21/spark-basic/">spark basic</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="分区和cpu核心数目"><a href="#分区和cpu核心数目" class="headerlink" title="分区和cpu核心数目"></a>分区和cpu核心数目</h2><p>分区数目一般是cpu核心数目的2到4倍<br>加入有50GB的数据存放在hdfs上面，除以128MB，差不多是160，但是我们的cpu总核心数目才50，<br>所以160个分区对应50个cores也是可以的，这样一个core差不多要运行3个task</p>
+<p>如果cpu核心有160，那么每个分区对应一个task，这样最快</p>
+<p>分区数目不能太多，太多了就太多的task，这样节点压力会很大</p>
+<p>每一个分区被一个task执行，如果160个分区也就是160个task，分布在50个cpu核心</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/21/spark-basic/" data-id="cjyrdp4ey002fvwji7xrffwt8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-postgres安装" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/postgres安装/" class="article-date">
+  <time datetime="2019-06-16T14:51:52.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/16/postgres安装/">postgres安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="noopener">https://www.postgresql.org/download/linux/redhat/</a><br>官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本<code>yum install postgresql10</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/pgsql-10/bin/postgresql-10-setup initdb</span><br><span class="line">systemctl enable postgresql-10</span><br><span class="line">systemctl start postgresql-10</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>注意配置文件在/var/lib/pgsql/10/data不在/usr/pgsql-10<br>可以通过netstat -nlt查看ip的绑定情况，如果修改了/usr/pgsql-10的listen相关的配置，<br>会发现5432仍然listen在127.0.0.1,而不是远程任意ip地址可以访问<br><a href="https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了" target="_blank" rel="noopener">https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了</a></p>
+<p>pg_hba.conf的配置必须是trust，否则远程客户端比如datagrip还是不能登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host    all             all              0.0.0.0/0                       trust</span><br><span class="line">host    all             all              ::/0                            trust</span><br></pre></td></tr></table></figure></p>
+<p>同时注意postgres安装的时候会默认安装一个linux的用户postgres,<br>可以su - postgres之后然后psql命令进入shell的sql界面，<br>然后修改密码ALTER USER postgres WITH PASSWORD ‘xuhang’，<br>最后可以客户端用xuhang这个密码登陆</p>
+<h2 id="其他ref"><a href="#其他ref" class="headerlink" title="其他ref"></a>其他ref</h2><p><a href="https://www.postgresql.org/docs/10/auth-pg-hba-conf.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/10/auth-pg-hba-conf.html</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>直接看下面步骤进行安装for quick，进入root用户<br>yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="noopener">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a><br>yum install postgresql10<br>yum install postgresql10-server<br>/usr/pgsql-10/bin/postgresql-10-setup initdb<br>systemctl enable postgresql-10<br>systemctl start postgresql-10<br>安装好下面开始配置<br>su - postgres<br>psql<br>ALTER USER postgres WITH PASSWORD ‘xuhang’</p>
+<p>append<br><code>`
+host    all             all              0.0.0.0/0                       trust
+host    all             all              ::/0                            trust</code><br>to <code>/var/lib/pgsql/10/data/pg_hba.conf</code></p>
+<p>update to <code>listen_addresses = &#39;*&#39;</code><br>in <code>postgresql.conf</code></p>
+<p>systemctl restart postgresql-10<br>可以客户端登陆了，默认数据库postgres，默认用户名postgres，密码是alter修改过的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/16/postgres安装/" data-id="cjyrdp4ew002bvwjig5dxeusv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/13/ibm小型机/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="硬件体系"><a href="#硬件体系" class="headerlink" title="硬件体系"></a>硬件体系</h2><p>从处理能力来说，单Hz的处理能力x86已经超过了Power系列，这是毋庸置疑的。但是Power有其明显的优点。它采用了标准的SMP结构，也就是说对于内存来说所有CPU访问的速度都是一致的，而x86采用了NUMA结构，这就是说CPU和内存是分区的，每个CPU访问自己的这部分内存特别快，但是如果需要访问其它部分那就要走QPI总线（现在已经在不断改进了），这也客观上造成了随着CPU数量的增多，处理能力的增长Power系列的线性程度远好于x86（这也是为什么很少会用4路以上的x86服务器）。而且作为小型机，封闭系统，其设计更加完整紧凑，综合起来性能强于x86</p>
+<h2 id="软件体系"><a href="#软件体系" class="headerlink" title="软件体系"></a>软件体系</h2><p>硬件体系是自己的，操作系统也是自己的（AIX等），所以整合起来Power系列的整体稳定性要强于x86服务器，而且运维也方便（特别是对于一些外围硬件，如果使用IBM更加容易用），抗压能力也强（小型机90%的CPU占用率，运行几个星期可能都OK，x86几天就估计出问题了）<br>但是Power系列的小型机的价格太高了，而且已经赶不上技术的变化了，由于Google的崛起，云计算的兴盛，现在的分布式系统的成熟度越来越高，系统已经越来越不依赖几台小型机来提供稳定可靠性，而是通过集群来提供，性能也能够通过分布式的处理来解决。所以x86的使用越来越广泛，而最新的一些低成本但是能够带来高效能的新技术都在x86体系下得到应用（x86市场占有率高，也开放），而Power系列由于其封闭的特性，反而难以得到应用，所以Power系列的小型机优势越来越不明显，已经在逐渐退出历史舞台了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AIX is an open operating system from IBM that is based on a version of UNIX.<br>ibm小型机的系统是AIX， 所以相关的软件也要on aix， 比如oracle on aix,<br>不过ibm小型机也可以安装linux,因为linux也可以运行在power处理器， Power ISA指令集</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="cjyrdp4ec001cvwjib2w6vthx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hadoop-early-architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/13/hadoop-early-architecture/" class="article-date">
@@ -91,7 +223,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="cjyk7oqk600116kjiqq5wixvu" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="cjyrdp4e70011vwjip29iiwyx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/">hadoop</a></li></ul>
@@ -130,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="cjyk7oqm900496kjixdrargdp" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="cjyrdp4ff003bvwji5qf0b469" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/win10/">win10</a></li></ul>
@@ -176,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="cjyk7oqk800146kjiwilyke85" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="cjyrdp4e5000zvwjibicegtsw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hbase/">hbase</a></li></ul>
@@ -230,7 +362,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/12/git-usage/" data-id="cjyk7oqk4000w6kjifu715ggl" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/git-usage/" data-id="cjyrdp4e3000vvwji4ryrzam0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
@@ -277,7 +409,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/05/spark闭包/" data-id="cjyk7oqma004a6kjiv4zlvyqk" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/05/spark闭包/" data-id="cjyrdp4fb0033vwjinefvygn7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
@@ -316,7 +448,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="cjyk7oqjw000l6kjivi6nul19" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="cjyrdp4dl0009vwjiloaouoao" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -362,133 +494,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/01/centos7-ssh免密码/" data-id="cjyk7oqjm00056kjij7y1579g" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/01/centos7-ssh免密码/" data-id="cjyrdp4do000dvwjitdhpqm30" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/01/hostname设置/" class="article-date">
-  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/01/hostname设置/">hostname设置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
-<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
-<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
-<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="cjyk7oqk3000u6kji1p26lxv5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/30/centos-update-timezone/" class="article-date">
-  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/centos-update-timezone/">update timezone</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line"></span><br><span class="line">hwclock -w  写入硬件，避免重启失效</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/centos-update-timezone/" data-id="cjyk7oqjh00016kjik78x1kfs" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
-  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/spark-driver-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
-<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
-<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
-</ul>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="cjyk7oqls003d6kji603zegfb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -515,7 +524,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -525,7 +534,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -547,23 +556,23 @@
       <ul>
         
           <li>
+            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/31/filesystem/">filesystem</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
             <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>

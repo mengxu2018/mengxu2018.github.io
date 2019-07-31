@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/26/maven-compiler/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+    <a href="/2019/06/01/hostname设置/" class="article-date">
+  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
+      <a class="article-title" href="/2019/06/01/hostname设置/">hostname设置</a>
     </h1>
   
 
@@ -84,20 +84,99 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
-<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
-<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
+<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
+<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
+<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="cjyk7oqlh002v6kji16d4lynu" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="cjyrdp4e80013vwjier6os3up" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos-update-timezone" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/30/centos-update-timezone/" class="article-date">
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/30/centos-update-timezone/">update timezone</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line"></span><br><span class="line">hwclock -w  写入硬件，避免重启失效</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/30/centos-update-timezone/" data-id="cjyrdp4db0001vwjic6ssti6b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/30/spark-driver-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
+<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
+<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="cjyrdp4f7002wvwjiwku1ggb9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -133,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="cjyk7oqjk00036kjivullco2z" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="cjyrdp4dk0008vwjijmi9z2ay" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
@@ -145,10 +224,10 @@
 
 
   
-    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/26/first-dubbo/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+    <a href="/2019/05/26/maven-compiler/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
 </a>
     
   </div>
@@ -159,7 +238,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
+      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
     </h1>
   
 
@@ -167,17 +246,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
-
+        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
+<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
+<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjyk7oqjv000j6kjijf37o4eo" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="cjyrdp4eu0027vwji4f061v3w" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
 
     </footer>
   </div>
@@ -217,10 +299,51 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="cjyk7oqjy000o6kjidl817cp2" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="cjyrdp4dx000lvwjiwyeeia4d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-dubbo/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="cjyrdp4dz000nvwjiqjugqh4l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li></ul>
 
     </footer>
   </div>
@@ -269,106 +392,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="cjyk7oqlm00336kji23gegn1c" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="cjyrdp4ex002dvwjiirle04pz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/spring-jpa/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/spring-jpa/">spring jpa</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
-<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
-</li>
-<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
-</li>
-<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
-</li>
-<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
-</li>
-<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
-</li>
-<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
-</li>
-<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
-</li>
-<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
-</li>
-</ul>
-<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="cjyk7oqmd004f6kjipbx5buc2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/springboot-test/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="cjyk7oqm3003z6kji9tq1isgc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
 
     </footer>
   </div>
@@ -407,7 +434,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjyk7oqm2003x6kjifv09xoae" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="cjyrdp4fj003ivwjis9fl4pe0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
@@ -451,49 +478,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjyk7oqlp00386kjia5olza7y" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="cjyrdp4f2002kvwjiybkl1z5j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/grpc/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="cjyk7oqk0000r6kjig1sa4i2e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/">grpc</a></li></ul>
 
     </footer>
   </div>
@@ -520,7 +508,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -530,7 +518,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -552,23 +540,23 @@
       <ul>
         
           <li>
+            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/31/filesystem/">filesystem</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
             <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>

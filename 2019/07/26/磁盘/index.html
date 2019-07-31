@@ -7,18 +7,18 @@
   
   <title>磁盘 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是 SATA">
+  <meta name="description" content="物理概念物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是">
 <meta name="keywords" content="hardware">
 <meta property="og:type" content="article">
 <meta property="og:title" content="磁盘">
 <meta property="og:url" content="https://mengxu2018.github.io/2019/07/26/磁盘/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是 SATA">
+<meta property="og:description" content="物理概念物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T12:44:55.699Z">
+<meta property="og:updated_time" content="2019-07-31T14:32:50.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="磁盘">
-<meta name="twitter:description" content="物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是 SATA">
+<meta name="twitter:description" content="物理概念物理接口M.2 , U.2 , AIC, NGFF 这些属于物理接口。高速信号协议SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。传输层协议SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。现在市面上 SSD接入PC 的主要接口 是">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -87,13 +87,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>物理接口<br>M.2 , U.2 , AIC, NGFF 这些属于物理接口。<br>高速信号协议<br>SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。<br>传输层协议<br>SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。<br>NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。<br>现在市面上 SSD接入PC 的主要接口 是 SATA。其采用命令协议AHCI（它还支持IDE）是为寻道旋转磁盘设计的, 而不是闪存。 SATA三代 传输速率 每秒在150 MB ~ 600 MB 之间。对于SSD的大多数消费者来说，这绝对是足够的。<br>PCIe（PCI Express）取代SATA 作为最新的高带宽接口。<br>NVMe是最新的高性能和优化协议，取代了AHCI，并支持PCIe技术。<br>RAID 0：如果你有n块磁盘，原来只能同时写一块磁盘，写满了再下一块，做了RAID 0之后，n块可以同时写（并发write），速度提升很快，但由于没有备份，可靠性很差。n最少为2。<br>RAID 1：正因为RAID 0太不可靠，所以衍生出了RAID 1。如果你有n块磁盘，把其中n/2块磁盘作为镜像磁盘，在往其中一块磁盘写入数据时，也同时往另一块写数据。坏了其中一块时，镜像磁盘自动顶上，可靠性最佳，但空间利用率太低。n最少为2。<br>RAID0性能最高，RAID1可靠性最高<br>可以用ssd来做磁盘阵列，如果要性能就RAID0，可靠性就RAID1</p>
-<p>参考<br><a href="https://www.zhihu.com/question/48972075" target="_blank" rel="noopener">https://www.zhihu.com/question/48972075</a><br>kafka存储 <a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a></p>
+        <h2 id="物理概念"><a href="#物理概念" class="headerlink" title="物理概念"></a>物理概念</h2><p>物理接口<br>M.2 , U.2 , AIC, NGFF 这些属于物理接口。<br>高速信号协议<br>SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。<br>传输层协议<br>SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。<br>NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。<br>现在市面上 SSD接入PC 的主要接口 是 SATA。其采用命令协议AHCI（它还支持IDE）是为寻道旋转磁盘设计的, 而不是闪存。 SATA三代 传输速率 每秒在150 MB ~ 600 MB 之间。对于SSD的大多数消费者来说，这绝对是足够的。<br>PCIe（PCI Express）取代SATA 作为最新的高带宽接口。<br>NVMe是最新的高性能和优化协议，取代了AHCI，并支持PCIe技术。<br>RAID 0：如果你有n块磁盘，原来只能同时写一块磁盘，写满了再下一块，做了RAID 0之后，n块可以同时写（并发write），速度提升很快，但由于没有备份，可靠性很差。n最少为2。<br>RAID 1：正因为RAID 0太不可靠，所以衍生出了RAID 1。如果你有n块磁盘，把其中n/2块磁盘作为镜像磁盘，在往其中一块磁盘写入数据时，也同时往另一块写数据。坏了其中一块时，镜像磁盘自动顶上，可靠性最佳，但空间利用率太低。n最少为2。<br>RAID0性能最高，RAID1可靠性最高<br>可以用ssd来做磁盘阵列，如果要性能就RAID0，可靠性就RAID1</p>
+<h2 id="文件系统相关"><a href="#文件系统相关" class="headerlink" title="文件系统相关"></a>文件系统相关</h2><p>Once a file system is established the block size remains the same. Some partitioning tools can change this after the fact, but not while the OS is running.</p>
+<p>A sector has traditional been a fixed 512 byte size, but a few drives have 4096 bytes sectors.</p>
+<p>A sector is the smallest individual reference-able regions on a disk.</p>
+<p>The block size refers to the allocation size the file system uses. The common options are 512, 1024, 2048, 4096, 8192, 16384, or 32678. Generally anything larger would be so inefficient nobody would use it, and you can’t go smaller than 1 disk sector.</p>
+<p>Sure you can write 10 bytes to a file, but behind the scenes it is allocated 1 block whether you use it all or not.</p>
+<p>操作系统记录了文件的block number，读取的时候是根据block number定位到具体的sector，block是操作系统分配的，操作系统（文件系统)记录block和sector的对应关系</p>
+<p>所以操作系统一次读取是以block为单位的，比如sector size是4 kb, block size可能是4kb也可能是8kb或者更多，哪怕你只需要一个字节的数据，但是读取的时候仍然读取了8kb在操作系统缓存</p>
+<p>格式化是操作系统的功能，操作系统可以对整个硬盘格式化分区为ntfs格式，但是分区后也可以用windows自带的压缩卷功能分出一块新的区域用来安装linux，linux再对这块新的空闲区域进行格式化分区为ext3格式</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://medium.com/r/?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDisk_sector" target="_blank" rel="noopener">https://medium.com/r/?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDisk_sector</a><br><a href="https://medium.com/r/?url=http%3A%2F%2Fwww.mathcs.emory.edu%2F~cheung%2FCourses%2F377%2FSyllabus%2F1-files%2Fintro-disk.html" target="_blank" rel="noopener">https://medium.com/r/?url=http%3A%2F%2Fwww.mathcs.emory.edu%2F~cheung%2FCourses%2F377%2FSyllabus%2F1-files%2Fintro-disk.html</a><br><a href="https://docstore.mik.ua/orelly/other/LRH/chp-2-sect-4.html" target="_blank" rel="noopener">https://docstore.mik.ua/orelly/other/LRH/chp-2-sect-4.html</a><br><a href="https://www.zhihu.com/question/48972075" target="_blank" rel="noopener">https://www.zhihu.com/question/48972075</a><br>kafka存储 <a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/磁盘/" data-id="cjyk7oqmc004d6kji47b9udqx" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/26/磁盘/" data-id="cjyrdp4gb004rvwji9rhluqsl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardware/">hardware</a></li></ul>
@@ -135,7 +143,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -145,7 +153,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -167,23 +175,23 @@
       <ul>
         
           <li>
+            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/31/filesystem/">filesystem</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
             <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>

@@ -62,6 +62,138 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/ant-design-sample/" class="article-date">
+  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/ant-design-sample/">ant design sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用create-react-app创建的项目， react-router作为路由创建了sidebar, 用ant-design创建的表格，<br>后续会用springboot作为后台，增加crud的功能<br><a href="https://github.com/mengxu2018/ant-design-sample.git" target="_blank" rel="noopener">https://github.com/mengxu2018/ant-design-sample.git</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/ant-design-sample/" data-id="cjyrdp4d60000vwjii0axrnys" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/puppeteer-centos7-setup/" class="article-date">
+  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
+<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/puppeteer-centos7-setup/" data-id="cjyrdp4f3002mvwji329av21k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nodejs-module.export" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/26/nodejs-module.export/" class="article-date">
+  <time datetime="2019-01-26T14:51:52.000Z" itemprop="datePublished">2019-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="module-export"><a href="#module-export" class="headerlink" title="module.export"></a>module.export</h2><p>The exports variable is available within a module’s file-level scope, and is assigned the value of module.exports before the module is evaluated.</p>
+<p>It allows a shortcut, so that module.exports.f = … can be written more succinctly as exports.f = …. However, be aware that like any variable, if a new value is assigned to exports, it is no longer bound to module.exports:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports.hello = true; // Exported from require of module</span><br><span class="line">exports = &#123; hello: false &#125;;  // Not exported, only available in the module</span><br></pre></td></tr></table></figure>
+<p>When the  <code>module.exports</code> property is being completely replaced by a new object, it is common to also reassign <code>exports</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module.exports = exports = <span class="keyword">function</span> <span class="function"><span class="title">Constructor</span></span>() &#123;</span><br><span class="line">  // ... etc.</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>简单说就是exports如果被新的object覆盖掉了，那就必须是modules.exports = {}， 否则可以直接简写 exports.xxx={}</p>
+<h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><p><em>foo.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const circle = require(<span class="string">'./circle.js'</span>);</span><br><span class="line">console.log(`The area of a circle of radius 4 is <span class="variable">$&#123;circle.area(4)&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>circle.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const &#123; PI &#125; = Math;</span><br><span class="line">module.exports.area = (r) =&gt; PI * r ** 2;   // the module can be ignored here</span><br><span class="line">module.exports.circumference = (r) =&gt; 2 * PI * r;</span><br></pre></td></tr></table></figure></p>
+<p><strong>上面这个例子里， 因为<code>exports</code>没有被赋新的object， 所以<code>modules</code>关键字可以省略</strong></p>
+<p><em>bar.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const Square = require(<span class="string">'./square.js'</span>);</span><br><span class="line">const mySquare = new Square(2);</span><br><span class="line">console.log(`The area of mySquare is <span class="variable">$&#123;mySquare.area()&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>square.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// assigning to exports will not modify module, must use module.exports</span><br><span class="line">// the module can not be ignored here</span><br><span class="line">module.exports = class Square &#123;</span><br><span class="line">    constructor(width) &#123;</span><br><span class="line">      this.width = width;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="title">area</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> this.width ** 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
+<p> <strong>上面这个例子里， 因为<code>exports</code>被赋新的object， 所以<code>modules</code>关键字不可以省略</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="cjyrdp4ev0028vwji6jdzn47b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
@@ -91,7 +223,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjyk7oqlv003l6kji8p0hmj5q" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="cjyrdp4f4002pvwjilqr2u6fn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -139,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjyk7oqli002x6kjiduvtudhq" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="cjyrdp4er0021vwjis8ipyarw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
@@ -178,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjyk7oqjn00086kjic09ecexh" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="cjyrdp4dn000bvwjii88c8e3n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
@@ -218,7 +350,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjyk7oqjr000e6kjiqkrdhb11" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="cjyrdp4du000jvwjia78rcker" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
@@ -264,7 +396,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjyk7oqkg001l6kji407q4w4y" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="cjyrdp4ei001nvwji46qlyfv4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
@@ -305,7 +437,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjyk7oqka00186kji0rrkla0e" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/01/06/k8s-deploy-application/" data-id="cjyrdp4ec001avwjilypl1m8z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
@@ -430,7 +562,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2018/12/24/kubernetes-cluster-setup/" data-id="cjyk7oqkn001z6kjij8yhjuxs" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2018/12/24/kubernetes-cluster-setup/" data-id="cjyrdp4es0023vwjilelvz1i3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
@@ -460,7 +592,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -470,7 +602,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -492,23 +624,23 @@
       <ul>
         
           <li>
+            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/31/filesystem/">filesystem</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
             <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>

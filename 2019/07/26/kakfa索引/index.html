@@ -7,18 +7,20 @@
   
   <title>kakfa索引 | No pains,no gains</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.稠密索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。 2.稀疏索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。特性：每个存储块的每一个键">
+  <meta name="description" content="Index file stores the offsets and physical position of the message in the log file. If you need to read the message at offset 1, you first search for it in the index file and figure out that the messa">
 <meta name="keywords" content="kafka">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kakfa索引">
 <meta property="og:url" content="https://mengxu2018.github.io/2019/07/26/kakfa索引/index.html">
 <meta property="og:site_name" content="No pains,no gains">
-<meta property="og:description" content="1.稠密索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。 2.稀疏索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。特性：每个存储块的每一个键">
+<meta property="og:description" content="Index file stores the offsets and physical position of the message in the log file. If you need to read the message at offset 1, you first search for it in the index file and figure out that the messa">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-28T02:45:01.568Z">
+<meta property="og:image" content="https://mengxu2018.github.io/images/kakfa-index.jpeg">
+<meta property="og:updated_time" content="2019-07-31T14:24:38.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kakfa索引">
-<meta name="twitter:description" content="1.稠密索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。 2.稀疏索引定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。特性：每个存储块的每一个键">
+<meta name="twitter:description" content="Index file stores the offsets and physical position of the message in the log file. If you need to read the message at offset 1, you first search for it in the index file and figure out that the messa">
+<meta name="twitter:image" content="https://mengxu2018.github.io/images/kakfa-index.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
   
@@ -87,16 +89,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.稠密索引<br>定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序一致。<br>特性：每个存储块的每一个键对应的指针都指向每个数据块每一条记录，当要查找指定键 K 时，采用二分查找即可找到键K对应的记录，复杂度为 log2n。</p>
-<p>2.稀疏索引<br>定义：它是由键值和指针(指向记录本身地址)组成的一系列存储块，该存储块的键值与文件的逻辑顺序单调性一致。<br>特性：每个存储块的每一个键对应的指针都指向每个数据块的第一条记录，当要查找指定建 K 时，先采用二分查找找到 &lt;=K 的键 S，如果 S=K，则命中记录，如果 S&lt;k，则顺序查找 =K 的键，复杂度大于 log2n，小于 n。</p>
-<p>比较：<br>稀疏索引占用的索引存储空间比较小，但是查找时间较长；<br>稠密索引查找时间较短，索引存储空间较大。</p>
-<p>kafka用的是稀疏索引<br>通过index中offset与物理偏移映射,用二分查找能快速定位msg,并且通过分多个Segment,每个index文件很小,查找速度更快。</p>
-<p><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory" target="_blank" rel="noopener">https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory</a><br><a href="https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html" target="_blank" rel="noopener">https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html</a><br><a href="https://blog.csdn.net/idber/article/details/8096941" target="_blank" rel="noopener">https://blog.csdn.net/idber/article/details/8096941</a></p>
+        <p>Index file stores the offsets and physical position of the message in the log file.</p>
+<p>If you need to read the message at offset 1, you first search for it in the index file and figure out that the message is in position 79. Then you directly go to position 79 in the log file and start reading. This makes it quite effective as you can use binary search to quickly get to the correct offset in the already sorted index file.</p>
+<p>kakfa内部用的是稀疏索引，一般来说每个block 512Kb，这样通过offset定位到512KB的数据，然后在这批数据中进行下一步查询，如果是 稠密索引就更简单了，直接定位到目标的record（因为segment中的消息是顺序写入的，稀疏索引定位到某个offset对应的512kB的block后是可以找到其中真正所需的消息的)</p>
+<p><img src="/images/kakfa-index.jpeg" alt="index"></p>
+<p>稀疏索引中，左边的offset对应右边的消息，一个索引记录对应3个消息，真是的case可能是512Kb，比如offset为5的消息怎么定位呢？先找到索引记录3，然后找到右边具体的block，就是3到5，这个block肯定包含offset为5的记录，然后在这个有限数据中通过二分查找找到offset为5的记录效率会很快</p>
+<p><a href="https://medium.com/r/?url=https%3A%2F%2Fwww2.cs.sfu.ca%2FCourseCentral%2F354%2Fzaiane%2Fmaterial%2Fnotes%2FChapter11%2Fnode5.html" target="_blank" rel="noopener">https://medium.com/r/?url=https%3A%2F%2Fwww2.cs.sfu.ca%2FCourseCentral%2F354%2Fzaiane%2Fmaterial%2Fnotes%2FChapter11%2Fnode5.html</a><br><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory" target="_blank" rel="noopener">https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory</a><br><a href="https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html" target="_blank" rel="noopener">https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html</a><br><a href="https://blog.csdn.net/idber/article/details/8096941" target="_blank" rel="noopener">https://blog.csdn.net/idber/article/details/8096941</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa索引/" data-id="cjyk7oqkj001r6kjijvpkqanx" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa索引/" data-id="cjyrdp4eh001mvwjiayppnn72" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
@@ -106,6 +109,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/07/28/zookeeper-cluster/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          zookeeper cluster
+        
+      </div>
+    </a>
   
   
     <a href="/2019/07/26/kakfa-in-aws/" id="article-nav-older" class="article-nav-link-wrap">
@@ -129,7 +141,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -139,7 +151,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -161,23 +173,23 @@
       <ul>
         
           <li>
+            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/31/filesystem/">filesystem</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
           </li>
         
           <li>
             <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/26/zero-copy/">zero-copy</a>
           </li>
         
       </ul>
