@@ -62,6 +62,259 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kakfa-in-aws" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/kakfa-in-aws/" class="article-date">
+  <time datetime="2019-07-26T14:19:51.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://aws.amazon.com/cn/blogs/big-data/best-practices-for-running-apache-kafka-on-aws/" target="_blank" rel="noopener">https://aws.amazon.com/cn/blogs/big-data/best-practices-for-running-apache-kafka-on-aws/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa-in-aws/" data-id="cjz5m0muc0027scjibex5gev0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kakfa-in-production" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/kakfa-in-production/" class="article-date">
+  <time datetime="2019-07-26T14:16:37.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.confluent.io/current/kafka/deployment.html" target="_blank" rel="noopener">https://docs.confluent.io/current/kafka/deployment.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa-in-production/" data-id="cjz5m0mu90021scji3f8phj02" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kakfa自我随记" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/kakfa自我随记/" class="article-date">
+  <time datetime="2019-07-26T13:24:32.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>kafka利用page cache提升性能，但是page cache有风险，如果机器crash了，数据会丢失，但是kakfa利用replica保证了可用性</p>
+</li>
+<li><p>For a topic with replication factor N, we will tolerate up to N-1 server failures without losing any records committed to the log.<br>一个topic ，默认分区的replication个数，不能大于集群中broker的个数。<br>分区数量可以超过机器数量，但是replication数量超过机器数量没意义了，因为这个本来就是用来容错的</p>
+</li>
+<li><p>consumer-offset这个内置topic的 分区数量和replication数量是server.proxx配置的<br>其他的topic可以命令行创建的时候设定分区数量和replication数量</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa自我随记/" data-id="cjz5m0muf002bscjihk6iulk6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-zero-copy" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/zero-copy/" class="article-date">
+  <time datetime="2019-07-26T13:24:19.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/zero-copy/">zero-copy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to another. This is frequently used to save CPU cycles and memory bandwidth when transmitting a file over a network.[1]</p>
+<p><a href="https://en.wikipedia.org/wiki/Zero-copy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Zero-copy</a></p>
+<p><a href="https://blog.csdn.net/u013256816/article/details/52589524" target="_blank" rel="noopener">https://blog.csdn.net/u013256816/article/details/52589524</a></p>
+<p>Kafka在 消息消费的时候使用该技术<br>Consumer从Broker获取文件数据的时候，直接通过下面的方法进行channel到channel的数据传输。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.nio.FileChannel.transferTo(</span><br><span class="line">long position,</span><br><span class="line">long count,</span><br><span class="line">WritableByteChannel target)`</span><br></pre></td></tr></table></figure></p>
+<p>也就是说你的数据源是一个Channel,数据接收端也是一个Channel(SocketChannel),则通过该方式进行数据传输，是直接在内核态进行的，避免拷贝数据导致的内核态和用户态的多次切换。</p>
+<p><a href="https://cloud.tencent.com/developer/article/1195251" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1195251</a></p>
+<p>Java input streams can support zero-copy through the java.nio.channels.FileChannel’s transferTo() method if the underlying operating system also supports zero copy.[5]</p>
+<p><a href="https://www.jianshu.com/p/7e5e558bf93e" target="_blank" rel="noopener">https://www.jianshu.com/p/7e5e558bf93e</a><br><a href="http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/" target="_blank" rel="noopener">http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/zero-copy/" data-id="cjz5m0mvc0045scji8erbeh23" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用户空间-内核空间" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/用户空间-内核空间/" class="article-date">
+  <time datetime="2019-07-26T13:22:20.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/用户空间-内核空间/">用户空间-内核空间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RAM is divided into two distinct regions- the user space and the kernal space.</p>
+<p>User Space- It is set of locations where normal user processes run. These processes can’t access kernal space directly. Some part of kernal space can be accessed via system calls.These system calls acts as software interrupts in kernal space.</p>
+<p>Kernal Space - kernal runs in the dedicated part of memory. Role of kernal space is to manage applications/ processes running in user space. It can access all the memory. If a process perform a system call, a software interrupt is sent to kernal which then dispatches an appropriate interrupt handler.</p>
+<p><a href="https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space" target="_blank" rel="noopener">https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/用户空间-内核空间/" data-id="cjz5m0mve004ascjilhyyr09h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用户模式-内核模式" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/用户模式-内核模式/" class="article-date">
+  <time datetime="2019-07-26T13:20:48.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/用户模式-内核模式/">用户模式-内核模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kernel Mode<br>In Kernel mode, the executing code has complete and unrestricted access to the underlying hardware. It can execute any CPU instruction and reference any memory address. Kernel mode is generally reserved for the lowest-level, most trusted functions of the operating system. Crashes in kernel mode are catastrophic; they will halt the entire PC.</p>
+<p>User Mode<br>In User mode, the executing code has no ability to directly access hardware or reference memory. Code running in user mode must delegate to system APIs to access hardware or memory. Due to the protection afforded by this sort of isolation, crashes in user mode are always recoverable. Most of the code running on your computer will execute in user mode.</p>
+<p><a href="https://blog.codinghorror.com/understanding-user-and-kernel-mode/" target="_blank" rel="noopener">https://blog.codinghorror.com/understanding-user-and-kernel-mode/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/用户模式-内核模式/" data-id="cjz5m0mvf004cscjinbje875o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-内存管理" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/07/26/内存管理/" class="article-date">
@@ -91,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/内存管理/" data-id="cjyrdp4gh004zvwjiilel8n2b" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/26/内存管理/" data-id="cjz5m0mvd0047scjivr4ul97q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
@@ -130,7 +383,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/io读写/" data-id="cjyrdp4ee001fvwjiv4ntjgbo" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/26/io读写/" data-id="cjz5m0mtw001ascjisqjbkq4b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardware/">hardware</a></li></ul>
@@ -178,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/磁盘/" data-id="cjyrdp4gb004rvwji9rhluqsl" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/26/磁盘/" data-id="cjz5m0mvh004fscjinql6rfig" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardware/">hardware</a></li></ul>
@@ -250,294 +503,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka存储/" data-id="cjyrdp4eo001vvwjieh8m3w23" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka存储/" data-id="cjz5m0mub0024scji8ql3wno2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka高可用" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/20/kafka高可用/" class="article-date">
-  <time datetime="2019-07-20T12:29:34.000Z" itemprop="datePublished">2019-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/20/kafka高可用/">kafka高可用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="如果保证消息不丢失且不重复消费"><a href="#如果保证消息不丢失且不重复消费" class="headerlink" title="如果保证消息不丢失且不重复消费"></a>如果保证消息不丢失且不重复消费</h2><p><a href="https://www.zhihu.com/question/34842764" target="_blank" rel="noopener">https://www.zhihu.com/question/34842764</a><br><a href="https://blog.csdn.net/matrix_google/article/details/79888144" target="_blank" rel="noopener">https://blog.csdn.net/matrix_google/article/details/79888144</a><br><a href="https://blog.csdn.net/qingqing7/article/details/80054281" target="_blank" rel="noopener">https://blog.csdn.net/qingqing7/article/details/80054281</a><br>关于消息不丢失其实再kafka权威指南这本书已经讲过，但是不重复消费只是讲解了怎么减少重复消息的数量，</p>
-<p>首先说明，Kafka 的设计就是 at-least-once 的， 具体可以看<br><a href="https://www.infoq.cn/article/kafka-analysis-part-8" target="_blank" rel="noopener">https://www.infoq.cn/article/kafka-analysis-part-8</a><br><a href="http://www.jasongj.com/2015/03/10/KafkaColumn1/#Kafka-delivery-guarantee" target="_blank" rel="noopener">http://www.jasongj.com/2015/03/10/KafkaColumn1/#Kafka-delivery-guarantee</a></p>
-<p>这里会涉及到幂等性，这个是数学的概念，用在编程领域，则意为对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的，还是要多学习数学，<br><a href="https://www.jianshu.com/p/475589f5cd7b" target="_blank" rel="noopener">https://www.jianshu.com/p/475589f5cd7b</a></p>
-<p>baeldung也有文章介绍这个问题，<br>In this tutorial, we’ll look at how Kafka ensures exactly-once delivery between producer and consumer applications through the newly introduced Transactional API.<br><a href="https://www.baeldung.com/kafka-exactly-once" target="_blank" rel="noopener">https://www.baeldung.com/kafka-exactly-once</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka高可用/" data-id="cjyrdp4eq001zvwjiwcbi73rq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka-different-with-JMS-Broker" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/20/kafka-different-with-JMS-Broker/" class="article-date">
-  <time datetime="2019-07-20T12:24:02.000Z" itemprop="datePublished">2019-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/20/kafka-different-with-JMS-Broker/">kafka不同于一般的message queue</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Multiple-Consumers"><a href="#Multiple-Consumers" class="headerlink" title="Multiple Consumers"></a>Multiple Consumers</h2><p>In addition to multiple producers, Kafka is designed for multiple consumers to read any single stream of messages without interfering with each other. This is in contrast to many queuing systems where once a message is consumed by one client, it is not available to any other. Multiple Kafka consumers can choose to operate as part of a group and share a stream, assuring that the entire group processes a given message only once.</p>
-<p><a href="https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition" target="_blank" rel="noopener">https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition</a><br>kafka可以允许多个consumer group同时消费同一个消息</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-different-with-JMS-Broker/" data-id="cjyrdp4ej001qvwjin5tr8rsb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/20/kafka-definitive-guide/" class="article-date">
-  <time datetime="2019-07-20T08:58:31.000Z" itemprop="datePublished">2019-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/20/kafka-definitive-guide/">kafka definitive guide</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="kafka配置-log-dirs："><a href="#kafka配置-log-dirs：" class="headerlink" title="kafka配置 log.dirs："></a>kafka配置 log.dirs：</h2><p>kafka存放数据的路径。这个路径并不是唯一的，可以是多个，路径之间只需要使用逗号分隔即可；每当创建新partition时，都会选择在包含最少partitions的路径下进行。<br>Note that the broker will place a new partition in the path that has the least number of partitions currently stored in it, not the least amount of disk space<br>选择最少分区的目录，而不是最少磁盘空间的目录</p>
-<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p>The normal mode of operation for a Kafka consumer is reading from the end of the partitions, where the consumer is caught up and lagging behind the producers very little, if at all. In this situation, the messages the consumer is reading are optimally stored in the system’s page cache, resulting in faster reads than if the broker has to reread the messages from disk. Therefore, having more memory available to the system  for page cache will improve the performance of consumer clients.  Kafka itself does not need much heap memory configured for the Java Virtual Machine (JVM). Even a broker that is handling X messages per second and a data rate of X megabits per second can run with a 5 GB heap. The rest of the system memory will be used by the page cache and will benefit Kafka by allowing the system to cache log segments in use. This is the main reason it is not recommended to have Kafka collocated on a system with any other significant application, as they will have to share the use of the page cache. This will decrease the consumer performance for Kafka.</p>
-<p><a href="https://en.wikipedia.org/wiki/Page_cache" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Page_cache</a></p>
-<h2 id="page-33"><a href="#page-33" class="headerlink" title="page 33"></a>page 33</h2><p>Linux swap space, vm.swappiness 用法, Virtual_memory<br>虚拟内存是计算机系统内存管理的一种技术。<br>Virtual memory is a combination of RAM and disk space that running processes can use.<br>它使得应用程序认为它拥有连续的可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如RAM）的使用也更有效率。</p>
-<p>It is an important kernel parameter for Kafka because the more memory allocated to the swap space, the less memory can be allocated to the page cache. Cloudera recommends to set vm.swappiness value to 1.</p>
-<p>所以kafka可以禁止使用swap到磁盘</p>
-<h2 id="page-60"><a href="#page-60" class="headerlink" title="page 60"></a>page 60</h2><p>If a key exists and the default partitioner is used, Kafka will hash the key (using its own hash algorithm, so hash values will not change when Java is upgraded), and use the result to map the message to a specific partition. Since it is important that a key is always mapped to the same partition, we use all the partitions in the topic to calculate the mapping — not just the available partitions. This means that if a specific partition is unavailable when you write data to it, you might get an error. This is fairly rare, as you will see in Chapter 6 when we discuss Kafka’s replication and availability. The mapping of keys to partitions is consistent only as long as the number of partitions in a topic does not change. So as long as the number of partitions is constant,you can be sure that, for example, records regarding user 045189 will always get written to partition 34. This allows all kinds of optimization when reading data from partitions.However, the moment you add new partitions to the topic, this is no longer guaranteed — the old records will stay in partition 34 while new records will get written to a different partition. When partitioning keys is important, the easiest solution is to create topics with sufficient partitions (Chapter 2 includes suggestions for howto determine a good number of partitions) and never add partitions.</p>
-<p>如果机器数量是10个，topicA的分区数量是5，某个key来计算hash的时候应该是根据分区来算的，和机器没关系</p>
-<p>上面可以看到计算key分布在哪个分区的时候用的是所有的node，而不是available的node，因为计算hash的时候如果你的node节点挂了就不计算在内的话就会出现新的key到不一样的分区去了，但是前提是topic的分区数量没有改变,某个topic的分区是编号的，每个分区都有复制，所以即便某个机器挂了，依然可以用复制的分区来读写，复制的分区的编号和之前的leader应该是一样的</p>
-<p>org.apache.kafka.clients.producer.internals.DefaultPartitioner#partition</p>
-<p>Partitions in a Kafka topic are numbered from 0…N.</p>
-<p>Kafka Default Partiotioner is using modulo for the same purpose</p>
-<p>下面还有解释<br>Keys are used when messages are to be written to partitions in a more controlled manner. The simplest such scheme is to generate a consistent hash of the key, and then select the partition number for that message by taking the result of the hash modulo, the total number of partitions in the topic. This assures that messages with the same key are always written to the same partition. Keys are discussed in more detail in Chapter 3.</p>
-<p>kafka并没有需要用一致性hash，默认是mod，分区数量需要保持不变，这样才可以保证每个key永远都落到同一个分区上面</p>
-<h2 id="page-76"><a href="#page-76" class="headerlink" title="page 76"></a>page 76</h2><p><img src="/images/kakfa-re-process-message.PNG" alt="kakfa-re-process-message"></p>
-<p>If the committed offset is smaller than the offset of the last message the client processed, the messages between the last processed offset and the committed offset will be processed twice.</p>
-<p>上次的offset是2，但是上一次pull过来的数据是7-11，说明3-6已经处理过了，正在处理10，11还没有处理，所以如果从2加上1开始处理的话，3-10就会重复处理</p>
-<p><img src="/images/kakfa-lost-message.PNG" alt="kakfa-lost-message"></p>
-<p>If the committed offset is larger than the offset of the last message the client actually processed, all messages between the last processed offset and the committed offset will be missed by the consumer group</p>
-<p>上次的offset是11，但是上次pull过来的4-11只是处理到了5，也就是说6-11就没有机会处理 了</p>
-<hr>
-<p>至于为什么offset和之前处理过的消息的posistion不一致，看看有没有其他办法解决</p>
-<p>前者是commit的速度赶不上pull的速度，后者是pull的速度赶不上commit的速度</p>
-<p>因为提交commit是5秒一次，所以就会存在pull过来的offset大于或者小于上次commit的offset，哪怕减少到1s也不可能完全杜绝</p>
-<p>如果设置自动提交offset为false的话可以杜绝消息丢失，但是不能杜绝重复消费，但是可以减少重复消费的数量，比如第一个图，如果是pull消息消费完成在手动提交的话，消息6肯定就是last commited offset，如果消息处理到10的时候挂了，那重复消费就是7-10而不是2-10</p>
-<h2 id="page-97"><a href="#page-97" class="headerlink" title="page 97"></a>page 97</h2><p>Another task the leader is responsible for is knowing which of the follower replicas is up-to-date with the leader. Followers attempt to stay up-to-date by replicating all the messages from the leader as the messages arrive, but they can fail to stay in sync for various reasons, such as when network congestion slows down replication or when a broker crashes and all replicas on that broker start falling behind until we start the broker and they can start replicating again.</p>
-<p>但是重启之后分区的leader就会发生变化了，因为宕机后会重新选举分区的leader，机器重新启动后replicate还是会继续之前的进行，如果这台机器不能启动了，那重新弄台新的机器with the same broker id，这样新的机器也可以把所有消息复制过来，新的机器不会成为controller，新的机器里面也只是众多分区的follower，不会成为leader</p>
-<p>在新建topic的时，kafka集群按照上述方法去创建分配，leader是均匀分布的，但是时间久了，当某台机器宕机后，follower会变成leader，之前的leader在机器restart之后，赶上了进度，加入了ISR列表，此时变成了follower，不在提供读写能力。这个时候就会存在leader分配不均的问题<br>只有partition均匀分布才可以负载均衡<br><a href="https://www.jianshu.com/p/c987b5e055b0" target="_blank" rel="noopener">https://www.jianshu.com/p/c987b5e055b0</a></p>
-<h2 id="page-71"><a href="#page-71" class="headerlink" title="page 71"></a>page 71</h2><p>You can’t have multiple consumers that belong to the same group in one thread and you can’t have multiple threads safely use the same consumer. <code>One consumer per thread</code> is the rule. To run multiple consumers in the same group in one application, you will need to run each in its own thread. It is useful to wrap the consumer logic in its own object and then use Java’s ExecutorService to start multiple threads each with its own consumer. The Confluent blog has a tutorial that shows how to do just that.</p>
-<h2 id="page-107"><a href="#page-107" class="headerlink" title="page 107"></a>page 107</h2><p>By default, each segment contains either 1 GB of data or a week of data, whichever is smaller.<br>新的segment的条件是先到1 GB或者7天到了，注意是OR，类似于保养3年或者10万公里</p>
-<p>As a Kafka broker is writing to a partition, if the segment limit is reached, we close the file and start a new one.</p>
-<p>The segment we are currently writing to is called an active segment. The active segment is never deleted, so if you set log retention to only store a day of data but each segment contains five days of data, you will really keep data for five days because we can’t delete the data before the segment is closed. If you choose to store data for a week and roll a new segment every day, you will see that every day we will roll a new segment while deleting the oldest segment - so most of the time the partition will have seven segments.<br>意思就是虽然设置log retention为一天，但是因为数据到了5天才达到1 GB，也就是到5天才生成新的segment，这样你也要保留数据5天，因为active的segment不能删除</p>
-<p>但是kafka有个问题，如果分区过多，那么日志分段也会很多，写的时候由于是批量写，其实就会变成随机写了，随机I/O这个时候对性能影响很大。所以一般来说Kafka不能有太多的partition。针对这一点，RocketMQ把所有的日志都写在一个文件里面，就能变成顺序写，通过一定优化，读也能接近于顺序读。<br>上面这段话是阿里的博客，好像是错误的， 单个partition是可以实现消息的顺序写入的。哪怕再多的分区，对于单个分区也是一样顺序写，比如一个producer，100万个message，5台机器，100个分区，一个机器20个分区，那么平均一个分区接受1万个消息，怎么会变成随机写呢？一个分区内部也只有一个segment是active啊，没有多个segment的说法</p>
-<p>我们建议的做法是，如果是3个broker的集群，有5个消费者，那么建议partition的数量是15，也就是broker和consumer数量的最小公倍数。当然，也可以是一个大于消费者的broker数量的倍数，比如6或者9，还请读者自行根据实际环境裁定。<br><a href="https://bbs.huaweicloud.com/blogs/bf79ccc8d0fd11e7b8317ca23e93a891" target="_blank" rel="noopener">https://bbs.huaweicloud.com/blogs/bf79ccc8d0fd11e7b8317ca23e93a891</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-definitive-guide/" data-id="cjyrdp4g9004ovwjieprilc1s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka-schema" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/20/kafka-schema/" class="article-date">
-  <time datetime="2019-07-20T08:11:33.000Z" itemprop="datePublished">2019-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/20/kafka-schema/">kafka schema</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>kafka消息的数据格式</p>
-<p><a href="https://www.confluent.io/blog/avro-kafka-data/" target="_blank" rel="noopener">https://www.confluent.io/blog/avro-kafka-data/</a><br><a href="https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321" target="_blank" rel="noopener">https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321</a><br><a href="https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c" target="_blank" rel="noopener">https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-schema/" data-id="cjyrdp4ef001hvwjiu7svumqo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-pyspark-introduction" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/14/pyspark-introduction/" class="article-date">
-  <time datetime="2019-07-14T05:40:42.000Z" itemprop="datePublished">2019-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/14/pyspark-introduction/">pyspark introduction</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>spark内置提供了机器学习的很多api，有scala，java，python版本的，但是如果需要用到深度学习，需要安装第三方的package，<br>而且需要python来写，也就是pyspark<br>这里主要使用的是Deep Learning Pipelines，由spark官方提供<br><a href="https://github.com/databricks/spark-deep-learning#working-with-images-in-spark" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning#working-with-images-in-spark</a><br><a href="https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html" target="_blank" rel="noopener">https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html</a></p>
-<h2 id="安装深度学习的第三方package"><a href="#安装深度学习的第三方package" class="headerlink" title="安装深度学习的第三方package"></a>安装深度学习的第三方package</h2><p>$SPARK_HOME/bin/spark-shell –packages databricks:spark-deep-learning:1.5.0-spark2.4-s_2.11</p>
-<h2 id="install-python3-6-pip"><a href="#install-python3-6-pip" class="headerlink" title="install python3.6, pip"></a>install python3.6, pip</h2><p>yum install -y <a href="https://centos7.iuscommunity.org/ius-release.rpm" target="_blank" rel="noopener">https://centos7.iuscommunity.org/ius-release.rpm</a><br>yum install -y python36u python36u-libs python36u-devel python36u-pip</p>
-<p>测试<br>python3.6 -V</p>
-<p>升级下pip<br>pip install –upgrade pip</p>
-<h2 id="python环境变量"><a href="#python环境变量" class="headerlink" title="python环境变量"></a>python环境变量</h2><p>conf/spark-env.sh下面添加<code>export PYSPARK_PYTHON=/usr/bin/python3.6</code></p>
-<h2 id="第一个程序"><a href="#第一个程序" class="headerlink" title="第一个程序"></a>第一个程序</h2><p>先安装这个第三方package<br>pip install numpy</p>
-<p>进入shell<br>./bin/pyspark</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from pyspark.ml.image import ImageSchema</span><br><span class="line">image_df = ImageSchema.readImages(&quot;/data/myimages&quot;)</span><br></pre></td></tr></table></figure>
-<p>from sparkdl.image import imageIO as imageIO<br>这个module也需要pip来安装</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为什么要修改spakr默认的python环境变量，我发现默认的是python2.6，这样即便是安装了第三方的package还是会not found</p>
-<p><a href="https://github.com/databricks/spark-deep-learning/tree/master/python" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/python</a> 里面是python的api<br><a href="https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala</a> 里面是具体的实现</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/14/pyspark-introduction/" data-id="cjyrdp4f0002hvwjit0io8sfv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-source-code-debug" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/06/spark-source-code-debug/" class="article-date">
-  <time datetime="2019-07-06T10:04:38.000Z" itemprop="datePublished">2019-07-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/06/spark-source-code-debug/">spark source code debug</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>直接github下载spark的源码<br>\spark-2.4.2\core\src\test\scala\org\apache\spark\SortShuffleSuite.scala<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">test(&quot;mytest&quot;) &#123;</span><br><span class="line"> sc = new SparkContext(&quot;local&quot;, &quot;test&quot;, conf)</span><br><span class="line"> val dfsFilename = &quot;c:/temp/abc.txt&quot;</span><br><span class="line"> val readFileRDD = sc.textFile(dfsFilename)</span><br><span class="line"> val wcounts1 = readFileRDD.flatMap(line =&gt; line.split(&quot; &quot;))</span><br><span class="line"> wcounts1.collect().foreach(println)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">test(&quot;mytest2&quot;) &#123;</span><br><span class="line"> sc = new SparkContext(&quot;local&quot;, &quot;test&quot;, conf)</span><br><span class="line"> val dfsFilename = &quot;c:/temp/abc.txt&quot;</span><br><span class="line"> val readFileRDD = sc.textFile(dfsFilename)</span><br><span class="line"> val wcounts1 = readFileRDD.flatMap(line =&gt; line.split(&quot; &quot;)).filter(w =&gt; (w == &quot;Humpty&quot;) || (w == &quot;Dumpty&quot;)).map(word =&gt; (word, 1)).reduceByKey(_ + _)</span><br><span class="line"> wcounts1.collect.foreach(println)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>最方便的就是源码中找到一个sparkcontext创建好的，然后加上自己的代码就好了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/06/spark-source-code-debug/" data-id="cjyrdp4fc0036vwjinlbbjhw6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -550,7 +519,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -564,7 +533,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kfaka/">kfaka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -574,7 +543,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16.67px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/kafka/" style="font-size: 18.33px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 13.33px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/kafka/" style="font-size: 18px;">kafka</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/kfaka/" style="font-size: 10px;">kfaka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -583,7 +552,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -596,23 +565,23 @@
       <ul>
         
           <li>
-            <a href="/2019/07/31/kakfa源码学习/">kakfa源码学习</a>
+            <a href="/2019/08/10/kafka源码开发环境/">kafka源码开发环境</a>
           </li>
         
           <li>
-            <a href="/2019/07/31/filesystem/">filesystem</a>
+            <a href="/2019/08/10/kafka-client-sample/">kafka client sample</a>
           </li>
         
           <li>
-            <a href="/2019/07/28/zookeeper-cluster/">zookeeper cluster</a>
+            <a href="/2019/08/10/linux-issues/">linux issues</a>
           </li>
         
           <li>
-            <a href="/2019/07/26/kakfa索引/">kakfa索引</a>
+            <a href="/2019/08/03/kafka-cluster-setup/">kafka cluster setup</a>
           </li>
         
           <li>
-            <a href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
+            <a href="/2019/08/03/kafka0-9-after/">kafka0.9-after</a>
           </li>
         
       </ul>
