@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-spark-shuffle" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-pyspark-introduction" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/26/spark-shuffle/" class="article-date">
-  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+    <a href="/2019/07/14/pyspark-introduction/" class="article-date">
+  <time datetime="2019-07-14T05:40:42.000Z" itemprop="datePublished">2019-07-14</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+      <a class="article-title" href="/2019/07/14/pyspark-introduction/">pyspark introduction</a>
     </h1>
   
 
@@ -84,19 +84,253 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>the <code>Spark SQL</code> module contains the following default configuration: <code>spark.sql.shuffle.partitions</code> set to 200.</p>
-<p>可以看到下面的执行计划有200个分区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; flightData2015.sort(&quot;count&quot;).explain()</span><br><span class="line">== Physical Plan ==</span><br><span class="line">*(2) Sort [count#12 ASC NULLS FIRST], true, 0</span><br><span class="line">+- Exchange rangepartitioning(count#12 ASC NULLS FIRST, 200)</span><br><span class="line">   +- *(1) FileScan csv [DEST_COUNTRY_NAME#10,ORIGIN_COUNTRY_NAME#11,count#12] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/root/spark/data/testdata/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;DEST_COUNTRY_NAME:string,ORIGIN_COUNTRY_NAME:string,count:int&gt;</span><br></pre></td></tr></table></figure></p>
-<p><img src="/images/shuffle-1.PNG" alt="shuffle-1"></p>
-<p>spark sql是高级的api，不是spark.default.parallelism?这个属性有关的rdd的底层api<br>这种高级api的spark.sql.shuffle.partitions是在shuffle的时候分区</p>
-<p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
-<p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
-<p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>所以shuffle 不一定是跨jvm或者node的操作，也可能一个stage，8个machine，8个task都shuffle 了，但是下一个stage只有一个task，在一个node上面运行，这个task的shuffle从当前的机器加上另外7台机器的数据 ，新的task应该还是之前的jvm，不是新启动一个jvm，还是在当前的executor上面</p>
+        <p>spark内置提供了机器学习的很多api，有scala，java，python版本的，但是如果需要用到深度学习，需要安装第三方的package，<br>而且需要python来写，也就是pyspark<br>这里主要使用的是Deep Learning Pipelines，由spark官方提供<br><a href="https://github.com/databricks/spark-deep-learning#working-with-images-in-spark" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning#working-with-images-in-spark</a><br><a href="https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html" target="_blank" rel="noopener">https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html</a></p>
+<h2 id="安装深度学习的第三方package"><a href="#安装深度学习的第三方package" class="headerlink" title="安装深度学习的第三方package"></a>安装深度学习的第三方package</h2><p>$SPARK_HOME/bin/spark-shell –packages databricks:spark-deep-learning:1.5.0-spark2.4-s_2.11</p>
+<h2 id="install-python3-6-pip"><a href="#install-python3-6-pip" class="headerlink" title="install python3.6, pip"></a>install python3.6, pip</h2><p>yum install -y <a href="https://centos7.iuscommunity.org/ius-release.rpm" target="_blank" rel="noopener">https://centos7.iuscommunity.org/ius-release.rpm</a><br>yum install -y python36u python36u-libs python36u-devel python36u-pip</p>
+<p>测试<br>python3.6 -V</p>
+<p>升级下pip<br>pip install –upgrade pip</p>
+<h2 id="python环境变量"><a href="#python环境变量" class="headerlink" title="python环境变量"></a>python环境变量</h2><p>conf/spark-env.sh下面添加<code>export PYSPARK_PYTHON=/usr/bin/python3.6</code></p>
+<h2 id="第一个程序"><a href="#第一个程序" class="headerlink" title="第一个程序"></a>第一个程序</h2><p>先安装这个第三方package<br>pip install numpy</p>
+<p>进入shell<br>./bin/pyspark</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from pyspark.ml.image import ImageSchema</span><br><span class="line">image_df = ImageSchema.readImages(&quot;/data/myimages&quot;)</span><br></pre></td></tr></table></figure>
+<p>from sparkdl.image import imageIO as imageIO<br>这个module也需要pip来安装</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为什么要修改spakr默认的python环境变量，我发现默认的是python2.6，这样即便是安装了第三方的package还是会not found</p>
+<p><a href="https://github.com/databricks/spark-deep-learning/tree/master/python" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/python</a> 里面是python的api<br><a href="https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala</a> 里面是具体的实现</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="cjz5m0muw003bscji6f4vd0t4" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/07/14/pyspark-introduction/" data-id="ck272f0vc0036y0jiv8w7a2tg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-source-code-debug" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/06/spark-source-code-debug/" class="article-date">
+  <time datetime="2019-07-06T10:04:38.000Z" itemprop="datePublished">2019-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/06/spark-source-code-debug/">spark source code debug</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>直接github下载spark的源码<br>\spark-2.4.2\core\src\test\scala\org\apache\spark\SortShuffleSuite.scala<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">test(&quot;mytest&quot;) &#123;</span><br><span class="line"> sc = new SparkContext(&quot;local&quot;, &quot;test&quot;, conf)</span><br><span class="line"> val dfsFilename = &quot;c:/temp/abc.txt&quot;</span><br><span class="line"> val readFileRDD = sc.textFile(dfsFilename)</span><br><span class="line"> val wcounts1 = readFileRDD.flatMap(line =&gt; line.split(&quot; &quot;))</span><br><span class="line"> wcounts1.collect().foreach(println)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">test(&quot;mytest2&quot;) &#123;</span><br><span class="line"> sc = new SparkContext(&quot;local&quot;, &quot;test&quot;, conf)</span><br><span class="line"> val dfsFilename = &quot;c:/temp/abc.txt&quot;</span><br><span class="line"> val readFileRDD = sc.textFile(dfsFilename)</span><br><span class="line"> val wcounts1 = readFileRDD.flatMap(line =&gt; line.split(&quot; &quot;)).filter(w =&gt; (w == &quot;Humpty&quot;) || (w == &quot;Dumpty&quot;)).map(word =&gt; (word, 1)).reduceByKey(_ + _)</span><br><span class="line"> wcounts1.collect.foreach(println)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最方便的就是源码中找到一个sparkcontext创建好的，然后加上自己的代码就好了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/06/spark-source-code-debug/" data-id="ck272f0vm003sy0ji4woh4i3e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-rdd" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/03/spark-rdd/" class="article-date">
+  <time datetime="2019-07-03T13:22:40.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/03/spark-rdd/">spark rdd</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RDD这种抽象是整个Spark的核心，具有如下特定：<br>immutable: 不可变（只读）<br>resilient: 弹性（容错）<br>distributed:分布式（数据存储在整个集群的各个机器上)<br>In-Memory:数据位于内存中(Spark提供了其他的持久化选项）<br>Lazy evaluated:有Action触发时才会执行真正的操作<br>Cacheable:内存不足以容纳数据时，可以缓存到磁盘<br>Typed:每个RDD都有类型，例如RDD[String],RDD[(int,String)]<br>patitioned:RDD的数据划分为多个Partition，分布在集群中，每个JVM（Executor）一个Partition。</p>
+<p><a href="https://www.zhihu.com/question/23079001" target="_blank" rel="noopener">https://www.zhihu.com/question/23079001</a><br>这个文章讲了为什么多个rdd的DAG没有耗光内存,<br>比如rdd是不可变的，多个rdd的内存加起来不是很大了吗</p>
+<p>iterator rdd<br><a href="https://www.jianshu.com/p/c05d33b4d70d" target="_blank" rel="noopener">https://www.jianshu.com/p/c05d33b4d70d</a></p>
+<p>rdd的不可变<br><a href="https://www.zybuluo.com/BrandonLin/note/448121" target="_blank" rel="noopener">https://www.zybuluo.com/BrandonLin/note/448121</a><br>一个rdd计算出另外一个rdd，之前的rdd就被丢弃了，不可能dag里面的每个rdd都占据着内存<br>而且各个rdd的内存也有共同的部分，只是在api层面不可变<br>如果用户没有要求Spark cache该RDD的结果，那么这个过程占用的内存是很小的，一个元素处理完毕后就落地或扔掉了（概念上如此，实现上有buffer），并不会长久地占用内存。</p>
+<p>rdd源码分析<br><a href="https://www.jianshu.com/p/f5b50e233acc" target="_blank" rel="noopener">https://www.jianshu.com/p/f5b50e233acc</a><br><a href="https://mr-dai.github.io/spark_core_source_1/" target="_blank" rel="noopener">https://mr-dai.github.io/spark_core_source_1/</a><br><a href="https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java" target="_blank" rel="noopener">https://stackoverflow.com/questions/30446706/implementing-custom-spark-rdd-in-java</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val textFile = sc.textFile(&quot;hdfs://…&quot;)</span><br><span class="line">val counts = textFile.flatMap(line =&gt; line.split(&quot; &quot;))</span><br><span class="line"> .filter(_.length &gt;= 2)</span><br><span class="line"> .map(word =&gt; (word, 1))</span><br><span class="line"> .reduceByKey(_ + _)</span><br><span class="line">counts.saveAsTextFile(&quot;hdfs://…&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>上面这个例子textFile会生成一个haddoprdd，然后就是MapPartitionsRDD,<br>textFile是一个HadoopRDD经过map后的MapPartitionsRDD，<br>经过flatMap后仍然是一个MapPartitionsRDD，<br>经过filter方法之后生成了一个新的MapPartitionsRDD，<br>经过map函数之后，继续是一个MapPartitionsRDD，<br>最后经过reduceByKey变成了ShuffleRDD。<br>rdd中主要就是compute方法还有iterator概念<br>def compute(split: Partition, context: TaskContext): Iterator[T]</p>
+<p>RDD 抽象类要求其所有子类都必须实现 compute 方法，该方法接受的参数之一是一个Partition 对象，目的是计算该分区中的数据。<br>最后actioins执行的时候会一层一层向parent来执行迭代器里面的操作<br>再两个例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val lines = spark.textFile(&quot;hdfs://&lt;input&gt;&quot;)</span><br><span class="line">val errors = lines.filter(_.startsWith(&quot;ERROR&quot;))</span><br><span class="line">val messages = errors.map(_.split(&quot; &quot;)(1))</span><br><span class="line">messages.saveAsTextFile(&quot;hdfs://&lt;output&gt;&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>Spark在运行时动态构造了一个复合Iterator。就上述示例来说，构造出来的Iterator的逻辑概念上大致长这样：<br>所以并不是每个transformation都会生成一份新数据，而是串行化的执行(起码在一个stage里面)<br>下面是伪代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">new Iterator[String] &#123;</span><br><span class="line"> private var head: String = _</span><br><span class="line"> private var headDefined: Boolean = false</span><br><span class="line">def hasNext: Boolean = headDefined || &#123;</span><br><span class="line"> do &#123;</span><br><span class="line"> try head = readOneLineFromHDFS(…) // (1) read from HDFS</span><br><span class="line"> catch &#123;</span><br><span class="line"> case _: EOFException =&gt; return false</span><br><span class="line"> &#125;</span><br><span class="line"> &#125; while (!head.startsWith(&quot;ERROR&quot;)) // (2) filter closure</span><br><span class="line"> true</span><br><span class="line"> &#125;</span><br><span class="line">def next: String = if (hasNext) &#123;</span><br><span class="line"> headDefined = false</span><br><span class="line"> head.split(&quot; &quot;)(1) // (3) map closure</span><br><span class="line"> &#125; else &#123;</span><br><span class="line"> throw new NoSuchElementException(&quot;…&quot;)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可不可以认为，想map mapPartition这样的操作实际上在运行的时候后都是逐行处理数据的？<br>yes<br>Spark的计算执行可以认为是一个这样的过程：从一个RDD读取数据，做处理，然后依照action的不同把结果发回用户空间。这个过程中可能会有很多中间临时的RDD，假如你对这些RDD设置了cache，那么在它所在的计算环节结束后的中间结果就会被缓存起来，缓存有个缓存管理器，spark里被称作blockmanager。注意哦，这里还有一个误区是，很多初学的同学认为调用了cache或者persist的那一刻就是在缓存了，这是完全不对的，真正的缓存执行指挥在action被触发，job被提交开始计算，在计算的中间过程中才会执行。<br>我的理解是当action执行结束过才会把中间结果缓存起来，因为spark知道了你要缓存的是哪个rdd，所以他把那个rdd的结果都做上标记，结束后一起缓存起来<br>数据是作为流一条条从管道的开始一路走到结束。最为直观的好处就是：不需要加载全量数据集，上一次的计算结果可以马上丢弃。全量数据集其实是一个很恐怖的东西，全世界都在避免它，所以某种意义上来看，如果没有Shuffle过程，Spark所需要内存其实非常小，一条数据又能占多大空间。第二，如果不是Pipeline的方式，而是马上触发全量操作，势必需要一个中间容器来保存结果，其实这里就又回到MapReduce的老路，效率很低。</p>
+<p>MapPartitionsRDD的compute方法的作用了：在有前置依赖的条件下，在父RDD的Iterable接口上给遍历每个元素的时候再套上一个方法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/03/spark-rdd/" data-id="ck272f0vk003ny0jib7ypgqbz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/30/spark-definitive-guide/" class="article-date">
+  <time datetime="2019-06-30T14:51:52.000Z" itemprop="datePublished">2019-06-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/30/spark-definitive-guide/">spark 权威指南 笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="page-29"><a href="#page-29" class="headerlink" title="page 29"></a>page 29</h2><p>In specifying this action, we started a Spark job that runs our filter transformation (a narrow<br>transformation), then an aggregation (a wide transformation) that performs the counts on a per<br>partition basis, and then a collect, which brings our result to a native object in the respective<br>language. You can see all of this by inspecting the Spark UI, a tool included in Spark with which you<br>can monitor the Spark jobs running on a cluster.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val myRange = spark.range(1000).toDF(&quot;number&quot;)</span><br><span class="line">val divisBy2 = myRange.where(&quot;number % 2 = 0&quot;)</span><br><span class="line">divisBy2.count()</span><br></pre></td></tr></table></figure></p>
+<p>一开始很疑惑为什么count会是wide transformation还包括collect，可以需要看执行计划还有spark ui去加深理解，<br>写代码rdd的count和dataset的count去比较<br>尤其是dataset部分</p>
+<p><a href="https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds" target="_blank" rel="noopener">https://dzone.com/articles/apache-spark-3-reasons-why-you-should-not-use-rdds</a><br>这篇文章也说了count在rdd和dataframe不一样</p>
+<p>spark dataframe的count方法和rdd的count action不是一个意思，<br><a href="https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2" target="_blank" rel="noopener">https://stackoverflow.com/questions/47194160/why-is-dataset-count-causing-a-shuffle-spark-2-2</a></p>
+<p>更新：通过sql的执行计划图<br><a href="http://k8s-master:18080/history/app-20190628083643-0001/SQL/execution/?id=0" target="_blank" rel="noopener">http://k8s-master:18080/history/app-20190628083643-0001/SQL/execution/?id=0</a><br><img src="/images/count_stage.PNG" alt="stage"><br>可以看到第一个stage两个task，每个task计算出count为250，这样HashAggregate出来的rows就是2，通过shuffle进入到<br>第二个stage，第二个stage汇总count后得出总的count是500，row是1<br>总结：这个case从第一个stage到第二个stage分区数目从2到1，但是看执行计划确实也算是shuffle操作，<br>只要有shuffle操作就会有新的stage<br>这个case的count确实是action，虽然filter操作不会有shuffle操作，但是由于count底层还是有了shuffle操作，<br>从图片看filter确实也没有wide transformation（shuffle），只不过filter后才有了聚合操作</p>
+<h2 id="page-299"><a href="#page-299" class="headerlink" title="page 299"></a>page 299</h2> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">spark.read</span><br><span class="line">   .option(&quot;header&quot;, &quot;true&quot;)</span><br><span class="line">   .csv(&quot;/root/online-retail-dataset.csv&quot;)</span><br><span class="line">   .repartition(4)</span><br><span class="line">   .selectExpr(&quot;instr(Description, &apos;GLASS&apos;) &gt;= 1 as is_glass&quot;)</span><br><span class="line">   .groupBy(&quot;is_glass&quot;)</span><br><span class="line">   .count()</span><br><span class="line">   .collect()</span><br></pre></td></tr></table></figure>
+<p>这个可以在shell里面执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; spark.read.option(&quot;header&quot;, &quot;true&quot;).csv(&quot;/root/online-retail-dataset.csv&quot;)    .repartition(4).selectExpr(&quot;instr(Description,&apos;GLASS&apos;) &gt;= 1 as is_glass&quot;)    .groupBy(&quot;is_glass&quot;).count().show()</span><br><span class="line">+--------+------+</span><br><span class="line">|is_glass| count|</span><br><span class="line">+--------+------+</span><br><span class="line">|    null|  1454|</span><br><span class="line">|    true| 12861|</span><br><span class="line">|   false|527594|</span><br><span class="line">+--------+------+</span><br></pre></td></tr></table></figure></p>
+<p>运行在集群<br> ./bin/spark-submit   –class org.apache.spark.examples.SimpleApp2 –master spark://192.168.77.130:7077 –deploy-mode client –executor-memory 1500M –conf spark.eventLog.enabled=true –conf spark.sql.shuffle.partitions=6 /root/spark/spark-example-scala-1.0.jar</p>
+<p>这个分为三个stage<br>第一个stage读取数据默认按照cpu的核心来分区，比如我两个work nodes，每个都是一个core，就是两个分区<br>第二个是强制分区为4个，反正还是这两个机器，所以shuffle 的代价不大，都是机器内部的转移数据<br>第三个是执行groupby之后默认的200个分区，上面参数指定为6，groupby的时候相同key的数据需要在一个task里面，所以需要shuffle，所以可以看到虽然有200个task，但是只有3个task是有数据的，最后collect会把所有的数据汇总到driver</p>
+<p>看执行计划<br><a href="http://k8s-master:18080/history/app-20190628102443-0003/SQL/execution/?id=1" target="_blank" rel="noopener">http://k8s-master:18080/history/app-20190628102443-0003/SQL/execution/?id=1</a><br><img src="/images/page-299-stage2.PNG" alt="stage"></p>
+<p>这个是第二个stage，为什么会输出12个row？<br>我们知道groupby导致下一个stage，但是上一个stage不可能把几十万行数据都shuffle出去没必要，<br>他会在当前的分区执行一次groupby，这就是聚合，这样每个分区都是3行数据，<br>4个分区就是12行数据，这个12行数据会在最后一个stage里面运行，<br>我发现最后一个stage就三个task有shuffle read，可能因为把同样的key发送到了同一个task上面了，一共就三个key（group by之后就3个key)</p>
+<p>下面是书上说的<br>Notice that in Figure 18-5 the number of output rows is six. This convienently lines up with<br>the number of output rows（这个就是3） multiplied by the number of partitions（这个是4) at aggregation time. This is because Spark performs an<br>aggregation for each partition (in this case a hash-based aggregation) before shuffling the data aroundin preparation for the final stage.</p>
+<h2 id="page-264"><a href="#page-264" class="headerlink" title="page 264"></a>page 264</h2><p>Regardless of the number of partitions, that<br>entire stage is computed in parallel. The final result aggregates those partitions individually, brings<br>them all to a single partition before finally sending the final result to the driver. We’ll see this<br>configuration several times over the course of this part of the book.</p>
+<p>Tasks<br>Stages in Spark consist of tasks. <code>Each task corresponds to a combination of blocks of data and a set
+of transformations that will run on a single executor</code>. If there is one big partition in our dataset, we<br>will have one task. If there are 1,000 little partitions, we will have 1,000 tasks that can be executed in<br>parallel. A task is just a unit of computation applied to a unit of data (the partition). Partitioning your<br>data into a greater number of partitions means that more can be executed in parallel. This is not a<br>panacea, but it is a simple place to begin with optimization.</p>
+<h2 id="page-133"><a href="#page-133" class="headerlink" title="page 133"></a>page 133</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val df = spark.read.format(&quot;csv&quot;)</span><br><span class="line">.option(&quot;header&quot;, &quot;true&quot;)</span><br><span class="line">.option(&quot;inferSchema&quot;, &quot;true&quot;)</span><br><span class="line">.load(&quot;/FileStore/tables/retail-data/all/online_retail_dataset-92e8e.csv&quot;)</span><br></pre></td></tr></table></figure>
+<p>这个dateframe一共541909行数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().count()</span><br><span class="line">``` </span><br><span class="line">这个返回25900,说明分组之后的行是这么多</span><br><span class="line">df.groupBy(&quot;InvoiceNo&quot;, &quot;CustomerId&quot;).count().show()</span><br><span class="line">这个可以看分组后的数据，这个count返回的是个dataset，所以可以继续执行count这个action</span><br><span class="line">这个job有两个stage，</span><br><span class="line">第一个stage有8个task，分别读取8分之1的数据，然后shuffle write， write的行书就是25907，</span><br><span class="line">第二个stage读取这些数据，上面8个分区的数据都是重复的group后的结果，所以继续汇总下，就是剩下25900行数据</span><br><span class="line"></span><br><span class="line">## page 57</span><br><span class="line">Overview of Structured Spark Types</span><br><span class="line">Spark is effectively a programming language of its own. Internally, Spark uses an engine called</span><br><span class="line">Catalyst that maintains its own type information through the planning and processing of work. In</span><br><span class="line">doing so, this opens up a wide variety of execution optimizations that make significant differences.</span><br><span class="line">Spark types map directly to the different language APIs that Spark maintains and there exists a lookup</span><br><span class="line">table for each of these in Scala, Java, Python, SQL, and R. Even if we use Spark’s Structured APIs</span><br><span class="line">from Python or R, the majority of our manipulations will operate strictly on Spark types, not Python</span><br><span class="line">types. For example, the following code does not perform addition in Scala or Python; it actually</span><br><span class="line">performs addition purely in Spark:</span><br><span class="line">下面是spark的dataset类型的编译时候就报错的解释例子</span><br></pre></td></tr></table></figure></p>
+<p>case class Person(name : String , age : Int)<br>val personRDD = sc.makeRDD(Seq(Person(“A”,10),Person(“B”,20)))<br>val personDF = sqlContext.createDataframe(personRDD)<br>val ds:Dataset[Person] = personDF.as[Person]<br>ds.filter(p =&gt; p.age &gt; 25)<br>ds.filter(p =&gt; p.salary &gt; 25)<br> // error : value salary is not a member of person<br>ds.rdd // returns RDD[Person]<br><code>`</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/30/spark-definitive-guide/" data-id="ck272f0vi003ky0jiinvnnm67" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-deep-learning-baisc" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/29/deep-learning-baisc/" class="article-date">
+  <time datetime="2019-06-29T14:51:52.000Z" itemprop="datePublished">2019-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/29/deep-learning-baisc/">deep learning</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="训练-模型"><a href="#训练-模型" class="headerlink" title="训练 模型"></a>训练 模型</h2><p>你可以把机器想象成一个小孩子，你带小孩去公园。公园里有很多人在遛狗。简单起见，咱们先考虑二元分类问题。你告诉小孩这个动物是狗，那个也是狗。但突然一只猫跑过来，你告诉他，这个不是狗。久而久之，小孩就会产生认知模式。这个学习过程，就叫“训练”。所形成的认知模式，就是”模型“。训练之后。这时，再跑过来一个动物时，你问小孩，这个是狗吧？他会回答，是/否。这个就叫，预测。一个模型中，有很多参数。有些参数，可以通过训练获得，比如logistic模型中的权重。但有些参数，通过训练无法获得，被称为”超参数“，比如学习率等。这需要靠经验，过着grid search的方法去寻找。上面这个例子，是有人告诉小孩，样本的正确分类，这叫有督管学习。还有无督管学习，比如小孩自发性对动物的相似性进行辨识和分类。</p>
+<p>自己的理解：<br>小孩的<code>认知模式</code>就是一个<code>模型</code>，你要给他足够的数据连训练出来一个新的认知模式，这个新的<code>模型</code>适合你自己的task<br>训练的是模型里的参数，模型是一个从输入到输出的黑盒子，训练是为了让这个黑盒子更适应您手头的任务(通过大量的数据)。<br>所以说深度学习要选择模型，这些模型一般人写不了，一般选择开源的模型，你把你自己的大量数据通过他来训练之后变成适合自己的模型<br>深度学习可以理解成用深度神经网络（DNN，Deep Neural Network）来进行机器学习，他俩的关系可以从这个定义中一目了然地看出来。</p>
+<p>所以神经网络了解了解拿来用用就行了，不需要自己去实现，有开源的深度学习框架</p>
+<h2 id="框架-硬件"><a href="#框架-硬件" class="headerlink" title="框架 硬件"></a>框架 硬件</h2><p>As such, your Keras model can be trained on a number of different hardware platforms beyond CPUs:</p>
+<p>NVIDIA GPUs<br>Google TPUs, via the TensorFlow backend and Google Cloud<br>OpenCL-enabled GPUs, such as those from AMD, via the PlaidML Keras backend</p>
+<h2 id="GUDA"><a href="#GUDA" class="headerlink" title="GUDA"></a>GUDA</h2><p>GUDA又是什么呢。CUDA就是通用计算，游戏让GPU算的是一堆像素的颜色，而GPU完全可以算其他任何运算，比如大数据量矩阵乘法等。同样，程序准备好对应的数组，以及让GPU如何算这些数组的描述结构（比如让GPU内部开多少个线程来算，怎么算，之类），这些数据和描述，都要调用CUDA库提供的函数来传递给CUDA，CUDA再调用显卡用户态驱动对CUDA程序进行编译，后者再调用内核态驱动将命令以及编译好的程序数据传送给GPU</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/29/deep-learning-baisc/" data-id="ck272f0tq000dy0jickr54kz0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hive-work-with-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/27/hive-work-with-spark/" class="article-date">
+  <time datetime="2019-06-27T14:51:52.000Z" itemprop="datePublished">2019-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.quora.com/How-does-Apache-Spark-and-Apache-Hive-work-together/answer/Angela-Zhang-%E5%BC%B5%E5%AE%89%E7%90%AA" target="_blank" rel="noopener">https://www.quora.com/How-does-Apache-Spark-and-Apache-Hive-work-together/answer/Angela-Zhang-%E5%BC%B5%E5%AE%89%E7%90%AA</a><br>这个文章是讲的最好的</p>
+<p>hive底层可以替换执行引擎为spark<br>spark也可以执行sql 基于hive的metastore</p>
+<p>Spark SQL - Spark module that makes use of the Hive Metastore. You can use this via HiveContext. This currently (as of 2017) has better support, so we’ll talk more about this in the next section.</p>
+<p>Hive on Spark - Hive project that integrates Spark as an additional engine. You can enable this by doing hive.execution.engine=spark. This support was added recently (2015 - 2016).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/27/hive-work-with-spark/" data-id="ck272f0ua0014y0jigwystz28" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
@@ -136,10 +370,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="cjz5m0mt00005scji3rtwpths" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="ck272f0to000cy0jiv3d1pl4r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark-shuffle" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/spark-shuffle/" class="article-date">
+  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/spark-shuffle/">spark shuffle</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>the <code>Spark SQL</code> module contains the following default configuration: <code>spark.sql.shuffle.partitions</code> set to 200.</p>
+<p>可以看到下面的执行计划有200个分区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; flightData2015.sort(&quot;count&quot;).explain()</span><br><span class="line">== Physical Plan ==</span><br><span class="line">*(2) Sort [count#12 ASC NULLS FIRST], true, 0</span><br><span class="line">+- Exchange rangepartitioning(count#12 ASC NULLS FIRST, 200)</span><br><span class="line">   +- *(1) FileScan csv [DEST_COUNTRY_NAME#10,ORIGIN_COUNTRY_NAME#11,count#12] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/root/spark/data/testdata/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;DEST_COUNTRY_NAME:string,ORIGIN_COUNTRY_NAME:string,count:int&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/shuffle-1.PNG" alt="shuffle-1"></p>
+<p>spark sql是高级的api，不是spark.default.parallelism?这个属性有关的rdd的底层api<br>这种高级api的spark.sql.shuffle.partitions是在shuffle的时候分区</p>
+<p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
+<p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
+<p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>所以shuffle 不一定是跨jvm或者node的操作，也可能一个stage，8个machine，8个task都shuffle 了，但是下一个stage只有一个task，在一个node上面运行，这个task的shuffle从当前的机器加上另外7台机器的数据 ，新的task应该还是之前的jvm，不是新启动一个jvm，还是在当前的executor上面</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="ck272f0vl003py0ji6xezfg4x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -186,51 +466,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/24/spark-submit-application-example/" data-id="cjz5m0mv3003nscji53zh19eo" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/24/spark-submit-application-example/" data-id="ck272f0vo003wy0ji4vmprzur" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-centos重启网卡失效" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/centos重启网卡失效/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/centos重启网卡失效/">centos重启网卡失效</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>systemctl stop NetworkManager<br>systemctl restart network</p>
-<p>上面两个命令可以解决</p>
-<p><a href="https://zhuanlan.zhihu.com/p/29810657" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29810657</a><br><a href="https://blog.csdn.net/chun_xiaolin001/article/details/81632626" target="_blank" rel="noopener">https://blog.csdn.net/chun_xiaolin001/article/details/81632626</a><br><a href="https://blog.csdn.net/Renirvana/article/details/79167286" target="_blank" rel="noopener">https://blog.csdn.net/Renirvana/article/details/79167286</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/centos重启网卡失效/" data-id="cjz5m0mt50009scjin1mqqwl8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -300,224 +539,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="cjz5m0mvy005kscjiorlqree4" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="ck272f0wj005xy0jibfyefwfk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-stage" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-stage/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/spark-stage/">spark stage</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="https://mapr.com/blog/how-spark-runs-your-applications/" target="_blank" rel="noopener">https://mapr.com/blog/how-spark-runs-your-applications/</a><br>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>Shuffling is the process of data transfer between stages.</p>
-<p>When you invoke an action on an RDD, a “job” is created. Jobs are work submitted to Spark.<br>Jobs are divided into “stages” based on the shuffle boundary. This can help you understand.<br>Each stage is further divided into tasks based on the number of partitions in the RDD. So tasks are the smallest units of work for Spark.<br>Wide transformations basically result in stage boundaries.<br>spark的stage是各个shuffle操作的边界，也就是如果没有shuffle发生的话，还是在一个stage里面，4040端口看stage的相关信息加深理解<br><a href="https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454" target="_blank" rel="noopener">https://medium.com/@goyalsaurabh66/spark-basics-rdds-stages-tasks-and-dag-8da0f52f0454</a><br>the stages are created based on the transformations. The narrow transformations will be grouped (pipe-lined) together into a single stage.</p>
-<p>action的操作比如collect一般算在最后一个stage里面</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-stage/" data-id="cjz5m0mv1003jscjix1ohpdgl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/21/spark-basic/" class="article-date">
-  <time datetime="2019-06-21T14:51:52.000Z" itemprop="datePublished">2019-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/21/spark-basic/">spark basic</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="分区和cpu核心数目"><a href="#分区和cpu核心数目" class="headerlink" title="分区和cpu核心数目"></a>分区和cpu核心数目</h2><p>分区数目一般是cpu核心数目的2到4倍<br>加入有50GB的数据存放在hdfs上面，除以128MB，差不多是160，但是我们的cpu总核心数目才50，<br>所以160个分区对应50个cores也是可以的，这样一个core差不多要运行3个task</p>
-<p>如果cpu核心有160，那么每个分区对应一个task，这样最快</p>
-<p>分区数目不能太多，太多了就太多的task，这样节点压力会很大</p>
-<p>每一个分区被一个task执行，如果160个分区也就是160个task，分布在50个cpu核心</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/21/spark-basic/" data-id="cjz5m0mut0034scjie3hllflb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-postgres安装" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/16/postgres安装/" class="article-date">
-  <time datetime="2019-06-16T14:51:52.000Z" itemprop="datePublished">2019-06-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/16/postgres安装/">postgres安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="noopener">https://www.postgresql.org/download/linux/redhat/</a><br>官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本<code>yum install postgresql10</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/pgsql-10/bin/postgresql-10-setup initdb</span><br><span class="line">systemctl enable postgresql-10</span><br><span class="line">systemctl start postgresql-10</span><br></pre></td></tr></table></figure></p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>注意配置文件在/var/lib/pgsql/10/data不在/usr/pgsql-10<br>可以通过netstat -nlt查看ip的绑定情况，如果修改了/usr/pgsql-10的listen相关的配置，<br>会发现5432仍然listen在127.0.0.1,而不是远程任意ip地址可以访问<br><a href="https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了" target="_blank" rel="noopener">https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了</a></p>
-<p>pg_hba.conf的配置必须是trust，否则远程客户端比如datagrip还是不能登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host    all             all              0.0.0.0/0                       trust</span><br><span class="line">host    all             all              ::/0                            trust</span><br></pre></td></tr></table></figure></p>
-<p>同时注意postgres安装的时候会默认安装一个linux的用户postgres,<br>可以su - postgres之后然后psql命令进入shell的sql界面，<br>然后修改密码ALTER USER postgres WITH PASSWORD ‘xuhang’，<br>最后可以客户端用xuhang这个密码登陆</p>
-<h2 id="其他ref"><a href="#其他ref" class="headerlink" title="其他ref"></a>其他ref</h2><p><a href="https://www.postgresql.org/docs/10/auth-pg-hba-conf.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/10/auth-pg-hba-conf.html</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>直接看下面步骤进行安装for quick，进入root用户<br>yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="noopener">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a><br>yum install postgresql10<br>yum install postgresql10-server<br>/usr/pgsql-10/bin/postgresql-10-setup initdb<br>systemctl enable postgresql-10<br>systemctl start postgresql-10<br>安装好下面开始配置<br>su - postgres<br>psql<br>ALTER USER postgres WITH PASSWORD ‘xuhang’</p>
-<p>append<br><code>`
-host    all             all              0.0.0.0/0                       trust
-host    all             all              ::/0                            trust</code><br>to <code>/var/lib/pgsql/10/data/pg_hba.conf</code></p>
-<p>update to <code>listen_addresses = &#39;*&#39;</code><br>in <code>postgresql.conf</code></p>
-<p>systemctl restart postgresql-10<br>可以客户端登陆了，默认数据库postgres，默认用户名postgres，密码是alter修改过的</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/16/postgres安装/" data-id="cjz5m0mup002uscjiywvdlae8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hadoop-early-architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/13/hadoop-early-architecture/" class="article-date">
-  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/13/hadoop-early-architecture/">old Hadoop Architecture</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于yarn之前的hadooop架构请参考下面这个文章<br><a href="https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works" target="_blank" rel="noopener">https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works</a><br>mapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的</p>
-<p>yarn架构<br><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/</a><br>新旧 Hadoop MapReduce 框架比对<br>让我们来对新旧 MapReduce 框架做详细的分析和对比，可以看到有以下几点显著变化：</p>
-<p>首先客户端不变，其调用 API 及接口大部分保持兼容，这也是为了对开发使用者透明化，使其不必对原有代码做大的改变 ( 详见 2.3 Demo 代码开发及详解)，但是原框架中核心的 JobTracker 和 TaskTracker 不见了，取而代之的是 ResourceManager, ApplicationMaster 与 NodeManager 三个部分。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="cjz5m0mto000zscji7rxfmm32" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/">hadoop</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/13/ibm小型机/" class="article-date">
-  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="硬件体系"><a href="#硬件体系" class="headerlink" title="硬件体系"></a>硬件体系</h2><p>从处理能力来说，单Hz的处理能力x86已经超过了Power系列，这是毋庸置疑的。但是Power有其明显的优点。它采用了标准的SMP结构，也就是说对于内存来说所有CPU访问的速度都是一致的，而x86采用了NUMA结构，这就是说CPU和内存是分区的，每个CPU访问自己的这部分内存特别快，但是如果需要访问其它部分那就要走QPI总线（现在已经在不断改进了），这也客观上造成了随着CPU数量的增多，处理能力的增长Power系列的线性程度远好于x86（这也是为什么很少会用4路以上的x86服务器）。而且作为小型机，封闭系统，其设计更加完整紧凑，综合起来性能强于x86</p>
-<h2 id="软件体系"><a href="#软件体系" class="headerlink" title="软件体系"></a>软件体系</h2><p>硬件体系是自己的，操作系统也是自己的（AIX等），所以整合起来Power系列的整体稳定性要强于x86服务器，而且运维也方便（特别是对于一些外围硬件，如果使用IBM更加容易用），抗压能力也强（小型机90%的CPU占用率，运行几个星期可能都OK，x86几天就估计出问题了）<br>但是Power系列的小型机的价格太高了，而且已经赶不上技术的变化了，由于Google的崛起，云计算的兴盛，现在的分布式系统的成熟度越来越高，系统已经越来越不依赖几台小型机来提供稳定可靠性，而是通过集群来提供，性能也能够通过分布式的处理来解决。所以x86的使用越来越广泛，而最新的一些低成本但是能够带来高效能的新技术都在x86体系下得到应用（x86市场占有率高，也开放），而Power系列由于其封闭的特性，反而难以得到应用，所以Power系列的小型机优势越来越不明显，已经在逐渐退出历史舞台了。</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AIX is an open operating system from IBM that is based on a version of UNIX.<br>ibm小型机的系统是AIX， 所以相关的软件也要on aix， 比如oracle on aix,<br>不过ibm小型机也可以安装linux,因为linux也可以运行在power处理器， Power ISA指令集</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="cjz5m0mtv0017scjiw9fh6lpb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -530,7 +555,7 @@ host    all             all              ::/0                            trust</
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -544,7 +569,7 @@ host    all             all              ::/0                            trust</
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kfaka/">kfaka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -554,7 +579,7 @@ host    all             all              ::/0                            trust</
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 16px;">java</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/kafka/" style="font-size: 18px;">kafka</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/kfaka/" style="font-size: 10px;">kfaka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -563,7 +588,7 @@ host    all             all              ::/0                            trust</
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -576,23 +601,23 @@ host    all             all              ::/0                            trust</
       <ul>
         
           <li>
-            <a href="/2019/08/10/kafka源码开发环境/">kafka源码开发环境</a>
+            <a href="/2019/10/26/java-servlet/">java servlet</a>
           </li>
         
           <li>
-            <a href="/2019/08/10/kafka-client-sample/">kafka client sample</a>
+            <a href="/2019/10/26/java-exception/">java exception</a>
           </li>
         
           <li>
-            <a href="/2019/08/10/linux-issues/">linux issues</a>
+            <a href="/2019/10/26/es6-promise/">es6 promise</a>
           </li>
         
           <li>
-            <a href="/2019/08/03/kafka-cluster-setup/">kafka cluster setup</a>
+            <a href="/2019/10/26/jvm-classloader/">jvm classloader</a>
           </li>
         
           <li>
-            <a href="/2019/08/03/kafka0-9-after/">kafka0.9-after</a>
+            <a href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
           </li>
         
       </ul>
