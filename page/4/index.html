@@ -62,6 +62,272 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kafka存储" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/20/kafka存储/" class="article-date">
+  <time datetime="2019-07-20T13:54:26.000Z" itemprop="datePublished">2019-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/20/kafka存储/">kafka存储</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kafka很大程度上依赖文件系统来存储和缓存消息。有一普遍的认识：磁盘很慢。这让人们怀疑使用磁盘作为持久化的性能。实际上，磁盘是快还是慢完全取决于我们是如何使用它。</p>
+<p>就目前来说，一个7200rpm SATA RAID-5磁盘线性（顺序）写入的性能能达到600MB/sec，而任意位置写（寻址再写）的性能只有100k/sec。这些线性读写是所有使用模式中最可预测的，并且由操作系统进行了大量优化。现在的操作系统提供了预读取和后写入的技术。实际上你会发现，顺序的磁盘读写比任意的内存读写更快。 </p>
+<p>发现线性的访问磁盘（即：按顺序的访问磁盘），很多时候比随机的内存访问快得多，而且有利于持久化</p>
+<p><strong>基于jvm内存有以下缺点</strong></p>
+<ul>
+<li>对象的内存开销非常高，通常会让存储数据的大小加倍（或更多）</li>
+<li>随着堆内数据的增加，GC的速度越来越慢，而且可能导致错误</li>
+</ul>
+<p><strong>基于操作系统的文件系统来设计有以下好处：</strong></p>
+<ul>
+<li>可以通过os的pagecache来有效利用主内存空间，由于数据紧凑，可以cache大量数据，并且没有gc的压力</li>
+<li>即使服务重启，缓存中的数据也是热的（不需要预热）。而基于进程的缓存，需要程序进行预热，而且会消耗很长的时间。（10G大概需要10分钟）</li>
+<li>大大简化了代码。因为在缓存和文件系统之间保持一致性的所有逻辑都在OS中。以上建议和设计使得代码实现起来十分简单，不需要尽力想办法去维护内存中的数据，数据会立即写入磁盘。</li>
+</ul>
+<p>总的来说，kafka这种是以页面缓存（pagecache）为中心的设计风格, Kafka不会保持尽可能多的内容在内存空间，而是尽可能把内容直接写入到磁盘。所有的数据都及时的以持久化日志的方式写入到文件系统</p>
+<p><strong>下面再详细说Kafka 如何做到高吞吐、低延迟的呢？</strong><br>这里提下 Kafka 写数据的大致方式：先写操作系统的页缓存（Page Cache）,然后由操作系统自行决定何时刷到磁盘。<br>因此 Kafka 达到高吞吐、低延迟的原因主要有以下4点：</p>
+<ul>
+<li>页缓存是在内存中分配的，所以消息写入的速度很快。</li>
+<li>Kafka 不必和底层的文件系统进行交互，所有繁琐的 I/O 操作都由操作系统来处理。</li>
+<li>Kafka 采用追加写的方式，避免了磁盘随机写操作。</li>
+<li>使用以 sendfile 为代表的零拷贝技术提高了读取数据的效率。</li>
+</ul>
+<p>使用页缓存而非堆内存还有一个好处，就是当 Kafka broker 的进程崩溃时，堆内存的数据会丢失，但是页缓存的数据依然存在，重启 Kafka broker 后可以继续提供服务。</p>
+<p><strong>Page Cache 带来的好处？</strong><br>Linux 总会把系统中还没被应用使用的内存挪来给 Page Cache，在命令行输入free，或者 cat /proc/meminfo ，“Cached”的部分就是 Page Cache。</p>
+<p>Page Cache 中每个文件是一棵 Radix 树（又称 PAT 位树, 一种多叉搜索树），节点由 4k 大小的 Page 组成，可以通过文件的偏移量（如 0x1110001）快速定位到某个Page。</p>
+<p>当写操作发生时，它只是将数据写入 Page Cache 中，并将该页置上 dirty 标志。</p>
+<p>当读操作发生时，它会首先在 Page Cache 中查找，如果有就直接返回，没有的话就会从磁盘读取文件写入 Page Cache 再读取。</p>
+<p>可见，只要生产者与消费者的速度相差不大，消费者会直接读取之前生产者写入Page Cache的数据，大家在内存里完成接力，根本没有磁盘访问。</p>
+<p>而比起在内存中维护一份消息数据的传统做法，这既不会重复浪费一倍的内存，Page Cache 又不需要 GC （可以放心使用60G内存了），而且即使 Kafka 重启了，Page Cache 还依然在。</p>
+<p><strong>关于page cache，最好参考understand linux kernel这本书，下面节选了</strong><br>The page cache is the main disk cache used by the Linux kernel. In most cases, the kernel refers to the page cache when reading from or writing to disk. New pages are added to the page cache to satisfy User Mode processes’s read requests. If the page is not already in the cache, a new entry is added to the cache and filled with the data read from the disk. If there is enough free memory, the page is kept in the cache for an indefinite period of time and can then be reused by other processes without accessing the disk.</p>
+<p>所以如果要深入的学习分布式系统，linux内核必须要深入学习</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>磁盘阵列 <a href="https://zh.wikipedia.org/wiki/RAID" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/RAID</a><br>ssd vs raid <a href="https://mybroadband.co.za/news/hardware/255699-how-raid-can-give-your-hard-drives-ssd-like-performance.html" target="_blank" rel="noopener">https://mybroadband.co.za/news/hardware/255699-how-raid-can-give-your-hard-drives-ssd-like-performance.html</a><br>pcie <a href="https://searchstorage.techtarget.com/definition/PCIe-SSD-PCIe-solid-state-drive" target="_blank" rel="noopener">https://searchstorage.techtarget.com/definition/PCIe-SSD-PCIe-solid-state-drive</a><br>常见问题 <a href="https://zhuanlan.zhihu.com/p/65512721" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/65512721</a><br>索引文件 <a href="https://matt33.com/2016/03/08/kafka-store/" target="_blank" rel="noopener">https://matt33.com/2016/03/08/kafka-store/</a></p>
+<p>page cache<br><a href="https://www.cnblogs.com/sxhlinux/p/6376480.html" target="_blank" rel="noopener">https://www.cnblogs.com/sxhlinux/p/6376480.html</a><br><a href="https://qinglinmao8315.github.io/linux/2018/03/14/linux-page-cache.html" target="_blank" rel="noopener">https://qinglinmao8315.github.io/linux/2018/03/14/linux-page-cache.html</a></p>
+<p>kakfa读写 <a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka存储/" data-id="ck272f0ut002by0ji4wiyckhp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka高可用" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/20/kafka高可用/" class="article-date">
+  <time datetime="2019-07-20T12:29:34.000Z" itemprop="datePublished">2019-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/20/kafka高可用/">kafka高可用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="如果保证消息不丢失且不重复消费"><a href="#如果保证消息不丢失且不重复消费" class="headerlink" title="如果保证消息不丢失且不重复消费"></a>如果保证消息不丢失且不重复消费</h2><p><a href="https://www.zhihu.com/question/34842764" target="_blank" rel="noopener">https://www.zhihu.com/question/34842764</a><br><a href="https://blog.csdn.net/matrix_google/article/details/79888144" target="_blank" rel="noopener">https://blog.csdn.net/matrix_google/article/details/79888144</a><br><a href="https://blog.csdn.net/qingqing7/article/details/80054281" target="_blank" rel="noopener">https://blog.csdn.net/qingqing7/article/details/80054281</a><br>关于消息不丢失其实再kafka权威指南这本书已经讲过，但是不重复消费只是讲解了怎么减少重复消息的数量，</p>
+<p>首先说明，Kafka 的设计就是 at-least-once 的， 具体可以看<br><a href="https://www.infoq.cn/article/kafka-analysis-part-8" target="_blank" rel="noopener">https://www.infoq.cn/article/kafka-analysis-part-8</a><br><a href="http://www.jasongj.com/2015/03/10/KafkaColumn1/#Kafka-delivery-guarantee" target="_blank" rel="noopener">http://www.jasongj.com/2015/03/10/KafkaColumn1/#Kafka-delivery-guarantee</a></p>
+<p>这里会涉及到幂等性，这个是数学的概念，用在编程领域，则意为对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的，还是要多学习数学，<br><a href="https://www.jianshu.com/p/475589f5cd7b" target="_blank" rel="noopener">https://www.jianshu.com/p/475589f5cd7b</a></p>
+<p>baeldung也有文章介绍这个问题，<br>In this tutorial, we’ll look at how Kafka ensures exactly-once delivery between producer and consumer applications through the newly introduced Transactional API.<br><a href="https://www.baeldung.com/kafka-exactly-once" target="_blank" rel="noopener">https://www.baeldung.com/kafka-exactly-once</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka高可用/" data-id="ck272f0uw002ey0jidx72a7sb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka-different-with-JMS-Broker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/20/kafka-different-with-JMS-Broker/" class="article-date">
+  <time datetime="2019-07-20T12:24:02.000Z" itemprop="datePublished">2019-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/20/kafka-different-with-JMS-Broker/">kafka不同于一般的message queue</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Multiple-Consumers"><a href="#Multiple-Consumers" class="headerlink" title="Multiple Consumers"></a>Multiple Consumers</h2><p>In addition to multiple producers, Kafka is designed for multiple consumers to read any single stream of messages without interfering with each other. This is in contrast to many queuing systems where once a message is consumed by one client, it is not available to any other. Multiple Kafka consumers can choose to operate as part of a group and share a stream, assuring that the entire group processes a given message only once.</p>
+<p><a href="https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition" target="_blank" rel="noopener">https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition</a><br>kafka可以允许多个consumer group同时消费同一个消息</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-different-with-JMS-Broker/" data-id="ck272f0uq0025y0ji1dmhbe40" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka-definitive-guide" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/20/kafka-definitive-guide/" class="article-date">
+  <time datetime="2019-07-20T08:58:31.000Z" itemprop="datePublished">2019-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/20/kafka-definitive-guide/">kafka definitive guide</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="kafka配置-log-dirs："><a href="#kafka配置-log-dirs：" class="headerlink" title="kafka配置 log.dirs："></a>kafka配置 log.dirs：</h2><p>kafka存放数据的路径。这个路径并不是唯一的，可以是多个，路径之间只需要使用逗号分隔即可；每当创建新partition时，都会选择在包含最少partitions的路径下进行。<br>Note that the broker will place a new partition in the path that has the least number of partitions currently stored in it, not the least amount of disk space<br>选择最少分区的目录，而不是最少磁盘空间的目录</p>
+<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p>The normal mode of operation for a Kafka consumer is reading from the end of the partitions, where the consumer is caught up and lagging behind the producers very little, if at all. In this situation, the messages the consumer is reading are optimally stored in the system’s page cache, resulting in faster reads than if the broker has to reread the messages from disk. Therefore, having more memory available to the system  for page cache will improve the performance of consumer clients.  Kafka itself does not need much heap memory configured for the Java Virtual Machine (JVM). Even a broker that is handling X messages per second and a data rate of X megabits per second can run with a 5 GB heap. The rest of the system memory will be used by the page cache and will benefit Kafka by allowing the system to cache log segments in use. This is the main reason it is not recommended to have Kafka collocated on a system with any other significant application, as they will have to share the use of the page cache. This will decrease the consumer performance for Kafka.</p>
+<p><a href="https://en.wikipedia.org/wiki/Page_cache" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Page_cache</a></p>
+<h2 id="page-33"><a href="#page-33" class="headerlink" title="page 33"></a>page 33</h2><p>Linux swap space, vm.swappiness 用法, Virtual_memory<br>虚拟内存是计算机系统内存管理的一种技术。<br>Virtual memory is a combination of RAM and disk space that running processes can use.<br>它使得应用程序认为它拥有连续的可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如RAM）的使用也更有效率。</p>
+<p>It is an important kernel parameter for Kafka because the more memory allocated to the swap space, the less memory can be allocated to the page cache. Cloudera recommends to set vm.swappiness value to 1.</p>
+<p>所以kafka可以禁止使用swap到磁盘</p>
+<h2 id="page-60"><a href="#page-60" class="headerlink" title="page 60"></a>page 60</h2><p>If a key exists and the default partitioner is used, Kafka will hash the key (using its own hash algorithm, so hash values will not change when Java is upgraded), and use the result to map the message to a specific partition. Since it is important that a key is always mapped to the same partition, we use all the partitions in the topic to calculate the mapping — not just the available partitions. This means that if a specific partition is unavailable when you write data to it, you might get an error. This is fairly rare, as you will see in Chapter 6 when we discuss Kafka’s replication and availability. The mapping of keys to partitions is consistent only as long as the number of partitions in a topic does not change. So as long as the number of partitions is constant,you can be sure that, for example, records regarding user 045189 will always get written to partition 34. This allows all kinds of optimization when reading data from partitions.However, the moment you add new partitions to the topic, this is no longer guaranteed — the old records will stay in partition 34 while new records will get written to a different partition. When partitioning keys is important, the easiest solution is to create topics with sufficient partitions (Chapter 2 includes suggestions for howto determine a good number of partitions) and never add partitions.</p>
+<p>如果机器数量是10个，topicA的分区数量是5，某个key来计算hash的时候应该是根据分区来算的，和机器没关系</p>
+<p>上面可以看到计算key分布在哪个分区的时候用的是所有的node，而不是available的node，因为计算hash的时候如果你的node节点挂了就不计算在内的话就会出现新的key到不一样的分区去了，但是前提是topic的分区数量没有改变,某个topic的分区是编号的，每个分区都有复制，所以即便某个机器挂了，依然可以用复制的分区来读写，复制的分区的编号和之前的leader应该是一样的</p>
+<p>org.apache.kafka.clients.producer.internals.DefaultPartitioner#partition</p>
+<p>Partitions in a Kafka topic are numbered from 0…N.</p>
+<p>Kafka Default Partiotioner is using modulo for the same purpose</p>
+<p>下面还有解释<br>Keys are used when messages are to be written to partitions in a more controlled manner. The simplest such scheme is to generate a consistent hash of the key, and then select the partition number for that message by taking the result of the hash modulo, the total number of partitions in the topic. This assures that messages with the same key are always written to the same partition. Keys are discussed in more detail in Chapter 3.</p>
+<p>kafka并没有需要用一致性hash，默认是mod，分区数量需要保持不变，这样才可以保证每个key永远都落到同一个分区上面</p>
+<h2 id="page-76"><a href="#page-76" class="headerlink" title="page 76"></a>page 76</h2><p><img src="/images/kakfa-re-process-message.PNG" alt="kakfa-re-process-message"></p>
+<p>If the committed offset is smaller than the offset of the last message the client processed, the messages between the last processed offset and the committed offset will be processed twice.</p>
+<p>上次的offset是2，但是上一次pull过来的数据是7-11，说明3-6已经处理过了，正在处理10，11还没有处理，所以如果从2加上1开始处理的话，3-10就会重复处理</p>
+<p><img src="/images/kakfa-lost-message.PNG" alt="kakfa-lost-message"></p>
+<p>If the committed offset is larger than the offset of the last message the client actually processed, all messages between the last processed offset and the committed offset will be missed by the consumer group</p>
+<p>上次的offset是11，但是上次pull过来的4-11只是处理到了5，也就是说6-11就没有机会处理 了</p>
+<hr>
+<p>至于为什么offset和之前处理过的消息的posistion不一致，看看有没有其他办法解决</p>
+<p>前者是commit的速度赶不上pull的速度，后者是pull的速度赶不上commit的速度</p>
+<p>因为提交commit是5秒一次，所以就会存在pull过来的offset大于或者小于上次commit的offset，哪怕减少到1s也不可能完全杜绝</p>
+<p>如果设置自动提交offset为false的话可以杜绝消息丢失，但是不能杜绝重复消费，但是可以减少重复消费的数量，比如第一个图，如果是pull消息消费完成在手动提交的话，消息6肯定就是last commited offset，如果消息处理到10的时候挂了，那重复消费就是7-10而不是2-10</p>
+<h2 id="page-97"><a href="#page-97" class="headerlink" title="page 97"></a>page 97</h2><p>Another task the leader is responsible for is knowing which of the follower replicas is up-to-date with the leader. Followers attempt to stay up-to-date by replicating all the messages from the leader as the messages arrive, but they can fail to stay in sync for various reasons, such as when network congestion slows down replication or when a broker crashes and all replicas on that broker start falling behind until we start the broker and they can start replicating again.</p>
+<p>但是重启之后分区的leader就会发生变化了，因为宕机后会重新选举分区的leader，机器重新启动后replicate还是会继续之前的进行，如果这台机器不能启动了，那重新弄台新的机器with the same broker id，这样新的机器也可以把所有消息复制过来，新的机器不会成为controller，新的机器里面也只是众多分区的follower，不会成为leader</p>
+<p>在新建topic的时，kafka集群按照上述方法去创建分配，leader是均匀分布的，但是时间久了，当某台机器宕机后，follower会变成leader，之前的leader在机器restart之后，赶上了进度，加入了ISR列表，此时变成了follower，不在提供读写能力。这个时候就会存在leader分配不均的问题<br>只有partition均匀分布才可以负载均衡<br><a href="https://www.jianshu.com/p/c987b5e055b0" target="_blank" rel="noopener">https://www.jianshu.com/p/c987b5e055b0</a></p>
+<h2 id="page-71"><a href="#page-71" class="headerlink" title="page 71"></a>page 71</h2><p>You can’t have multiple consumers that belong to the same group in one thread and you can’t have multiple threads safely use the same consumer. <code>One consumer per thread</code> is the rule. To run multiple consumers in the same group in one application, you will need to run each in its own thread. It is useful to wrap the consumer logic in its own object and then use Java’s ExecutorService to start multiple threads each with its own consumer. The Confluent blog has a tutorial that shows how to do just that.</p>
+<h2 id="page-107"><a href="#page-107" class="headerlink" title="page 107"></a>page 107</h2><p>By default, each segment contains either 1 GB of data or a week of data, whichever is smaller.<br>新的segment的条件是先到1 GB或者7天到了，注意是OR，类似于保养3年或者10万公里</p>
+<p>As a Kafka broker is writing to a partition, if the segment limit is reached, we close the file and start a new one.</p>
+<p>The segment we are currently writing to is called an active segment. The active segment is never deleted, so if you set log retention to only store a day of data but each segment contains five days of data, you will really keep data for five days because we can’t delete the data before the segment is closed. If you choose to store data for a week and roll a new segment every day, you will see that every day we will roll a new segment while deleting the oldest segment - so most of the time the partition will have seven segments.<br>意思就是虽然设置log retention为一天，但是因为数据到了5天才达到1 GB，也就是到5天才生成新的segment，这样你也要保留数据5天，因为active的segment不能删除</p>
+<p>但是kafka有个问题，如果分区过多，那么日志分段也会很多，写的时候由于是批量写，其实就会变成随机写了，随机I/O这个时候对性能影响很大。所以一般来说Kafka不能有太多的partition。针对这一点，RocketMQ把所有的日志都写在一个文件里面，就能变成顺序写，通过一定优化，读也能接近于顺序读。<br>上面这段话是阿里的博客，好像是错误的， 单个partition是可以实现消息的顺序写入的。哪怕再多的分区，对于单个分区也是一样顺序写，比如一个producer，100万个message，5台机器，100个分区，一个机器20个分区，那么平均一个分区接受1万个消息，怎么会变成随机写呢？一个分区内部也只有一个segment是active啊，没有多个segment的说法</p>
+<p>我们建议的做法是，如果是3个broker的集群，有5个消费者，那么建议partition的数量是15，也就是broker和consumer数量的最小公倍数。当然，也可以是一个大于消费者的broker数量的倍数，比如6或者9，还请读者自行根据实际环境裁定。<br><a href="https://bbs.huaweicloud.com/blogs/bf79ccc8d0fd11e7b8317ca23e93a891" target="_blank" rel="noopener">https://bbs.huaweicloud.com/blogs/bf79ccc8d0fd11e7b8317ca23e93a891</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-definitive-guide/" data-id="ck272f0wi005wy0ji0kb54tmm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka-schema" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/20/kafka-schema/" class="article-date">
+  <time datetime="2019-07-20T08:11:33.000Z" itemprop="datePublished">2019-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/20/kafka-schema/">kafka schema</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>kafka消息的数据格式</p>
+<p><a href="https://www.confluent.io/blog/avro-kafka-data/" target="_blank" rel="noopener">https://www.confluent.io/blog/avro-kafka-data/</a><br><a href="https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321" target="_blank" rel="noopener">https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321</a><br><a href="https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c" target="_blank" rel="noopener">https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-schema/" data-id="ck272f0us0027y0jiujdk5l94" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-pyspark-introduction" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/07/14/pyspark-introduction/" class="article-date">
@@ -300,257 +566,6 @@ of transformations that will run on a single executor</code>. If there is one bi
 
 
   
-    <article id="post-hive-work-with-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/27/hive-work-with-spark/" class="article-date">
-  <time datetime="2019-06-27T14:51:52.000Z" itemprop="datePublished">2019-06-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/27/hive-work-with-spark/">hive 和spark的关系</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.quora.com/How-does-Apache-Spark-and-Apache-Hive-work-together/answer/Angela-Zhang-%E5%BC%B5%E5%AE%89%E7%90%AA" target="_blank" rel="noopener">https://www.quora.com/How-does-Apache-Spark-and-Apache-Hive-work-together/answer/Angela-Zhang-%E5%BC%B5%E5%AE%89%E7%90%AA</a><br>这个文章是讲的最好的</p>
-<p>hive底层可以替换执行引擎为spark<br>spark也可以执行sql 基于hive的metastore</p>
-<p>Spark SQL - Spark module that makes use of the Hive Metastore. You can use this via HiveContext. This currently (as of 2017) has better support, so we’ll talk more about this in the next section.</p>
-<p>Hive on Spark - Hive project that integrates Spark as an additional engine. You can enable this by doing hive.execution.engine=spark. This support was added recently (2015 - 2016).</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/27/hive-work-with-spark/" data-id="ck272f0ua0014y0jigwystz28" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-concurrent_parallel" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/26/concurrent_parallel/" class="article-date">
-  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/26/concurrent_parallel/">并发并行</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>tomcat哪怕在多核cpu中运行，也还是多线程并发，不算并行<br>tomcat内部使用多线程，但是操作系统会把这些现场分布到多个cpu core里面<br>所谓的并行，是指一个task分解多多个task，比如java 7的fork/join, 又或者spark的分布式计算，是一定需要多core的cpu或者多个cpu来计算</p>
-<p>关于并发并行还需要学习</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/concurrent_parallel/" data-id="ck272f0to000cy0jiv3d1pl4r" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-shuffle" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/26/spark-shuffle/" class="article-date">
-  <time datetime="2019-06-26T14:51:52.000Z" itemprop="datePublished">2019-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/26/spark-shuffle/">spark shuffle</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>the <code>Spark SQL</code> module contains the following default configuration: <code>spark.sql.shuffle.partitions</code> set to 200.</p>
-<p>可以看到下面的执行计划有200个分区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; flightData2015.sort(&quot;count&quot;).explain()</span><br><span class="line">== Physical Plan ==</span><br><span class="line">*(2) Sort [count#12 ASC NULLS FIRST], true, 0</span><br><span class="line">+- Exchange rangepartitioning(count#12 ASC NULLS FIRST, 200)</span><br><span class="line">   +- *(1) FileScan csv [DEST_COUNTRY_NAME#10,ORIGIN_COUNTRY_NAME#11,count#12] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/root/spark/data/testdata/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;DEST_COUNTRY_NAME:string,ORIGIN_COUNTRY_NAME:string,count:int&gt;</span><br></pre></td></tr></table></figure></p>
-<p><img src="/images/shuffle-1.PNG" alt="shuffle-1"></p>
-<p>spark sql是高级的api，不是spark.default.parallelism?这个属性有关的rdd的底层api<br>这种高级api的spark.sql.shuffle.partitions是在shuffle的时候分区</p>
-<p>这个好像跟之前的理解不一样，难道没有shuffle的transformation不需要分区？</p>
-<p><a href="http://blog.itpub.net/31511218/viewspace-2213494/" target="_blank" rel="noopener">http://blog.itpub.net/31511218/viewspace-2213494/</a><br>上面这个文章讲的不错<br>narrow transformation的分区跟文件大小有关系，wide transformation会需要设置spark.sql.shuffle.partitions，应该就是这样</p>
-<p>What is the difference between spark.sql.shuffle.partitions and spark.default.parallelism?<br><a href="https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa" target="_blank" rel="noopener">https://stackoverflow.com/questions/45704156/what-is-the-difference-between-spark-sql-shuffle-partitions-and-spark-default-pa</a><br>spark.default.parallelism只有在处理RDD时才会起作用，对Spark SQL的无效。<br>spark.sql.shuffle.partitions则是对sparks SQL专用的设置</p>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>Shuffling is a process of redistributing data across partitions (aka repartitioning) that may or may not cause moving data across JVM processes or even over the wire (between executors on separate machines).<br>所以shuffle 不一定是跨jvm或者node的操作，也可能一个stage，8个machine，8个task都shuffle 了，但是下一个stage只有一个task，在一个node上面运行，这个task的shuffle从当前的机器加上另外7台机器的数据 ，新的task应该还是之前的jvm，不是新启动一个jvm，还是在当前的executor上面</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/26/spark-shuffle/" data-id="ck272f0vl003py0ji6xezfg4x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-submit-application-example" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/spark-submit-application-example/" class="article-date">
-  <time datetime="2019-06-24T14:51:52.000Z" itemprop="datePublished">2019-06-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/24/spark-submit-application-example/">spark word count in practice</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="cluster-ui-spark-master-ui-PNG"><a href="#cluster-ui-spark-master-ui-PNG" class="headerlink" title="cluster ui spark-master-ui.PNG"></a>cluster ui spark-master-ui.PNG</h2><p><img src="/images/spark-master-ui.PNG" alt="spark master ui"></p>
-<h2 id="测试文件"><a href="#测试文件" class="headerlink" title="测试文件"></a>测试文件</h2><p>为了减少内存的损耗，可以<br>xuhang meng<br>meng xuhang<br>xuhang xuhang xuhang<br>meng<br>xuhang<br>meng<br>meng liudehua<br>xuhang meng<br>meng xuhang<br>这个复制无数遍到200M，这样就是hdfs两个block，一个block=128MB</p>
-<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>以reducebyKey为分界点，前面是一个stage，后面是另外一个stage<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples;</span><br><span class="line">import scala.Tuple2;</span><br><span class="line">import org.apache.spark.api.java.JavaPairRDD;</span><br><span class="line">import org.apache.spark.api.java.JavaRDD;</span><br><span class="line">import org.apache.spark.sql.SparkSession;</span><br><span class="line">import java.util.Arrays;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line">public final class JavaWordCount &#123;</span><br><span class="line">  private static final Pattern SPACE = Pattern.compile(&quot; &quot;);</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    if (args.length &lt; 1) &#123;</span><br><span class="line">      System.err.println(&quot;Usage: JavaWordCount &lt;file&gt;&quot;);</span><br><span class="line">      System.exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SparkSession spark = SparkSession</span><br><span class="line">      .builder()</span><br><span class="line">      .appName(&quot;JavaWordCount&quot;)</span><br><span class="line">      .getOrCreate();</span><br><span class="line">    JavaRDD&lt;String&gt; lines = spark.read().textFile(args[0]).javaRDD();</span><br><span class="line">    lines.repartition(6);</span><br><span class="line">    JavaRDD&lt;String&gt; words = lines.flatMap(s -&gt; Arrays.asList(SPACE.split(s)).iterator());</span><br><span class="line">    JavaPairRDD&lt;String, Integer&gt; ones = words.mapToPair(s -&gt; new Tuple2&lt;&gt;(s, 1));</span><br><span class="line">    JavaPairRDD&lt;String, Integer&gt; counts = ones.reduceByKey((i1, i2) -&gt; i1 + i2);</span><br><span class="line">    List&lt;Tuple2&lt;String, Integer&gt;&gt; output = counts.collect();</span><br><span class="line">    for (Tuple2&lt;?,?&gt; tuple : output) &#123;</span><br><span class="line">      System.out.println(tuple._1() + &quot;: &quot; + tuple._2());</span><br><span class="line">    &#125;</span><br><span class="line">    spark.stop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="在master节点启动driver"><a href="#在master节点启动driver" class="headerlink" title="在master节点启动driver"></a>在master节点启动driver</h2><p>最后的job <a href="http://192.168.77.130:18080/history/app-20190624085329-0015/jobs/" target="_blank" rel="noopener">http://192.168.77.130:18080/history/app-20190624085329-0015/jobs/</a></p>
-<p>parallelism=2， 并行设置为2， 就是200M的文件分区为2<br>每个executor分配2500M内存，内存消耗主要看重复的关键字多不多<br>两个stage，一个stage两个task，几乎就是一个task=1250M内存，也就是说并不是每个task都有2.5G内存<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –driver-memory=2g   –executor-memory 2500M   –conf spark.eventLog.enabled=true –conf spark.default.parallelism=2 /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/test.txt<br><img src="/images/cluster-2-executor.PNG" alt="cluster-2-executor.PNG"><br>这个官方图片恰好跟我这个例子一样，两个work node，一个node两个task<br><img src="/images/2-stage-4-task.PNG" alt="2-stage-4-task.PNG"></p>
-<p>在回顾下stage和task的概念</p>
-<ul>
-<li>stage : stage 是一个 job 的组成单位，就是说，一个 job 会被切分成 1 个或 1 个以上的 stage，然后各个 stage 会按照执行顺序依次执行。</li>
-<li>task : A unit of work within a stage, corresponding to one RDD partition。即 stage 下的一个任务执行单元，一般来说，一个 rdd 有多少个 partition，就会有多少个 task，因为每一个 task 只是处理一个 partition 上的数据</li>
-</ul>
-<p>我们这个例子恰好两个分区，也就是2个task， stage也恰好两个<br>下面是第一个stage的2个task<br><img src="/images/stage0-task.PNG" alt="stage0-task.PNG"><br>下面是第二个stage的2个task<br><img src="/images/stage1-task.PNG" alt="stage1-task.PNG"><br>可以看到shuffle read和shuffle write都存在<br>shuffle write：发生在shuffle之前，把要shuffle的数据写到磁盘<br>为什么：为了保证数据的安全性，避免占用大量的内存<br>shuffle read：发生在shuffle之后，下游RDD读取上游RDD的数据的过程<br>具体关于shuffle需要单独学习</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p>可以把parallelism=3或者更大的value，这样可以看到更多的task运行，如果设置为3，总共一个stage有3个task运行，<br>两个stage，总共就会有6个task，不过如果不设置的话会跟cpu核心的数量差不多，或者2到4倍</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/24/spark-submit-application-example/" data-id="ck272f0vo003wy0ji4vmprzur" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-cluster-setup/" class="article-date">
-  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/spark-cluster-setup/">hadoop spark cluster setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/spark-cluster.png" alt="spark architecture"><br><img src="/images/yarn.png" alt="yarn architecture"></p>
-<h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><p>主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,<br>首先把三台机器的hostname和ip配置下，有些case会hostname访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.77.130  k8s-master</span><br><span class="line">192.168.77.131  node1</span><br><span class="line">192.168.77.132  node2</span><br></pre></td></tr></table></figure></p>
-<p>这个一般立即生效的</p>
-<h2 id="参考官网修改配置文件"><a href="#参考官网修改配置文件" class="headerlink" title="参考官网修改配置文件"></a>参考官网修改配置文件</h2><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation</a><br>关于官网说的这两个文件，etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml<br><code>core-site.xml</code>比官网多了hadoop.tmp.dir, 同时用k8s-master或者ip比较好，localhost会导致远程连接失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/root/hadoop-3.1.2/tmp&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://k8s-master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>hdfs-site.xml</code>,比官网多了dfs.datanode.data.dir，dfs.datanode.data.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/name&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/data&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
-<p>多这个几个配置目录是在启动出错的时候可以方便手动删除目录里的文件，当然提前要创建好这个三个目录</p>
-<h2 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h2><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=root<br>export HDFS_DATANODE_USER=root<br>export HDFS_SECONDARYNAMENODE_USER=root<br>export YARN_RESOURCEMANAGER_USER=root<br>export YARN_NODEMANAGER_USER=root</p>
-<p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了<br>比如可以在hadoop-3.1.2/etc/hadoop/hadoop-env.sh统一设置一次</p>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
-<p>其实还可以启动./sbin/start-all来同时启动hdfs和yarn，当然这里只是搭建了一个假的分布式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master hadoop-3.1.2]# sbin/start-</span><br><span class="line">start-all.cmd        start-balancer.sh    start-dfs.sh         start-yarn.cmd</span><br><span class="line">start-all.sh         start-dfs.cmd        start-secure-dns.sh  start-yarn.sh</span><br><span class="line">[root@k8s-master hadoop-3.1.2]# sbin/start-all.sh</span><br><span class="line">Starting namenodes on [k8s-master]</span><br><span class="line">Last login: Thu Jun 13 21:16:03 CST 2019 from 192.168.77.3 on pts/0</span><br><span class="line">Starting datanodes</span><br><span class="line">Last login: Thu Jun 13 21:16:14 CST 2019 on pts/0</span><br><span class="line">Starting secondary namenodes [k8s-master]</span><br><span class="line">Last login: Thu Jun 13 21:16:17 CST 2019 on pts/0</span><br><span class="line">Starting resourcemanager</span><br><span class="line">Last login: Thu Jun 13 21:16:25 CST 2019 on pts/0</span><br><span class="line">Starting nodemanagers</span><br><span class="line">Last login: Thu Jun 13 21:16:30 CST 2019 on pts/0</span><br></pre></td></tr></table></figure></p>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>hdfs ui: <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a><br>yarn ui: <a href="http://k8s-master:8088" target="_blank" rel="noopener">http://k8s-master:8088</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -mkdir /user</span><br><span class="line">bin/hdfs dfs -mkdir /user/xuhang</span><br><span class="line">bin/hdfs dfs -put etc/hadoop/*.xml /user/xuhang</span><br></pre></td></tr></table></figure>
-<h2 id="部署mapreduce"><a href="#部署mapreduce" class="headerlink" title="部署mapreduce"></a>部署mapreduce</h2><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html</a><br>可以参考这个创建一个java的mapreduce然后编译打包，跑yarn上面</p>
-<h2 id="start-spark-cluster"><a href="#start-spark-cluster" class="headerlink" title="start spark cluster"></a>start spark cluster</h2><p><a href="https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在master机器，k8s-master</span><br><span class="line">./sbin/start-master.sh</span><br><span class="line"></span><br><span class="line">在其他机器</span><br><span class="line">./sbin/start-slave.sh spark://k8s-master:7077</span><br></pre></td></tr></table></figure></p>
-<p>这里的spark不是运行在yarn上面，只是用了standalone的cluster，待会从hdfs取数据</p>
-<h2 id="spark-ui"><a href="#spark-ui" class="headerlink" title="spark ui"></a>spark ui</h2><p><a href="http://k8s-master:8080/" target="_blank" rel="noopener">http://k8s-master:8080/</a><br>driver， work nodes</p>
-<p><a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a><br>monitor ui 在job运行过程可以访问,如果想事后访问请参考history log章节</p>
-<h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>java version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples;/* SimpleApp.java */</span><br><span class="line">import org.apache.spark.api.java.function.FilterFunction;</span><br><span class="line">import org.apache.spark.sql.SparkSession;</span><br><span class="line">import org.apache.spark.sql.Dataset;</span><br><span class="line"></span><br><span class="line">public class SimpleApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        if (args.length &lt; 1) &#123;</span><br><span class="line">            System.err.println(&quot;Usage: JavaWordCount &lt;file&gt;&quot;);</span><br><span class="line">            System.exit(1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        SparkSession spark = SparkSession.builder().appName(&quot;Simple Application&quot;).getOrCreate();</span><br><span class="line">        Dataset&lt;String&gt; logData = spark.read().textFile(args[0]).cache();</span><br><span class="line">        logData.show();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FilterFunction&lt;String&gt; f1 = s -&gt; s.contains(&quot;a&quot;);</span><br><span class="line">        FilterFunction&lt;String&gt; f2 = s -&gt; s.contains(&quot;b&quot;);</span><br><span class="line"></span><br><span class="line">        Dataset&lt;String&gt; newDs = logData.filter(f1);</span><br><span class="line">        System.out.println(&quot;start to print new ds&quot;);</span><br><span class="line">        newDs.show();</span><br><span class="line">        System.out.println(&quot;stop to print new ds&quot;);</span><br><span class="line">        long numAs = newDs.count();</span><br><span class="line">        long numBs = logData.filter(f2).count();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;my Lines with a: &quot; + numAs + &quot;, lines with b: &quot; + numBs);</span><br><span class="line"></span><br><span class="line">        spark.stop();</span><br><span class="line">        System.out.println(&quot;hello world&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="saprk-history-log"><a href="#saprk-history-log" class="headerlink" title="saprk history log"></a>saprk history log</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> mkdir /tmp/spark-events(by default)</span><br><span class="line"></span><br><span class="line"> ./bin/spark-submit   --class org.apache.spark.examples.SimpleApp --master spark://192.168.77.130:7077 --deploy-mode client --executor-memory 700M --conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml</span><br><span class="line">./sbin/start-history-server.sh</span><br></pre></td></tr></table></figure>
-<p><code>http://k8s-master:18080</code> by default<br>ref: <a href="https://spark.apache.org/docs/latest/monitoring.html" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/monitoring.html</a></p>
-<h2 id="run-on-other-machine-client-mode"><a href="#run-on-other-machine-client-mode" class="headerlink" title="run on other machine(client mode)"></a>run on other machine(client mode)</h2><p>client mode可以在任意局域网机器运行<br>with client mode, you can run the spark submit on any machine, just make sure in the same local network.<br>for instance, in centostest node,<br>mkdir /tmp/spark-events<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br><a href="http://centostest:18080/" target="_blank" rel="noopener">http://centostest:18080/</a>  (view history on the machine running the submit binary)</p>
-<h2 id="run-cluster-mode"><a href="#run-cluster-mode" class="headerlink" title="run cluster mode"></a>run cluster mode</h2><p> ./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode cluster –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br> 上面的命令可能会jar包找不到的错误<br>注意：standalone 模式的 cluster模式 要把jar 文件传到hdfs上面去，因为driver在集群中的任意一节点执行。</p>
-<h2 id="stage"><a href="#stage" class="headerlink" title="stage"></a>stage</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; lines = spark.read().textFile(args[0]).javaRDD();</span><br><span class="line">JavaRDD&lt;String&gt; words = lines.flatMap(s -&gt; Arrays.asList(SPACE.split(s)).iterator());</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; ones = words.mapToPair(s -&gt; new Tuple2&lt;&gt;(s, 1));</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; counts = ones.reduceByKey((i1, i2) -&gt; i1 + i2);</span><br><span class="line">List&lt;Tuple2&lt;String, Integer&gt;&gt; output = counts.collect();</span><br></pre></td></tr></table></figure>
-<p>对于这个程序有两个stage，一个到mapToPair结束，第二个到collect结束，点开可以看到DAG<br><img src="/images/workcount-rdd-stage.png" alt="stage"></p>
-<h2 id="指定分区数目"><a href="#指定分区数目" class="headerlink" title="指定分区数目"></a>指定分区数目</h2><p>spark.default.parallelism<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –driver-memory=2g   –executor-memory 2000M   –conf spark.eventLog.enabled=true –conf spark.default.parallelism=4 /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/mylarge4.txt</p>
-<h2 id="Yarn的组件及架构"><a href="#Yarn的组件及架构" class="headerlink" title="Yarn的组件及架构"></a>Yarn的组件及架构</h2><ul>
-<li>ResourceManager：Global（全局）的进程</li>
-<li>NodeManager：运行在每个节点上的进程</li>
-<li>ApplicationMaster：Application-specific（应用级别）的进程</li>
-<li>Scheduler：是ResourceManager的一个组件</li>
-<li>Container：节点上一组CPU和内存资源<br>Container是Yarn对计算机计算资源的抽象，它其实就是一组CPU和内存资源，所有的应用都会运行在Container中。ApplicationMaster是对运行在Yarn中某个应用的抽象，它其实就是某个类型应用的实例，ApplicationMaster是应用级别的，它的主要功能就是向ResourceManager（全局的）申请计算资源（Containers）并且和NodeManager交互来执行和监控具体的task。Scheduler是ResourceManager专门进行资源管理的一个组件，负责分配NodeManager上的Container资源，NodeManager也会不断发送自己Container使用情况给ResourceManager。<br>ResourceManager和NodeManager两个进程主要负责系统管理方面的任务。ResourceManager有一个Scheduler，负责各个集群中应用的资源分配。对于每种类型的每个应用，都会对应一个ApplicationMaster实例，ApplicationMaster通过和ResourceManager沟通获得Container资源来运行具体的job，并跟踪这个job的运行状态、监控运行进度。<br>因为application master需要向ResourceManager（全局的）申请计算资源（Containers），他应该是跑在每个node manager上面<br><a href="https://mapr.com/docs/60/MapROverview/c_application_master.html" target="_blank" rel="noopener">https://mapr.com/docs/60/MapROverview/c_application_master.html</a><br><a href="https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好" target="_blank" rel="noopener">https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好</a>)</li>
-</ul>
-<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>关于Hadoop本身，有namenode, datanode, resource manager, node manager四个节点，<br>关于这个4个节点，可以搭建真正的分布式测试下，同时搞起zookeeper防止单点故障<br>namenode, datanode是hdfs，resource manager, node manager是yarn</p>
-<h2 id="note"><a href="#note" class="headerlink" title="note"></a>note</h2><p>spark-submit –class com.cjh.test.WordCount –conf spark.default.parallelism=12 –conf spark.executor.memory=800m –conf spark.executor.cores=2 –conf spark.cores.max=6 my.jar<br>如果要多个参数在命令行，需要多个–conf</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="ck272f0wj005xy0jibfyefwfk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -569,7 +584,7 @@ of transformations that will run on a single executor</code>. If there is one bi
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -579,7 +594,7 @@ of transformations that will run on a single executor</code>. If there is one bi
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -588,7 +603,7 @@ of transformations that will run on a single executor</code>. If there is one bi
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -601,23 +616,23 @@ of transformations that will run on a single executor</code>. If there is one bi
       <ul>
         
           <li>
-            <a href="/2019/10/26/java-servlet/">java servlet</a>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/java-exception/">java exception</a>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/es6-promise/">es6 promise</a>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
           </li>
         
           <li>
-            <a href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
           </li>
         
       </ul>
@@ -632,7 +647,7 @@ of transformations that will run on a single executor</code>. If there is one bi
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 xu, hang<br>
+      &copy; 2020 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

@@ -62,6 +62,233 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/13/ibm小型机/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="硬件体系"><a href="#硬件体系" class="headerlink" title="硬件体系"></a>硬件体系</h2><p>从处理能力来说，单Hz的处理能力x86已经超过了Power系列，这是毋庸置疑的。但是Power有其明显的优点。它采用了标准的SMP结构，也就是说对于内存来说所有CPU访问的速度都是一致的，而x86采用了NUMA结构，这就是说CPU和内存是分区的，每个CPU访问自己的这部分内存特别快，但是如果需要访问其它部分那就要走QPI总线（现在已经在不断改进了），这也客观上造成了随着CPU数量的增多，处理能力的增长Power系列的线性程度远好于x86（这也是为什么很少会用4路以上的x86服务器）。而且作为小型机，封闭系统，其设计更加完整紧凑，综合起来性能强于x86</p>
+<h2 id="软件体系"><a href="#软件体系" class="headerlink" title="软件体系"></a>软件体系</h2><p>硬件体系是自己的，操作系统也是自己的（AIX等），所以整合起来Power系列的整体稳定性要强于x86服务器，而且运维也方便（特别是对于一些外围硬件，如果使用IBM更加容易用），抗压能力也强（小型机90%的CPU占用率，运行几个星期可能都OK，x86几天就估计出问题了）<br>但是Power系列的小型机的价格太高了，而且已经赶不上技术的变化了，由于Google的崛起，云计算的兴盛，现在的分布式系统的成熟度越来越高，系统已经越来越不依赖几台小型机来提供稳定可靠性，而是通过集群来提供，性能也能够通过分布式的处理来解决。所以x86的使用越来越广泛，而最新的一些低成本但是能够带来高效能的新技术都在x86体系下得到应用（x86市场占有率高，也开放），而Power系列由于其封闭的特性，反而难以得到应用，所以Power系列的小型机优势越来越不明显，已经在逐渐退出历史舞台了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AIX is an open operating system from IBM that is based on a version of UNIX.<br>ibm小型机的系统是AIX， 所以相关的软件也要on aix， 比如oracle on aix,<br>不过ibm小型机也可以安装linux,因为linux也可以运行在power处理器， Power ISA指令集</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="ck272f0uc001ay0jiavobipri" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git-usage" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/git-usage/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/git-usage/">git 分支介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="local-branch"><a href="#local-branch" class="headerlink" title="local branch"></a>local branch</h2><p>You can view a list of all the local branches on your machine by running git branch:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">master</span><br><span class="line">new-feature</span><br></pre></td></tr></table></figure></p>
+<p>Each local branch has a file under .git/refs/heads/:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -F .git/refs/heads/</span><br><span class="line">master new-feature</span><br></pre></td></tr></table></figure></p>
+<p>There are two types of local branches on your machine: non-tracking local branches, and tracking local branches.</p>
+<h3 id="Non-tracking-local-branches"><a href="#Non-tracking-local-branches" class="headerlink" title="Non-tracking local branches"></a>Non-tracking local branches</h3><p>Non-tracking local branches are not associated with any other branch. You create one by running <code>git branch &lt;branchname&gt;</code>.</p>
+<h3 id="Tracking-local-branches"><a href="#Tracking-local-branches" class="headerlink" title="Tracking local branches"></a>Tracking local branches</h3><p>Tracking local branches are associated with another branch, usually a remote-tracking branch. You create one by running <code>git branch - track &lt;branchname&gt; [&lt;start-point&gt;]</code>.<br>You can view which one of your local branches are tracking branches using <code>git branch -vv</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -vv</span><br><span class="line">master b31f87c85 [origin/master] Example commit message</span><br><span class="line">new-feature b760e04ed Another example commit message</span><br></pre></td></tr></table></figure></p>
+<p>From this command’s output, you can see that the local branch master is tracking the <code>remote-tracking</code> branch <code>origin/master</code>, and the local branch new-feature is not tracking anything.<br>Another way to see which branches are tracking branches is by having a look at <code>.git/config</code>.<br>Tracking local branches are useful. They allow you to run git pull and git push, without specifying which upstream branch to use. If the branch is not set up to track another branch, you’ll get an error like this one:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout new-feature</span><br><span class="line">$ git pull</span><br><span class="line">There is no tracking information for the current branch.</span><br><span class="line">Please specify which branch you want to merge with.</span><br><span class="line">See git-pull(1) for details</span><br><span class="line">git pull &lt;remote&gt; &lt;branch&gt;</span><br><span class="line">If you wish to set tracking information for this branch you can do so with:</span><br><span class="line">git branch - set-upstream new-feature &lt;remote&gt;/&lt;branch&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Remote-tracking-branches-still-on-your-machine"><a href="#Remote-tracking-branches-still-on-your-machine" class="headerlink" title="Remote-tracking branches (still on your machine)"></a>Remote-tracking branches (still on your machine)</h2><p>You can view a list of all the remote-tracking branches on your machine by running <code>git branch -r</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -r</span><br><span class="line">bitbucket/master</span><br><span class="line">origin/master</span><br><span class="line">origin/new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Each remote-tracking branch has a file under <code>.git/refs/&lt;remote&gt;/</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ tree -F .git/refs/remotes/</span><br><span class="line">.git/refs/remotes/</span><br><span class="line">├── bitbucket/</span><br><span class="line">│ └── master</span><br><span class="line">└── origin/</span><br><span class="line">├── master</span><br><span class="line">└── new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Think of your remote-tracking branches as your local cache for what the remote machines contain. You can update your remote-tracking branches using <code>git fetch</code>, which <code>git pull</code> uses behind the scenes.<br>Even though all the data for a remote-tracking branch is stored locally on your machine (like a cache), it’s still never called a local branch. (At least, I wouldn’t call it that!) It’s just called a remote-tracking branch.</p>
+<h2 id="Branches-on-a-remote-machine"><a href="#Branches-on-a-remote-machine" class="headerlink" title="Branches on a remote machine:"></a>Branches on a remote machine:</h2><p>You can view all the remote branches (that is, the branches on the remote machine), by running <code>git remote show &lt;remote&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ git remote show origin</span><br><span class="line">* remote origin</span><br><span class="line">Fetch URL: git@github.com:Flimm/example.git</span><br><span class="line">Push URL: git@github.com:Flimm/example.git</span><br><span class="line">HEAD branch: master</span><br><span class="line">Remote branches:</span><br><span class="line">io-socket-ip new (next fetch will store in remotes/origin)</span><br><span class="line">master tracked</span><br><span class="line">new-branch tracked</span><br><span class="line">Local ref configured for &apos;git pull&apos;:</span><br><span class="line">master merges with remote master</span><br><span class="line">new-branch merges with remote new-branch</span><br><span class="line">Local ref configured for &apos;git push&apos;:</span><br><span class="line">master pushes to master (up to date)</span><br><span class="line">new-branch pushes to new-branch (fast-forwardable)</span><br></pre></td></tr></table></figure></p>
+<p>This git remote command queries the remote machine over the network about its branches. It does not update the remote-tracking branches on your local machine, use <code>git fetch</code> or <code>git pull</code> for that.</p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>git pull [<options>] [<repository> [<refspec>…​]]</refspec></repository></options></p>
+<p>git merge [-n] [ - stat] [ - no-commit] [ - squash] [ - [no-]edit]<br> [-s <strategy>] [-X <strategy-option>] [-S[<keyid>]]<br> [ - [no-]allow-unrelated-histories]<br> [ - [no-]rerere-autoupdate] [-m <msg>] [-F <file>] [<commit>…​]<br>从官方的文档来看，git merge是没有repository参数的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull origin next</span><br></pre></td></tr></table></figure></commit></file></msg></keyid></strategy-option></strategy></p>
+<p>这个pull的直接就是远程的分支, 他是下面两个命令的结合体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git merge origin/next</span><br></pre></td></tr></table></figure></p>
+<p>这个先把远程的所有分支fetch过来，然后把远程跟踪分支merge到当前分支，origin/next这种分支是存在本地的,虽然叫远程跟踪分支<br>把远程的分支fetch过来可以看到如下， fetch就是把远程的东西拿到本地的仓库，也就是origin/develop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C:\git\testgit&gt;git fetch</span><br><span class="line">remote: Enumerating objects: 5, done.</span><br><span class="line">remote: Counting objects: 100% (5/5), done.</span><br><span class="line">remote: Compressing objects: 100% (3/3), done.</span><br><span class="line">remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0</span><br><span class="line">Unpacking objects: 100% (3/3), done.</span><br><span class="line">From https://gitprod.statestr.com/e587214/testgit</span><br><span class="line">8ce7bef..0605953 develop -&gt; origin/develop</span><br></pre></td></tr></table></figure></p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777" target="_blank" rel="noopener">https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/git-usage/" data-id="ck272f0u3000xy0jivhag6eo8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hive-vs-hbase" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/hive-vs-hbase/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/hive-vs-hbase/">hive vs hbase</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。</li>
+<li>Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；HBase处理数据是基于列的而不是基于行的模式，适合海量数据的随机访问。</li>
+<li>HBase的表是疏松的存储的，因此用户可以给行定义各种不同的列；而Hive表是稠密型，即定义多少列，每一行有存储固定列数的数据。</li>
+<li>Hive使用Hadoop来分析处理数据，而Hadoop系统是批处理系统，因此不能保证处理的低迟延问题；而HBase是近实时系统，支持实时查询。</li>
+<li>Hive不提供row-level的更新，它适用于大量append-only数据集（如日志）的批任务处理。而基于HBase的查询，支持和row-level的更新。</li>
+<li>Hive提供完整的SQL实现，通常被用来做一些基于历史数据的挖掘、分析。而HBase不适用与有join，多级索引，表关系复杂的应用场景。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="ck272f0u90012y0jizmimgf29" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hbase/">hbase</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/windows10-disable-update/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="ck272f0vv004by0jibxymjwv8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/win10/">win10</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark闭包" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/05/spark闭包/" class="article-date">
+  <time datetime="2019-06-05T14:51:52.000Z" itemprop="datePublished">2019-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/05/spark闭包/">spark 闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>什么叫闭包： 跨作用域访问函数变量。又指的一个拥有许多变量和绑定了这些变量的环境的表达式（通常是一个函数），因而这些变量也是该表达式的一部分。</p>
+<p>Spark闭包的问题引出：<br>在spark中实现统计List(1,2,3)的和。如果使用下面的代码，程序打印的结果不是6，而是0。这个和我们编写单机程序的认识有很大不同。为什么呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">object Test &#123;</span><br><span class="line">  def main(args:Array[String]):Unit = &#123;</span><br><span class="line">      val conf = new SparkConf().setAppName(&quot;test&quot;);</span><br><span class="line">      val sc = new SparkContext(conf)</span><br><span class="line"></span><br><span class="line">      val rdd = sc.parallelize(List(1,2,3))</span><br><span class="line">      var counter = 0</span><br><span class="line">      //warn: don&apos;t do this</span><br><span class="line">      rdd.foreach(x =&gt; counter += x)</span><br><span class="line">      println(&quot;Counter value: &quot;+counter)</span><br><span class="line"></span><br><span class="line">      sc.stop()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题分析：<br>counter是在foreach函数外部定义的，也就是在driver程序中定义，而foreach函数是属于rdd对象的，rdd函数的执行位置是各个worker节点（或者说worker进程），main函数是在driver节点上（或者说driver进程上）执行的，所以当counter变量在driver中定义，被在rdd中使用的时候，出现了变量的“跨域”问题，也就是闭包问题。</p>
+<p>问题解释：<br>对于上面程序中的counter变量，由于在main函数和在rdd对象的foreach函数是属于不同“闭包”的，所以，传进foreach中的counter是一个副本，初始值都为0。foreach中叠加的是counter的副本，不管副本如何变化，都不会影响到main函数中的counter，所以最终打印出来的counter为0.</p>
+<p>当用户提交了一个用scala语言写的Spark程序，Spark框架会调用哪些组件呢？首先，这个Spark程序就是一个“Application”，程序里面的mian函数就是“Driver Program”， 前面已经讲到它的作用，只是，dirver程序的可能运行在客户端，也有可有可能运行在spark集群中，这取决于spark作业提交时参数的选定，比如，yarn-client和yarn-cluster就是分别运行在客户端和spark集群中。在driver程序中会有RDD对象的相关代码操作，比如下面代码的newRDD.map()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Test&#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val sc = new SparkContext(new SparkConf())</span><br><span class="line">    val newRDD = sc.textFile(&quot;&quot;)</span><br><span class="line"></span><br><span class="line">    newRDD.map(data =&gt; &#123;</span><br><span class="line">      //do something</span><br><span class="line">      println(data.toString)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及到RDD的代码，比如上面RDD的map操作，它们是在Worker节点上面运行的，所以spark会透明地帮用户把这些涉及到RDD操作的代码传给相应的worker节点。如果在RDD map函数中调用了在函数外部定义的对象，因为这些对象需要通过网络从driver所在节点传给其他的worker节点，所以要求这些类是可序列化的，比如在Java或者scala中实现Serializable类，除了java这种序列化机制，还可以选择其他方式，使得序列化工作更加高效。worker节点接收到程序之后，在spark资源管理器的指挥下运行RDD程序。不同worker节点之间的运行操作是并行的。</p>
+<p>​在worker节点上所运行的RDD中代码的变量是保存在worker节点上面的，在spark编程中，很多时候用户需要在driver程序中进行相关数据操作之后把该数据传给RDD对象的方法以做进一步处理，这时候，spark框架会自动帮用户把这些数据通过网络传给相应的worker节点。除了这种以变量的形式定义传输数据到worker节点之外，spark还另外提供了两种机制，分别是broadcast和accumulator。相比于变量的方式，在一定场景下使用broadcast比较有优势，因为所广播的数据在每一个worker节点上面只存一个副本，而在spark算子中使用到的外部变量会在每一个用到它的task中保存一个副本，即使这些task在同一个节点上面。所以当数据量比较大的时候，建议使用广播而不是外部变量。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/05/spark闭包/" data-id="ck272f0vp003zy0jitdxfiovs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/03/create-large-file/" class="article-date">
@@ -93,48 +320,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/01/hostname设置/" class="article-date">
-  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/01/hostname设置/">hostname设置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
-<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
-<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
-<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="ck272f0ub0016y0jinzqyieif" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -189,10 +374,10 @@
 
 
   
-    <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-hostname设置" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
-  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
+    <a href="/2019/06/01/hostname设置/" class="article-date">
+  <time datetime="2019-06-01T14:51:52.000Z" itemprop="datePublished">2019-06-01</time>
 </a>
     
   </div>
@@ -203,7 +388,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/spark-driver-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
+      <a class="article-title" href="/2019/06/01/hostname设置/">hostname设置</a>
     </h1>
   
 
@@ -211,19 +396,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
-<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
-<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
-</ul>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
+        <p>hostnamectl set-hostname ‘k8smaster’<br>这样设置后仅仅/etc/hostname里面有了</p>
+<p>/etc/hosts里面依然要设置，否则ssh k8smaster依然不work， k8smaster是本机名</p>
+<p>如果采用clone vm的方式搭建集群的话，clone后需要重新设置hostname,etc/hosts还有固定ip(/etc/sysconfig/network-script/ifcfg-xxx)</p>
+<p>最后的结果是/etc/hostname里面各自的ip，/etc/hosts里面三个机器一样的，包括windows就是4个机器一样的</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="ck272f0vh003iy0jigbp6szxs" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/01/hostname设置/" data-id="ck272f0ub0016y0jinzqyieif" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -270,10 +454,10 @@
 
 
   
-    <article id="post-aliyum-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-spark-driver-mode" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/26/aliyum-maven/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+    <a href="/2019/05/30/spark-driver-mode/" class="article-date">
+  <time datetime="2019-05-30T14:51:52.000Z" itemprop="datePublished">2019-05-30</time>
 </a>
     
   </div>
@@ -284,7 +468,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/aliyum-maven/">aliyun maven</a>
+      <a class="article-title" href="/2019/05/30/spark-driver-mode/">Spark Client和Cluster两种运行模式的工作流程</a>
     </h1>
   
 
@@ -292,195 +476,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>put below in pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">       &lt;repository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/repository&gt;</span><br><span class="line"></span><br><span class="line">   &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">   &lt;pluginRepositories&gt;</span><br><span class="line">       &lt;pluginRepository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/pluginRepository&gt;</span><br><span class="line">   &lt;/pluginRepositories&gt;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><ul>
+<li>client mode: In client mode, the driver is launched in the same process as the client that submits the application..也就是说在Client模式下，Driver进程会在当前客户端启动，客户端进程一直存在直到应用程序运行结束。</li>
+<li>cluster模式：In cluster mode, however, the driver is launched from one of the Worker processes inside the cluster, and the client process exits as soon as it fulfills its responsibility of submitting the application without waiting for the application to finish.也就是说，在cluster模式下，Driver进程将会在集群中的一个worker中启动，而且客户端进程在完成自己提交任务的职责后，就可以退出，而不用等到应用程序执行完毕</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://blog.csdn.net/SummerMangoZz/article/details/72627518" target="_blank" rel="noopener">https://blog.csdn.net/SummerMangoZz/article/details/72627518</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="ck272f0th0004y0jiahrmmycr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/26/maven-compiler/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
-<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
-<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="ck272f0v4002sy0ji51d5x5cd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-dubbo/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="ck272f0u1000ty0jink9lyai8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-spark/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
-<p>输出Lines with a: xxx, Lines with b: xxx</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="ck272f0u2000uy0jinsjbecnn" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/30/spark-driver-mode/" data-id="ck272f0vh003iy0jigbp6szxs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/15/oauth2/" class="article-date">
-  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>Authentication is the process of verifying an identity (who they say they are)</li>
-<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
-</ul>
-<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
-<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
-<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
-<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
-<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
-<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
-<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
-<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="ck272f0v9002zy0ji44f3ycky" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
 
     </footer>
   </div>
@@ -507,7 +515,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -517,7 +525,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -526,7 +534,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -539,23 +547,23 @@
       <ul>
         
           <li>
-            <a href="/2019/10/26/java-servlet/">java servlet</a>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/java-exception/">java exception</a>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/es6-promise/">es6 promise</a>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
           </li>
         
           <li>
-            <a href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
           </li>
         
       </ul>
@@ -570,7 +578,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 xu, hang<br>
+      &copy; 2020 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

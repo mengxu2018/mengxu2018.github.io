@@ -62,6 +62,220 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
+  <time datetime="2019-01-21T14:51:52.000Z" itemprop="datePublished">2019-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java"><a href="#java" class="headerlink" title="java"></a>java</h2><p>分组捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String line = &quot;This order was placed for QT3000! OK?&quot;;</span><br><span class="line">     Pattern pattern = Pattern.compile(&quot;(.*?)(\\d+)(.*)&quot;);</span><br><span class="line">     Matcher matcher = pattern.matcher(line);</span><br><span class="line"></span><br><span class="line">     while (matcher.find()) &#123;</span><br><span class="line">         System.out.println(&quot;group 1: &quot; + matcher.group(1));</span><br><span class="line">         System.out.println(&quot;group 2: &quot; + matcher.group(2));</span><br><span class="line">         System.out.println(&quot;group 3: &quot; + matcher.group(3));</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//匹配str中所有字符串hello，这时str中3个hello都能匹配上，通过下面打印的匹配上的字符串的位置可以看出</span><br><span class="line">Pattern p=Pattern.compile(&quot;hello&quot;);</span><br><span class="line">Matcher m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且该字符串是在开头的位置===========&quot;);</span><br><span class="line">// ^表示匹配字符串的开头，但是如何在[]里面则表示非，如[^a-f] 不匹配a-f</span><br><span class="line">// &quot;hello&quot;和&quot;^hello&quot;的区别就是：前者匹配时不管是不是在开头位置，只要能匹配就行，后者则是不但要能匹配而且还要是在开头的位置。这时str中3个hello只有第1个能匹配上。</span><br><span class="line">p=Pattern.compile(&quot;^hello&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">System.out.println(&quot;is:&quot; + m.matches());</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置xxx：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//这时str中两个java都能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且是该字符串是在末尾的位置===========&quot;);</span><br><span class="line">//这时str中两个java只有第2个才能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java$&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 这是整个匹配，直接是String的方法</span><br><span class="line">String test = &quot;http://yahoo.com&quot;;</span><br><span class="line">System.out.println(test.matches(&quot;^(http|https|ftp)://.*$&quot;));</span><br><span class="line"></span><br><span class="line">// 这个是编译过的表达式，也是整个匹配</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">System.out.println(&quot;m2:&quot; + m2.matches());</span><br><span class="line"></span><br><span class="line">// 这个是捕获group，取第一个group, index从1开始</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">if (m2.find()) &#123;</span><br><span class="line">    System.out.println(&quot;g1:&quot; + m2.group(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个是group(0)，没有小括号分组，从前到后匹配到什么算什么</span><br><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="ck272f0vf003dy0jipzx30gtv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T14:51:52.000Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
+<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
+<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
+</ul>
+<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
+<li>systemctl start mongod.service</li>
+<li>systemctl enable mongod.service</li>
+</ul>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="ck272f0v6002uy0jibmc2nugt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-command" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/16/docker-command/" class="article-date">
+  <time datetime="2019-01-16T14:51:52.000Z" itemprop="datePublished">2019-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/16/docker-command/">docker command</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name test  debian</span><br><span class="line">docker restart test</span><br><span class="line">docker container ls</span><br><span class="line">docker exec -it 28df3d5895a4 bash</span><br><span class="line">docker container  ls --all</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="ck272f0tu000hy0jisqtwbr0p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-network" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/09/docker-network/" class="article-date">
+  <time datetime="2019-01-09T14:51:52.000Z" itemprop="datePublished">2019-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/09/docker-network/">docker network</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="eth0-vethxxx"><a href="#eth0-vethxxx" class="headerlink" title="eth0, vethxxx"></a>eth0, vethxxx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit --name alpine1 alpine ash</span><br><span class="line">docker exec -it 581c07020bd0 ash</span><br></pre></td></tr></table></figure>
+<p><em><a href="https://kairen.github.io/2016/01/05/container/docker-network/" target="_blank" rel="noopener">https://kairen.github.io/2016/01/05/container/docker-network/</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="ck272f0tw000jy0ji5sp25d7r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-k8s-port-targetport-nodeport-service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/08/k8s-port-targetport-nodeport-service/" class="article-date">
+  <time datetime="2019-01-08T14:51:52.000Z" itemprop="datePublished">2019-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>总的来说，port和nodePort都是service的端口，前者暴露给集群内客户访问服务，后者暴露给集群外客户访问服务。从这两个端口到来的数据都需要经过反向代理kube-proxy流入后端pod的targetPort，从而到达pod上的容器内。</em></p>
+<p><em>nodeport只有 type为NodePort类型的的service用</em></p>
+<p>容易混淆的概念：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1、NodePort和port</span><br><span class="line"></span><br><span class="line">前者是将服务暴露给外部用户使用并在node上、后者则是为内部组件相互通信提供服务的，他们是在service上的端口。</span><br><span class="line"></span><br><span class="line">2、targetPort</span><br><span class="line">targetPort是pod上的端口，用来将pod内的container与外部进行通信的端口</span><br><span class="line"></span><br><span class="line">3、port、NodePort、ContainerPort和targetPort在哪儿？</span><br><span class="line"></span><br><span class="line">port在service上，负责处理对内的通信，clusterIP:port</span><br><span class="line"></span><br><span class="line">NodePort在node上，负责对外通信，NodeIP:NodePort</span><br><span class="line"></span><br><span class="line">ContainerPort在容器上，用于被pod绑定</span><br><span class="line"></span><br><span class="line">targetPort在pod上、负责与kube-proxy代理的port和Nodeport数据进行通信</span><br><span class="line"></span><br><span class="line">总结:targetPort很好理解，targetPort是pod上的端口，从port和nodePort上到来的数据最终经过kube-proxy流入到后端pod的targetPort上进入容器。</span><br><span class="line">https://blog.csdn.net/yjk13703623757/article/details/79819415</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">      kind: Service</span><br><span class="line">      metadata:</span><br><span class="line">        name: test-service</span><br><span class="line">      spec:</span><br><span class="line">        ports:</span><br><span class="line">        - port: 8080</span><br><span class="line">          targetPort: 8170</span><br><span class="line">          nodePort: 33333</span><br><span class="line">          protocol: TCP </span><br><span class="line">        selector:</span><br><span class="line">          component: test-service-app</span><br></pre></td></tr></table></figure>
+<p>The port is 8080 which represents that test-service can be accessed by other services in the cluster at port 8080.<br>The targetPort is 8170 which represents the test-service is actually running on port 8170 on pods<br>The nodePort is 33333 which represents that test-service can be accessed via kube-proxy on port 33333.<br><strong>pod运行在targetPort为8170不代表就可以通过这个端口访问，还是得通过port的8080来访问他(cluster内部)，或者nodePort的33333来访问（外部）</strong></p>
+<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h2><p><em>nodeport是外部机器访问的端口，这个是刚刚到kube-proxy的时候，还没有进入具体的pod</em><br><em>targetport是具体的port的监听端口，比如mysql的3306，就是dockerfile里面的expose端口</em><br><em>port是内部pod直接的访问端口，这个端口也是刚刚到kube-proxy的时候，还没有进入具体的pod，这个跟nodeport一个级别，<br>比如mysql的targetport虽然是3306，但是cluster里面的pod可能通过33306来访问mysql pod</em></p>
+<p><em>Kubernetes 分配给 Service 一个固定 IP，这是一个虚拟 IP （也称为 ClusterIP），并不是一个真实存在的IP,而是由 Kubernetes 虚拟出来的。虚拟 IP 的范围通过 Kubernetes API Service 的启动参数–service-cluster-ip-range=10.254.0.0/16 配置</em><br><em>虚拟 IP 属于 Kubernetes 内部的虚拟网络，外部是寻址不到的，在 Kubernetes 系统中，实际上是由 Kubernetes Proxy 组件负责实现虚拟 IP 路由和转发的，所以在 Kubernetes Node 中我们都运行了 Kubernetes Proxy，从而在容器覆盖网络之上又实现了 Kubernetes 层级的虚拟转发网络。</em></p>
+<p><em><a href="https://blog.csdn.net/xinghun_4/article/details/50492041" target="_blank" rel="noopener">https://blog.csdn.net/xinghun_4/article/details/50492041</a></em><br><em><a href="https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291" target="_blank" rel="noopener">https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291</a></em><br><em><a href="https://ieevee.com/tech/2017/01/20/k8s-service.html" target="_blank" rel="noopener">https://ieevee.com/tech/2017/01/20/k8s-service.html</a></em><br><em><a href="https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition" target="_blank" rel="noopener">https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition</a></em><br><em><a href="https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170" target="_blank" rel="noopener">https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170</a></em><br><em><a href="https://juejin.im/post/5bd6c14be51d455b7461cb46" target="_blank" rel="noopener">https://juejin.im/post/5bd6c14be51d455b7461cb46</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="ck272f0um001wy0jisz4wl7dp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-k8s-deploy-application" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/06/k8s-deploy-application/" class="article-date">
@@ -246,7 +460,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -256,7 +470,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -265,7 +479,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -278,23 +492,23 @@
       <ul>
         
           <li>
-            <a href="/2019/10/26/java-servlet/">java servlet</a>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/java-exception/">java exception</a>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/es6-promise/">es6 promise</a>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
           </li>
         
           <li>
-            <a href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
           </li>
         
       </ul>
@@ -309,7 +523,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 xu, hang<br>
+      &copy; 2020 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

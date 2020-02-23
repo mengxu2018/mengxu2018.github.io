@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>使用minikube学习环境 | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="minikubehttps://kubernetes.io/docs/setup/learning-environment/minikube/ 安装好centos后因为之前设置静态ip的时候对vmware进行了设置，所以现在除了nmtui之外，也必须修改/etc/sysconfig/network-scripts/ifcfg-ens33 yum install -y yum-utils \  de">
+<meta name="keywords" content="kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用minikube学习环境">
+<meta property="og:url" content="https://mengxu2018.github.io/2020/01/27/minikube-intro/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="minikubehttps://kubernetes.io/docs/setup/learning-environment/minikube/ 安装好centos后因为之前设置静态ip的时候对vmware进行了设置，所以现在除了nmtui之外，也必须修改/etc/sysconfig/network-scripts/ifcfg-ens33 yum install -y yum-utils \  de">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-14T06:04:40.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用minikube学习环境">
+<meta name="twitter:description" content="minikubehttps://kubernetes.io/docs/setup/learning-environment/minikube/ 安装好centos后因为之前设置静态ip的时候对vmware进行了设置，所以现在除了nmtui之外，也必须修改/etc/sysconfig/network-scripts/ifcfg-ens33 yum install -y yum-utils \  de">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-minikube-intro" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/27/minikube-intro/" class="article-date">
+  <time datetime="2020-01-27T12:44:15.000Z" itemprop="datePublished">2020-01-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用minikube学习环境
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h2><p><a href="https://kubernetes.io/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/learning-environment/minikube/</a></p>
+<p>安装好centos后因为之前设置静态ip的时候对vmware进行了设置，所以现在除了nmtui之外，也必须修改/etc/sysconfig/network-scripts/ifcfg-ens33</p>
+<p>yum install -y yum-utils \<br>  device-mapper-persistent-data \<br>  lvm2</p>
+<p>yum-config-manager \<br>      –add-repo \<br>      <a href="https://download.docker.com/linux/centos/docker-ce.repo" target="_blank" rel="noopener">https://download.docker.com/linux/centos/docker-ce.repo</a></p>
+<p>yum install -y docker-ce</p>
+<p>systemctl disable firewalld</p>
+<p>swapoff -a<br>vi /etc/fstab<br>注释掉下面这一行永久关闭swap</p>
+<p>#/dev/mapper/centos-swap swap                    swap    defaults        0 0</p>
+<p>sysctl net.bridge.bridge-nf-call-iptables=1</p>
+<p>minikube start –vm-driver=none（not suggest,可能会有kubernetes版本不被istio支持的问题)<br>minikube start –memory=4096 –cpus=4 –kubernetes-version=v1.15 –vm-driver=none(–kubernetes-version可以不带，有时候带会有错误)<br>minikube start –memory=4096 –cpus=4 –vm-driver=none<br>minikube dashboard –url</p>
+<p>下面是部署一个sample<br>kubectl create deployment hello-minikube –image=k8s.gcr.io/echoserver:1.10<br>kubectl expose deployment hello-minikube –type=NodePort –port=8080<br>kubectl get pod<br>minikube service hello-minikube –url<br>kubectl describe services hello-minikube<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kubectl describe services hello-minikube</span><br><span class="line">Name:                     hello-minikube</span><br><span class="line">Namespace:                default</span><br><span class="line">Labels:                   app=hello-minikube</span><br><span class="line">Annotations:              &lt;none&gt;</span><br><span class="line">Selector:                 app=hello-minikube</span><br><span class="line">Type:                     NodePort</span><br><span class="line">IP:                       10.96.132.162</span><br><span class="line">Port:                     &lt;unset&gt;  8080/TCP</span><br><span class="line">TargetPort:               8080/TCP</span><br><span class="line">NodePort:                 &lt;unset&gt;  31451/TCP</span><br><span class="line">Endpoints:                172.17.0.4:8080</span><br><span class="line">Session Affinity:         None</span><br><span class="line">External Traffic Policy:  Cluster</span><br><span class="line">Events:                   &lt;none&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Endpoints:                172.17.0.4:8080是内网的<br>NodePort:                 <unset>  31451/TCP 是外网的</unset></p>
+<p>kubectl get namespace<br>kubectl get pods -n istio-system<br>kubectl describe pod  -n istio-system istio-galley-69674cb559-chxtg<br>kubectl logs -n istio-system istio-policy-5cdbc47674-q7flx</p>
+<h2 id="istio-gateway"><a href="#istio-gateway" class="headerlink" title="istio gateway"></a>istio gateway</h2><p>kubectl get gateway<br>istioctl -n istio-system pc routes istio-ingressgateway-5db78457f5-h49tm –name http.80 -o json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: Gateway</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo-gateway</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    istio: ingressgateway # use istio default controller</span><br><span class="line">  servers:</span><br><span class="line">  - port:</span><br><span class="line">      number: 80</span><br><span class="line">      name: http</span><br><span class="line">      protocol: HTTP</span><br><span class="line">    hosts:</span><br><span class="line">    - &quot;*&quot;</span><br></pre></td></tr></table></figure>
+<p>In the gateway resource, the selector refers to Istio’s default ingress controller by its label, in which the key of the label is istio and the value is ingressgateway<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kubectl get pods -listio=ingressgateway -n istio-system</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">istio-ingressgateway-649f9646d4-nc88s   1/1     Running   0          10h</span><br><span class="line"></span><br><span class="line">感觉像是默认是要去和gateway resource同一个namespace下面去找gateway controller pod，找不到就找istio-system下面这个</span><br><span class="line"></span><br><span class="line">https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller</span><br><span class="line">上面这个文章讲的比较详细，如果不是默认的istio: ingressgateway的话，需要gateway resource和gateway controller的namespace一致,</span><br><span class="line">或者可以理解为gateway resource的默认namespace就是istio-system</span><br><span class="line"></span><br><span class="line">https://discuss.istio.io/t/istio-ingressgateway-controller-and-namespaces/1217/5 的一个回答</span><br><span class="line">In 1.1 this is changing a bit - the Gateway resource should be in same namespace as the gateway(the service, deployment, certificates). The default is istio-system - but you can run it in other namespace, or in multiple namespaces if you need to. Each namespace will have a different load balancer IP and may handle different domains with different certs.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">https://blog.jayway.com/2018/10/22/understanding-istio-ingress-gateway-in-kubernetes/</span><br></pre></td></tr></table></figure></p>
+<p>但是对于官网下面的话不理解<br>One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. The scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance.</p>
+<p>最后这里总结下：<br>gateway resource和gateway controller pod是两个东西，前者可以通过kubeclt get gateway获得，后者其实就是一个pod，<br>我们平常一般创建gateway resource的时候默认没有指定namespace的时候是默认为isito-system，比如istio: ingressgateway，他会去<br>istio-system这个namespace下面去找label为istio: ingressgateway的gateway pod<br>如果要自己创建一个自定义的gateway controller pod的话，参考<a href="https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller，简单说就是需要创建一个新的gateway" target="_blank" rel="noopener">https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller，简单说就是需要创建一个新的gateway</a> pod资源，这个资源会在某个namespace下面，<br>然后在创建gateway resource并且指定他的namespace，同时指定selector匹配gateway pod资源</p>
+<p><a href="https://istio.io/blog/2019/custom-ingress-gateway/这个文章的第七点说明type" target="_blank" rel="noopener">https://istio.io/blog/2019/custom-ingress-gateway/这个文章的第七点说明type</a>: LoadBalancer可以创建一个gateway controller pod，<br>在上面的so文章也有人回答‘In fact, it is very simple. Istio’s ingress is just a regular Kubernetes Service of “Load Balancer” type.’<br>但是有待验证</p>
+<p>关于gateway，这个文章<a href="https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/最好，" target="_blank" rel="noopener">https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/最好，</a><br>在minikube上面其实就是默认的ingress gateway通过nodeport暴露出来，所以访问具体的service其实是访问的这个gateway，<br>ingress说的其实就是这个gateway。<br>VirtualService里面的hosts应该说的重复字段，实际上destination里也有这个字段<br><a href="https://blog.csdn.net/kozazyh/article/details/81477629这里就说明了这个重复" target="_blank" rel="noopener">https://blog.csdn.net/kozazyh/article/details/81477629这里就说明了这个重复</a></p>
+<h2 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h2><h3 id="network-issue-due-to-iptables"><a href="#network-issue-due-to-iptables" class="headerlink" title="network issue due to iptables"></a>network issue due to iptables</h3><p>kubectl get pods -n istio-system<br>kubectl get pods -n kube-system<br>上面两个namespace下面的pod如果有下面的问题的话，就刷新iptables<br>none: coredns CrashLoopBackOff: dial tcp ip:443: connect: no route to host #4350</p>
+<p>systemctl stop kubelet<br>systemctl stop docker<br>iptables –flush<br>iptables -tnat –flush<br>systemctl start kubelet<br>systemctl start docker</p>
+<h3 id="multiply-container-due-to-the-istio"><a href="#multiply-container-due-to-the-istio" class="headerlink" title="multiply container due to the istio"></a>multiply container due to the istio</h3><p>When retrieving logs for pods that have multiple containers, you need to specify the container you want the logs for.<br>For example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs productpage-v1-84f77f8747-8zklx -c productpage</span><br></pre></td></tr></table></figure></p>
+<p>The reason is because Istio adds a second container to deployments via the istio-sidecar-injector. This is what adds the envoy proxy in front of all of your pods traffic.</p>
+<h3 id="why-kube-dns-and-core-dns-both-exist"><a href="#why-kube-dns-and-core-dns-both-exist" class="headerlink" title="why kube-dns and core-dns both exist"></a>why kube-dns and core-dns both exist</h3><p>kubectl get deployments -n kube-system<br>kubectl get pods -n kube-public<br>上面得到coredns<br>kubectl get svc -n kube-system<br>上面得到kube-dns<br>但是如果kubectl describe -n kube-system service/kube-dns就会发现<br>他的Selector: k8s-app=kube-dns其实就是指向kubectl get pods -lk8s-app=kube-dns -n kube-system</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://istio.io/docs/examples/bookinfo/" target="_blank" rel="noopener">https://istio.io/docs/examples/bookinfo/</a><br><a href="https://www.cnblogs.com/psy-code/p/9311104.html" target="_blank" rel="noopener">https://www.cnblogs.com/psy-code/p/9311104.html</a><br>kubectl get node -o wide</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/01/27/minikube-intro/" data-id="ck5wdwasg00013kji7b281v3t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/15/istio-adapter/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          istio mixer adapter setup
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/27/不能启动k8s/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">failed to start k8s</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

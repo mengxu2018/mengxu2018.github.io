@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-aliyum-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/springboot-docker/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/05/26/aliyum-maven/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
+      <a class="article-title" href="/2019/05/26/aliyum-maven/">aliyun maven</a>
     </h1>
   
 
@@ -84,18 +84,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
-<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
-<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
-
+        <p>put below in pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">       &lt;repository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/repository&gt;</span><br><span class="line"></span><br><span class="line">   &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">   &lt;pluginRepositories&gt;</span><br><span class="line">       &lt;pluginRepository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/pluginRepository&gt;</span><br><span class="line">   &lt;/pluginRepositories&gt;</span><br></pre></td></tr></table></figure></p>
+<p>put below in build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="ck272f0vu0049y0ji885xsoxy" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="ck272f0th0004y0jiahrmmycr" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
 
     </footer>
   </div>
@@ -104,9 +102,189 @@
 
 
   
-    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/springboot-test/" class="article-date">
+    <a href="/2019/05/26/maven-compiler/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
+<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
+<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="ck272f0v4002sy0ji51d5x5cd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-dubbo/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="ck272f0u1000ty0jink9lyai8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-spark/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
+<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
+<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
+<p>输出Lines with a: xxx, Lines with b: xxx</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="ck272f0u2000uy0jinsjbecnn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/15/oauth2/" class="article-date">
+  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>Authentication is the process of verifying an identity (who they say they are)</li>
+<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
+</ul>
+<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
+<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
+<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
+<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
+<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
+<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
+<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
+<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="ck272f0v9002zy0ji44f3ycky" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
   <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
@@ -118,7 +296,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
+      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
     </h1>
   
 
@@ -126,15 +304,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
+        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
+<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="ck272f0vs0046y0jioep4re3y" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="ck272f0ve003ay0jip6nvatyf" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
 
     </footer>
   </div>
@@ -200,9 +383,9 @@
 
 
   
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
+    <a href="/2019/03/31/springboot-test/" class="article-date">
   <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
@@ -214,7 +397,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
+      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
     </h1>
   
 
@@ -222,20 +405,57 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
-<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
+        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="ck272f0ve003ay0jip6nvatyf" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="ck272f0vs0046y0jioep4re3y" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/springboot-docker/" class="article-date">
+  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
+<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
+<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
+<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="ck272f0vu0049y0ji885xsoxy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
 
     </footer>
   </div>
@@ -283,251 +503,6 @@
 
 
   
-    <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/java-log/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/java-log/">java log implemention</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="logback-for-spring-data-jpa"><a href="#logback-for-spring-data-jpa" class="headerlink" title="logback for spring data jpa"></a>logback for spring data jpa</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;appender name=”STDOUT” class=”ch.qos.logback.core.ConsoleAppender”&gt;</span><br><span class="line"> &lt;encoder class=”ch.qos.logback.classic.encoder.PatternLayoutEncoder”&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n</span><br><span class="line"> &lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;appender name=”FILE” class=”ch.qos.logback.core.rolling.RollingFileAppender”&gt;</span><br><span class="line"> &lt;file&gt;$&#123;catalina.home&#125;/logs/playbook.log&lt;/file&gt;</span><br><span class="line"> &lt;rollingPolicy class=”ch.qos.logback.core.rolling.TimeBasedRollingPolicy”&gt;</span><br><span class="line"> &lt;! — daily rollover →</span><br><span class="line"> &lt;fileNamePattern&gt;$&#123;catalina.home&#125;/logs/playbook.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;</span><br><span class="line"> &lt;timeBasedFileNamingAndTriggeringPolicy</span><br><span class="line"> class=”ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP”&gt;</span><br><span class="line"> &lt;! — or whenever the file size reaches 50MB →</span><br><span class="line"> &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt;</span><br><span class="line"> &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span><br><span class="line"> &lt;! — keep 30 days’ worth of history →</span><br><span class="line"> &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line"> &lt;/rollingPolicy&gt;</span><br><span class="line"> &lt;encoder&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n&lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;logger name=”ch.qos.logback” level=”WARN” /&gt;</span><br><span class="line"> &lt;logger name=”com.demo.test” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework.beans” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.SQL” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.type.descriptor.sql” level=”TRACE” /&gt;</span><br><span class="line"> &lt;root level=”INFO”&gt;</span><br><span class="line"> &lt;appender-ref ref=”STDOUT” /&gt;</span><br><span class="line"> &lt;appender-ref ref=”FILE” /&gt;</span><br><span class="line"> &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>注意hibernate的log 需要 configure Hibernate to log via SLF4J,<br>System.setProperty(“org.jboss.logging.provider”, “slf4j”);<br>同时”hibernate.show_sql”设置为 “false”， 直接用logback,不要这种自带的控制台输出</p>
-<h2 id="tomcat-log"><a href="#tomcat-log" class="headerlink" title="tomcat log"></a>tomcat log</h2><p>所有的控制台输出都会重定向到tomcat/logs/catalina.out，但是maven tomcat7:run启动embended tomcat貌似没有这个文件<br>tocmat/logs/localhost.out 也会记录用户没有catch到的异常</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://tomcat.apache.org/tomcat-8.5-doc/logging.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.5-doc/logging.html</a><br><a href="https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback" target="_blank" rel="noopener">https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="ck272f0uf001fy0jilszu0w5x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/httpd-tomcat/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/httpd-tomcat/">httpd tomcat</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="install-apache-on-VM1"><a href="#install-apache-on-VM1" class="headerlink" title="install apache on VM1"></a>install apache on VM1</h2><p>yum install -y httpd</p>
-<h2 id="start-apache"><a href="#start-apache" class="headerlink" title="start apache"></a>start apache</h2><p>sudo systemctl start httpd</p>
-<h2 id="starts-at-boot"><a href="#starts-at-boot" class="headerlink" title="starts at boot"></a>starts at boot</h2><p>sudo systemctl enable httpd</p>
-<h2 id="install-apxs"><a href="#install-apxs" class="headerlink" title="install apxs"></a>install apxs</h2><p>yum install httpd-devel</p>
-<ul>
-<li>find / -name apxs</li>
-<li>which apxs  (this file path will be used in ./configure below)</li>
-</ul>
-<h2 id="install-gcc"><a href="#install-gcc" class="headerlink" title="install gcc"></a>install gcc</h2><p>yum install -y gcc*<br>yum install autoconf<br>yum install libtool</p>
-<h2 id="install-mod-jk"><a href="#install-mod-jk" class="headerlink" title="install mod_jk"></a>install mod_jk</h2><p>wget <a href="http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz" target="_blank" rel="noopener">http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz</a><br>tar -xf tomcat-connectors-1.2.46-src.tar.gz<br>cd tomcat-connectors-1.2.46-src/native<br>./buildconf.sh<br>./configure –with-apxs=/usr/bin/apxs<br>make &amp;&amp; make install<br>(find / -name mod_jk.so<br>/usr/lib64/httpd/modules/mod_jk.so)</p>
-<h2 id="Configure-httpd-conf"><a href="#Configure-httpd-conf" class="headerlink" title="Configure httpd.conf"></a>Configure httpd.conf</h2><p>Now that you’ve installed mod_jk, you need to configure it in your httpd.conf file so that you can use it.<br>You can find httpd.conf in the ‘conf’ directory of your Apache HTTPD home folder.<br>If httpd in installed by ‘yum install httpd’, this file is<br><code>/etc/httpd/conf/httpd.conf</code></p>
-<p>mod_jk requires two entities:</p>
-<ul>
-<li>mod_jk.xxx - The Apache HTTP Server module, depending on your operating system, it will be mod_jk.so, mod_jk.nlm or MOD_JK.SRVPGM (see the build section).</li>
-<li>workers.properties - A file that describes the host(s) and port(s) used by the workers (Tomcat processes). A sample workers.properties can be found under the conf directory in the source download.</li>
-</ul>
-<p>The configuration provided below, based on the Tomcat documentation, is the minimum configuration required for mod_jk to run correctly.</p>
-<p><code>#Load mod_jk module</code><br>LoadModule    jk_module  /usr/lib64/httpd/modules/mod_jk.so<br><code># Add the module (activate this lne for Apache 1.3)</code><br><code># AddModule     mod_jk.c</code><br><code># Where to find workers.properties</code><br>JkWorkersFile /etc/httpd/conf/workers.properties<br><code># Where to put jk shared memory</code><br>JkShmFile     /var/log/httpd/mod_jk.shm<br><code># Where to put jk logs</code><br>JkLogFile     /var/log/httpd/mod_jk.log<br><code># Set the jk log level [debug/error/info]</code><br>JkLogLevel    info<br><code># Send requests for context /examples to worker named worker1</code><br><code># 至于为什么 balancer，https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</code><br>JkMount  /playbook/* balancer</p>
-<h2 id="set-up-two-tomcat-on-VM2-VM3"><a href="#set-up-two-tomcat-on-VM2-VM3" class="headerlink" title="set up two tomcat on VM2, VM3"></a>set up two tomcat on VM2, VM3</h2><p>wget <a href="http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz" target="_blank" rel="noopener">http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz</a></p>
-<h2 id="Configure-workers-properties"><a href="#Configure-workers-properties" class="headerlink" title="Configure workers.properties"></a>Configure workers.properties</h2><p>The workers.properties file defines a list of Tomcat ‘workers’ to which Apache HTTPD can pass requests.<br>8009 is the ajp port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">worker.node1.host=192.168.77.131</span><br><span class="line">worker.node1.port=8009</span><br><span class="line"></span><br><span class="line">worker.node2.host=192.168.77.132</span><br><span class="line">worker.node2.port=8009</span><br></pre></td></tr></table></figure></p>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>start two tomcat<br>可以在两台tomcat里面都放一个playbook<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node1<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node2<br>systemctl restart httpd<br>现在访问<br><code>http://192.168.77.130/playbook/1.txt</code><br>会发现I am node1和I am node2交替出现<br>如果强制停止一台tomcat，整个服务不会中断</p>
-<h2 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h2><p>systemctl start httpd<br>systemctl restart/start/status httpd<br><a href="https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html</a><br><a href="https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration" target="_blank" rel="noopener">https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/workers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/workers.html</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/httpd-tomcat/" data-id="ck272f0uc0018y0jiqq3wnzzq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/">tomcat</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-aes_base64" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/21/aes_base64/" class="article-date">
-  <time datetime="2019-03-21T14:51:52.000Z" itemprop="datePublished">2019-03-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/21/aes_base64/">AES base64</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">https://aesencryption.net/</span><br><span class="line">https://www.clickssl.net/blog/128-bit-ssl-encryption-vs-256-bit-ssl-encryption</span><br><span class="line">https://www.quora.com/Is-AES256-more-secure-than-AES128-Whats-the-different</span><br><span class="line">https://en.wikipedia.org/wiki/Advanced_Encryption_Standard</span><br><span class="line">https://stackoverflow.com/questions/273396/aes-encryption-what-are-public-and-private-keys</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">import sun.misc.BASE64Decoder;</span><br><span class="line">import sun.misc.BASE64Encoder;</span><br><span class="line"></span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line">import javax.crypto.BadPaddingException;</span><br><span class="line">import javax.crypto.Cipher;</span><br><span class="line">import javax.crypto.IllegalBlockSizeException;</span><br><span class="line">import javax.crypto.NoSuchPaddingException;</span><br><span class="line">import javax.crypto.spec.SecretKeySpec;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.net.URLDecoder;</span><br><span class="line">import java.net.URLEncoder;</span><br><span class="line">import java.security.InvalidKeyException;</span><br><span class="line">import java.security.Key;</span><br><span class="line">import java.security.NoSuchAlgorithmException;</span><br><span class="line"></span><br><span class="line">public class AESEncryptionUtil &#123;</span><br><span class="line"></span><br><span class="line">// http://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx</span><br><span class="line"> private static String key = “customized key”;</span><br><span class="line"> public static BASE64Encoder enc = new BASE64Encoder();</span><br><span class="line"> public static BASE64Decoder dec = new BASE64Decoder();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> // eccrypt by AES, and encode by base64 to transfer by http</span><br><span class="line"> public static String encrypt(String clearText) throws Exception &#123;</span><br><span class="line"> String encodedEncryptText = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"> Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"></span><br><span class="line">cipher.init(Cipher.ENCRYPT_MODE, aesKey);</span><br><span class="line"> byte[] encrypted = cipher.doFinal(clearText.getBytes(“UTF-8”));</span><br><span class="line"></span><br><span class="line">encodedEncryptText = enc.encode(encrypted);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return encodedEncryptText;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// encode by base64, decrypt by AES</span><br><span class="line"> public static String decrypt(String encodedEncryptText) throws Exception &#123;</span><br><span class="line"> String decrypted = “”;</span><br><span class="line"> try &#123;</span><br><span class="line"> Key aesKey = new SecretKeySpec(key.getBytes(), “AES”);</span><br><span class="line"></span><br><span class="line">Cipher cipher = Cipher.getInstance(“AES”);</span><br><span class="line"> cipher.init(Cipher.DECRYPT_MODE, aesKey);</span><br><span class="line"></span><br><span class="line">byte[] decodeBufferArray = dec.decodeBuffer(encodedEncryptText);</span><br><span class="line"></span><br><span class="line">decrypted = new String(cipher.doFinal(decodeBufferArray), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">&#125; catch (NoSuchAlgorithmException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (NoSuchPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (BadPaddingException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IllegalBlockSizeException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (InvalidKeyException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125; catch (IOException e) &#123;</span><br><span class="line"> throw new Exception(e.getMessage());</span><br><span class="line"> &#125;</span><br><span class="line"> return decrypted;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line"> String a = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> a = encrypt(“mengxu1128@gmail.com”);</span><br><span class="line"> &#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(a);</span><br><span class="line"></span><br><span class="line">String b = null;</span><br><span class="line"> try &#123;</span><br><span class="line"> b = decrypt(a);</span><br><span class="line"></span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line"> e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line"> System.out.println(b);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/21/aes_base64/" data-id="ck272f0t60000y0jiyk3u1asg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-vmware-vm-add-space" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/14/vmware-vm-add-space/" class="article-date">
-  <time datetime="2019-03-14T14:51:52.000Z" itemprop="datePublished">2019-03-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/14/vmware-vm-add-space/">虚拟机增加空间</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="add-space"><a href="#add-space" class="headerlink" title="add space"></a>add space</h2><p>我们用VMware创建好虚拟机之后可能会遇到空间不足的情况，这个时候需要扩展磁盘空间然后将新的空间挂载 到指定的目录</p>
-<p><img src="/images/add-space.PNG" alt="vm addspace"></p>
-<p>虚拟机设置里面先扩展好空间</p>
-<p><code>fdisk -l</code>查看磁盘占用情况<br>可以看到/dev下面的sda已经到几，比如我的机器已经到2，说明新创建的分区将会是sda3</p>
-<p>输入<code>fdisk /dev/sda</code>,然后一步一步的回车，最后输入w保持修改<br>重启<code>reboot</code><br>这时在<code>/dev/</code>目录下，才能看到了新的分区比如<code>/dev/sda3</code><br><code>mkfs.ext2 /dev/sda3</code>  格式化<br>在根目录下创建disk3 (<code>mkdir /disk3</code>)<br><code>mount /dev/sda3 /disk43/</code>将分区mount到<code>/disk3/</code>上<br>在vi修改/etc/fstab文件,加入 <code>/dev/sda3   /disk3 ext2 defaults 0 0</code> 一行，并保存，实现开机自动mount</p>
-<p>至此，新增加的磁盘空间容量，即可在disk3上体现，并且重新开机自动mount该分区，追加磁盘空间的工作完毕。</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><code>/dev/</code> is the part in the unix directory tree that contains all “device” files<br>So <code>/dev/sda9</code> means the ninth partition on the first drive.</p>
-<p><a href="https://blog.csdn.net/lyd135364/article/details/78623119" target="_blank" rel="noopener">https://blog.csdn.net/lyd135364/article/details/78623119</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/14/vmware-vm-add-space/" data-id="ck272f0vq0041y0jicd2wtfxd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cloud/">cloud</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/09/mysql8-centos7-setup/" class="article-date">
-  <time datetime="2019-03-09T14:51:52.000Z" itemprop="datePublished">2019-03-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
-<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
-<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a> (这个仅仅是安装/etc/yum.repos.d)</li>
-<li>yum install mysql-community-server</li>
-</ul>
-<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
-<li>systemctl start mysqld.service ## use restart after update</li>
-<li>systemctl enable mysqld.service</li>
-</ul>
-<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
-<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
-<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
-<p>但是至此是不能从远程访问此mysqld</p>
-<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="ck272f0v8002xy0jix43qwzm3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -546,7 +521,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
     </div>
   </div>
 
@@ -556,7 +531,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 12px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/java/" style="font-size: 18px;">java</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/maven/" style="font-size: 12px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12px;">search</a> <a href="/tags/security/" style="font-size: 14px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 14px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
     </div>
   </div>
 
@@ -565,7 +540,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -578,23 +553,23 @@
       <ul>
         
           <li>
-            <a href="/2019/10/26/java-servlet/">java servlet</a>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/java-exception/">java exception</a>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/es6-promise/">es6 promise</a>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
           </li>
         
           <li>
-            <a href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
           </li>
         
           <li>
-            <a href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
           </li>
         
       </ul>
@@ -609,7 +584,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 xu, hang<br>
+      &copy; 2020 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

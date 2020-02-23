@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>istio mixer adapter setup | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="安装troubleshootinghttps://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough step1 ‘inconsistent vendoring’ errorhttps://github.com/golang/go/issues/34657解决的办法就是export GOROOT=单独的go目录，">
+<meta name="keywords" content="istio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="istio mixer adapter setup">
+<meta property="og:url" content="https://mengxu2018.github.io/2020/02/15/istio-adapter/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="安装troubleshootinghttps://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough step1 ‘inconsistent vendoring’ errorhttps://github.com/golang/go/issues/34657解决的办法就是export GOROOT=单独的go目录，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-18T08:55:15.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="istio mixer adapter setup">
+<meta name="twitter:description" content="安装troubleshootinghttps://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough step1 ‘inconsistent vendoring’ errorhttps://github.com/golang/go/issues/34657解决的办法就是export GOROOT=单独的go目录，">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-istio-adapter" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/15/istio-adapter/" class="article-date">
+  <time datetime="2020-02-15T12:31:52.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      istio mixer adapter setup
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="安装troubleshooting"><a href="#安装troubleshooting" class="headerlink" title="安装troubleshooting"></a>安装troubleshooting</h1><p><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough</a></p>
+<h2 id="step1-‘inconsistent-vendoring’-error"><a href="#step1-‘inconsistent-vendoring’-error" class="headerlink" title="step1 ‘inconsistent vendoring’ error"></a>step1 ‘inconsistent vendoring’ error</h2><p><a href="https://github.com/golang/go/issues/34657" target="_blank" rel="noopener">https://github.com/golang/go/issues/34657</a><br>解决的办法就是export GOROOT=单独的go目录，不要go下面的src有istio的那个<br>export GOROOT=/root/software/go</p>
+<h2 id="Step-2-BUILD-WITH-CONTAINER-1-make-gen"><a href="#Step-2-BUILD-WITH-CONTAINER-1-make-gen" class="headerlink" title="Step 2 BUILD_WITH_CONTAINER=1 make gen"></a>Step 2 BUILD_WITH_CONTAINER=1 make gen</h2><p>Just to ensure everything is good, let’s generate the file and build the code. Go to the top of the repo and do:<br><code>BUILD_WITH_CONTAINER=1 make gen</code><br>实际上是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export BUILD_WITH_CONTAINER=1</span><br><span class="line">cd /root/kube/go/src/istio.io/istio</span><br><span class="line">make gen</span><br></pre></td></tr></table></figure></p>
+<p>不过这个里面有个证书的错误，暂时没有影响，可以再观察</p>
+<h2 id="step3-mygrpcadapter"><a href="#step3-mygrpcadapter" class="headerlink" title="step3 mygrpcadapter"></a>step3 mygrpcadapter</h2><p>mygrpcadapter.go:40:2: no matching versions for query “latest”</p>
+<p>“istio.io/istio/pkg/log” -&gt; “istio.io/pkg/log”</p>
+<h2 id="step-5-hang-on"><a href="#step-5-hang-on" class="headerlink" title="step 5 hang on"></a>step 5 hang on</h2><p>第五步中的 pushd $ISTIO/istio &amp;&amp; make mixs貌似需要minikube服务是shutdown的时候才可以安装成功，<br>但是docker daemon要启动</p>
+<p>mixc，mixs都在/root/kube/go/src/istio.io/istio/out/linux_amd64/下面，<br>也就是说在$ISTIO/istio/out/linux_amd64下面，<br>但是文档里面说的是在$GOPATH/out/linux_amd64/release/</p>
+<h2 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h2><p>When compiling multiple packages or a single non-main package, build compiles the packages but discards the resulting object, serving only as a check that the packages can be built.</p>
+<p>go build编译main package的会生成执行文件，非main的就没有输出，just 验证下</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>按照这个文章弄好的其实还是需要打包部署成一个kubenetes的service， 不可能每次都是cmd下面的脚本运行adapter，<br>其实就是把cmd下面的go文件编译一下，部署成kubernetes里面的service。</p>
+<p>mygrpcadapter/config下面的.proto文件其实是为了生成mygrpcadapter.yaml，这个文件也是kubernetes的一个资源，需要kubectl apply<br>至于config/config.proto里面的Params是给sample_operator_cfg.yaml里面的kind: handler使用的，<br>sample_operator_cfg.yaml里面的instance用了metric template，会封装数据参数传给adapter。<br>The operator that configures Istio controls how this template-specific data is constructed and dispatched to adapters.<br><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide</a></p>
+<p>adapter的rule也会定义规则，比如只允许特定的host访问，<br>到时候浏览器访问某个service的时候，首先gateway会转发到特定的service，这个是gateway和virtualservice来做的，<br>adapter这边的rule是另外一码事</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/02/15/istio-adapter/" data-id="ck6yot4r70000csuxr6x4hgpc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/istio/">istio</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/23/jwt-first/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jwt spring security
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/27/minikube-intro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用minikube学习环境</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
