@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="No pains,no gains">
+<meta property="og:url" content="https://mengxu2018.github.io/page/10/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="No pains,no gains">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-file-io" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/07/file-io/" class="article-date">
+  <time datetime="2019-03-07T14:51:52.000Z" itemprop="datePublished">2019-03-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/07/file-io/">IO</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="sample-code-charset-related"><a href="#sample-code-charset-related" class="headerlink" title="sample code, charset related"></a>sample code, charset related</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import com.google.common.io.Files;</span><br><span class="line"></span><br><span class="line">import java.io.*;</span><br><span class="line">import java.nio.charset.Charset;</span><br><span class="line">import java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* https://www.zhihu.com/question/27562173</span><br><span class="line">* https://www.oracle.com/technetwork/articles/javase/supplementary-142654.html</span><br><span class="line">*</span><br><span class="line">* https://www.baeldung.com/java-write-to-file</span><br><span class="line">*/</span><br><span class="line">public class Test &#123;</span><br><span class="line">   public  static void main(String[] s) throws IOException &#123;</span><br><span class="line">       // print os default charset</span><br><span class="line">       Charset.defaultCharset().name();</span><br><span class="line">       System.out.println( Charset.defaultCharset().name());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // below ascii charset will be garbled code.</span><br><span class="line">       FileOutputStream fos = new FileOutputStream(&quot;c:/temp/abc.txt&quot;);</span><br><span class="line">       fos.write(&quot;我的&quot;.getBytes(StandardCharsets.US_ASCII));</span><br><span class="line"></span><br><span class="line">       // below will be right</span><br><span class="line">       fos.write(&quot;中国&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        *</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        */</span><br><span class="line">       Writer out = new BufferedWriter(new OutputStreamWriter(</span><br><span class="line">               new FileOutputStream(&quot;c:\\temp\\test.txt&quot;), StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">       out.append(&quot;Website UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;你是 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out.append(&quot;我的 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out.flush();</span><br><span class="line">       out.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       /**</span><br><span class="line">        * append a String to the existing file:</span><br><span class="line">        * use below way to write string, no need to call getBytes</span><br><span class="line">        * but this way can not specify charset</span><br><span class="line">        */</span><br><span class="line">       Writer out2 = new BufferedWriter(new FileWriter(&quot;c:/temp/test2.txt&quot;, true));</span><br><span class="line"></span><br><span class="line">       out2.append(&quot;Website2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;你是2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">       out2.append(&quot;我的2 UTF-8&quot;).append(&quot;\r\n&quot;);</span><br><span class="line"></span><br><span class="line">       out2.flush();</span><br><span class="line">       out2.close();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       // java 7 write string to file</span><br><span class="line">       Files.write(&quot;我的&quot;, new File(&quot;c:/temp/test3.txt&quot;), StandardCharsets.UTF_8);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/03/07/file-io/" data-id="ck272f0tz000py0jis3wegox3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-elasticsearch-start" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/17/elasticsearch-start/" class="article-date">
+  <time datetime="2019-02-17T14:51:52.000Z" itemprop="datePublished">2019-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/17/elasticsearch-start/">elasticsearch quickstart</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.6.0.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.6.0-linux-x86_64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you want to access kibana remotely, please update `server.host` to real IP in</span></span><br><span class="line"><span class="comment"># `kibana-6.6.0-linux-x86_64/config/kibana.yml` like 192.168.77.140</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You should run elasticsearch in non-root user</span></span><br><span class="line">bin/elasticsearch -d</span><br><span class="line">bin/kibana or `nohup bin/kibana &amp;`</span><br><span class="line"></span><br><span class="line"><span class="comment"># now you can access http://192.168.77.140:5601</span></span><br></pre></td></tr></table></figure>
+<h2 id="elasticsearch-http-verb"><a href="#elasticsearch-http-verb" class="headerlink" title="elasticsearch http verb"></a>elasticsearch http verb</h2><p>elasticsearch 按照HTTP协议下RestFul框架的交互格式就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /uri 创建</span><br><span class="line">DELETE /uri/xxx 删除</span><br><span class="line">PUT /uri/xxx 更新或创建</span><br><span class="line">GET /uri/xxx 查看</span><br></pre></td></tr></table></figure></p>
+<h2 id="sample-case"><a href="#sample-case" class="headerlink" title="sample case"></a>sample case</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_doc/1?pretty</span><br><span class="line"></span><br><span class="line">DELETE /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /customer/_doc/2?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /customer/_doc?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /customer/_search?q=Doe</span><br><span class="line"></span><br><span class="line">GET /customer/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;match&quot;: &#123; &quot;name&quot;: &quot;Doe&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;highlight&quot; : &#123;</span><br><span class="line">        &quot;fields&quot; : &#123;</span><br><span class="line">            &quot;name&quot; : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这种更新是删除再增加，version变化了</span><br><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//这样更新是真的更新，version不变</span><br><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get all index</span><br><span class="line">curl &quot;localhost:9200/_cat/indices?v&quot;</span><br><span class="line"></span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=*&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line">curl -X GET &quot;localhost:9200/bank/_search?q=Fitzgerald&amp;sort=account_number:asc&amp;pretty&quot;</span><br><span class="line"></span><br><span class="line">//查询某个index</span><br><span class="line">GET /twitter/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 查询所有的index</span><br><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;from&quot; : 0, &quot;size&quot; : 10,</span><br><span class="line">    &quot;query&quot; : &#123;</span><br><span class="line">        &quot;term&quot; : &#123; &quot;user&quot; : &quot;kimchy&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/02/17/elasticsearch-start/" data-id="ck272f0tx000ly0jinbyei1sz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ant-design-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/ant-design-sample/" class="article-date">
+  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/ant-design-sample/">ant design sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用create-react-app创建的项目， react-router作为路由创建了sidebar, 用ant-design创建的表格，<br>后续会用springboot作为后台，增加crud的功能<br><a href="https://github.com/mengxu2018/ant-design-sample.git" target="_blank" rel="noopener">https://github.com/mengxu2018/ant-design-sample.git</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/ant-design-sample/" data-id="ck272f0tl0008y0jiy300fta9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-puppeteer-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/31/puppeteer-centos7-setup/" class="article-date">
+  <time datetime="2019-01-31T14:51:52.000Z" itemprop="datePublished">2019-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/31/puppeteer-centos7-setup/">puppeteer centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install-node-npm"><a href="#Install-node-npm" class="headerlink" title="Install node, npm"></a>Install node, npm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 直接下载编译好的node，编译这个非常费时间</span><br><span class="line">wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</span><br><span class="line">tar xzf node-v10.15.0-linux-x64.tar.xz</span><br><span class="line"></span><br><span class="line">// 设置好path</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+<h2 id="安装好chrome在linux上需要的依赖"><a href="#安装好chrome在linux上需要的依赖" class="headerlink" title="安装好chrome在linux上需要的依赖"></a>安装好chrome在linux上需要的依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y</span><br><span class="line">yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y</span><br></pre></td></tr></table></figure>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mkdir puppeteer-test</span><br><span class="line"><span class="built_in">cd</span> puppeteer-test</span><br><span class="line">yarn add puppeteer // 下载失败可以提前执行 npm config <span class="built_in">set</span> puppeteer_download_host=https://npm.taobao.org/mirrors</span><br><span class="line"></span><br><span class="line">node test.js  //test.js 内容如下</span><br><span class="line"></span><br><span class="line">const puppeteer = require(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(async () =&gt; &#123;</span><br><span class="line">  const browser = await puppeteer.launch(&#123;</span><br><span class="line">    args: [<span class="string">'--no-sandbox'</span>,<span class="string">'--disable-setuid-sandbox'</span>],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    timeout: 15000,</span><br><span class="line">    //如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: <span class="literal">true</span>,</span><br><span class="line">    // 打开开发者工具, 当此值为<span class="literal">true</span>时, headless总为<span class="literal">false</span></span><br><span class="line">    devtools: <span class="literal">false</span>,</span><br><span class="line">    // 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">  const page = await browser.newPage();</span><br><span class="line">  await page.goto(<span class="string">'https://www.baidu.com'</span>);</span><br><span class="line">  await page.screenshot(&#123;path: <span class="string">'example.png'</span>&#125;);</span><br><span class="line"></span><br><span class="line">  await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p>// docker 中使用puppeteer<br>// docker中已经安装好所有的动态库，同时global的puppeteer也已经安装好<br>// docker会设置好ENV NODE_PATH=”/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}”<br>// <a href="https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image" target="_blank" rel="noopener">https://serverfault.com/questions/594281/how-can-i-override-cmd-when-running-a-docker-image</a><br><a href="https://github.com/alekzonder/docker-puppeteer" target="_blank" rel="noopener">https://github.com/alekzonder/docker-puppeteer</a></p>
+<p><a href="https://github.com/GoogleChrome/puppeteer/issues/1597" target="_blank" rel="noopener">https://github.com/GoogleChrome/puppeteer/issues/1597</a><br><a href="https://github.com/Googlechrome/puppeteer/issues/290" target="_blank" rel="noopener">https://github.com/Googlechrome/puppeteer/issues/290</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/31/puppeteer-centos7-setup/" data-id="ck272f0vd0038y0ji8iz04o3t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nodejs-module.export" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/26/nodejs-module.export/" class="article-date">
+  <time datetime="2019-01-26T14:51:52.000Z" itemprop="datePublished">2019-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/26/nodejs-module.export/">node.js module.export</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="module-export"><a href="#module-export" class="headerlink" title="module.export"></a>module.export</h2><p>The exports variable is available within a module’s file-level scope, and is assigned the value of module.exports before the module is evaluated.</p>
+<p>It allows a shortcut, so that module.exports.f = … can be written more succinctly as exports.f = …. However, be aware that like any variable, if a new value is assigned to exports, it is no longer bound to module.exports:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports.hello = true; // Exported from require of module</span><br><span class="line">exports = &#123; hello: false &#125;;  // Not exported, only available in the module</span><br></pre></td></tr></table></figure>
+<p>When the  <code>module.exports</code> property is being completely replaced by a new object, it is common to also reassign <code>exports</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module.exports = exports = <span class="keyword">function</span> <span class="function"><span class="title">Constructor</span></span>() &#123;</span><br><span class="line">  // ... etc.</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>简单说就是exports如果被新的object覆盖掉了，那就必须是modules.exports = {}， 否则可以直接简写 exports.xxx={}</p>
+<h2 id="sample-code"><a href="#sample-code" class="headerlink" title="sample code"></a>sample code</h2><p><em>foo.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const circle = require(<span class="string">'./circle.js'</span>);</span><br><span class="line">console.log(`The area of a circle of radius 4 is <span class="variable">$&#123;circle.area(4)&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>circle.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const &#123; PI &#125; = Math;</span><br><span class="line">module.exports.area = (r) =&gt; PI * r ** 2;   // the module can be ignored here</span><br><span class="line">module.exports.circumference = (r) =&gt; 2 * PI * r;</span><br></pre></td></tr></table></figure></p>
+<p><strong>上面这个例子里， 因为<code>exports</code>没有被赋新的object， 所以<code>modules</code>关键字可以省略</strong></p>
+<p><em>bar.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const Square = require(<span class="string">'./square.js'</span>);</span><br><span class="line">const mySquare = new Square(2);</span><br><span class="line">console.log(`The area of mySquare is <span class="variable">$&#123;mySquare.area()&#125;</span>`);</span><br></pre></td></tr></table></figure></p>
+<p><em>square.js</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// assigning to exports will not modify module, must use module.exports</span><br><span class="line">// the module can not be ignored here</span><br><span class="line">module.exports = class Square &#123;</span><br><span class="line">    constructor(width) &#123;</span><br><span class="line">      this.width = width;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="title">area</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> this.width ** 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
+<p> <strong>上面这个例子里， 因为<code>exports</code>被赋新的object， 所以<code>modules</code>关键字不可以省略</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/26/nodejs-module.export/" data-id="ck272f0va0031y0jipthzvpk0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-regular-expression-tutorial" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/21/regular-expression-tutorial/" class="article-date">
+  <time datetime="2019-01-21T14:51:52.000Z" itemprop="datePublished">2019-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/21/regular-expression-tutorial/">regular expression</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="java"><a href="#java" class="headerlink" title="java"></a>java</h2><p>分组捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String line = &quot;This order was placed for QT3000! OK?&quot;;</span><br><span class="line">     Pattern pattern = Pattern.compile(&quot;(.*?)(\\d+)(.*)&quot;);</span><br><span class="line">     Matcher matcher = pattern.matcher(line);</span><br><span class="line"></span><br><span class="line">     while (matcher.find()) &#123;</span><br><span class="line">         System.out.println(&quot;group 1: &quot; + matcher.group(1));</span><br><span class="line">         System.out.println(&quot;group 2: &quot; + matcher.group(2));</span><br><span class="line">         System.out.println(&quot;group 3: &quot; + matcher.group(3));</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//匹配str中所有字符串hello，这时str中3个hello都能匹配上，通过下面打印的匹配上的字符串的位置可以看出</span><br><span class="line">Pattern p=Pattern.compile(&quot;hello&quot;);</span><br><span class="line">Matcher m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且该字符串是在开头的位置===========&quot;);</span><br><span class="line">// ^表示匹配字符串的开头，但是如何在[]里面则表示非，如[^a-f] 不匹配a-f</span><br><span class="line">// &quot;hello&quot;和&quot;^hello&quot;的区别就是：前者匹配时不管是不是在开头位置，只要能匹配就行，后者则是不但要能匹配而且还要是在开头的位置。这时str中3个hello只有第1个能匹配上。</span><br><span class="line">p=Pattern.compile(&quot;^hello&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">System.out.println(&quot;is:&quot; + m.matches());</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置xxx：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;===========匹配字符串===========&quot;);</span><br><span class="line">//这时str中两个java都能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;===========匹配字符串，并且是该字符串是在末尾的位置===========&quot;);</span><br><span class="line">//这时str中两个java只有第2个才能匹配上</span><br><span class="line">p=Pattern.compile(&quot;java$&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开头结尾2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 这是整个匹配，直接是String的方法</span><br><span class="line">String test = &quot;http://yahoo.com&quot;;</span><br><span class="line">System.out.println(test.matches(&quot;^(http|https|ftp)://.*$&quot;));</span><br><span class="line"></span><br><span class="line">// 这个是编译过的表达式，也是整个匹配</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">System.out.println(&quot;m2:&quot; + m2.matches());</span><br><span class="line"></span><br><span class="line">// 这个是捕获group，取第一个group, index从1开始</span><br><span class="line">Pattern p2 = Pattern.compile(&quot;^(http|https|ftp)://.*$&quot;);</span><br><span class="line">Matcher m2 = p2.matcher(test);</span><br><span class="line">if (m2.find()) &#123;</span><br><span class="line">    System.out.println(&quot;g1:&quot; + m2.group(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个是group(0)，没有小括号分组，从前到后匹配到什么算什么</span><br><span class="line">String str=&quot;hello world,hello java,hello java&quot;;</span><br><span class="line">p=Pattern.compile(&quot;java&quot;);</span><br><span class="line">m=p.matcher(str);</span><br><span class="line">while(m.find())&#123;</span><br><span class="line">    System.out.println(m.group()+&quot;   位置：[&quot;+m.start()+&quot;,&quot;+m.end()+&quot;]&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/21/regular-expression-tutorial/" data-id="ck272f0vf003dy0jipzx30gtv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mongodb4-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/mongodb4-centos7-setup/" class="article-date">
+  <time datetime="2019-01-17T14:51:52.000Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/mongodb4-centos7-setup/">mongodb centos7 setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><ul>
+<li>wget <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.5-1.el7.x86_64.rpm</a></li>
+<li>rpm -i mongodb-org-server-4.0.5-1.el7.x86_64.rpm</li>
+<li>rpm -i <a href="https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm" target="_blank" rel="noopener">https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.5-1.el7.x86_64.rpm</a>  # client</li>
+</ul>
+<h2 id="Start-mongodb-server-and-autostart-mongodb-on-boot"><a href="#Start-mongodb-server-and-autostart-mongodb-on-boot" class="headerlink" title="Start mongodb server and autostart mongodb on boot"></a>Start mongodb server and autostart mongodb on boot</h2><ul>
+<li>systemctl start mongod.service</li>
+<li>systemctl enable mongod.service</li>
+</ul>
+<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p><code>update /etc/mongod.conf to bindIp: 0.0.0.0</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/17/mongodb4-centos7-setup/" data-id="ck272f0v6002uy0jibmc2nugt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-command" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/16/docker-command/" class="article-date">
+  <time datetime="2019-01-16T14:51:52.000Z" itemprop="datePublished">2019-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/16/docker-command/">docker command</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name test  debian</span><br><span class="line">docker restart test</span><br><span class="line">docker container ls</span><br><span class="line">docker exec -it 28df3d5895a4 bash</span><br><span class="line">docker container  ls --all</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/16/docker-command/" data-id="ck272f0tu000hy0jisqtwbr0p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-network" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/09/docker-network/" class="article-date">
+  <time datetime="2019-01-09T14:51:52.000Z" itemprop="datePublished">2019-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/09/docker-network/">docker network</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="eth0-vethxxx"><a href="#eth0-vethxxx" class="headerlink" title="eth0, vethxxx"></a>eth0, vethxxx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit --name alpine1 alpine ash</span><br><span class="line">docker exec -it 581c07020bd0 ash</span><br></pre></td></tr></table></figure>
+<p><em><a href="https://kairen.github.io/2016/01/05/container/docker-network/" target="_blank" rel="noopener">https://kairen.github.io/2016/01/05/container/docker-network/</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/09/docker-network/" data-id="ck272f0tw000jy0ji5sp25d7r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-k8s-port-targetport-nodeport-service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/08/k8s-port-targetport-nodeport-service/" class="article-date">
+  <time datetime="2019-01-08T14:51:52.000Z" itemprop="datePublished">2019-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/08/k8s-port-targetport-nodeport-service/">k8s service port</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>总的来说，port和nodePort都是service的端口，前者暴露给集群内客户访问服务，后者暴露给集群外客户访问服务。从这两个端口到来的数据都需要经过反向代理kube-proxy流入后端pod的targetPort，从而到达pod上的容器内。</em></p>
+<p><em>nodeport只有 type为NodePort类型的的service用</em></p>
+<p>容易混淆的概念：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1、NodePort和port</span><br><span class="line"></span><br><span class="line">前者是将服务暴露给外部用户使用并在node上、后者则是为内部组件相互通信提供服务的，他们是在service上的端口。</span><br><span class="line"></span><br><span class="line">2、targetPort</span><br><span class="line">targetPort是pod上的端口，用来将pod内的container与外部进行通信的端口</span><br><span class="line"></span><br><span class="line">3、port、NodePort、ContainerPort和targetPort在哪儿？</span><br><span class="line"></span><br><span class="line">port在service上，负责处理对内的通信，clusterIP:port</span><br><span class="line"></span><br><span class="line">NodePort在node上，负责对外通信，NodeIP:NodePort</span><br><span class="line"></span><br><span class="line">ContainerPort在容器上，用于被pod绑定</span><br><span class="line"></span><br><span class="line">targetPort在pod上、负责与kube-proxy代理的port和Nodeport数据进行通信</span><br><span class="line"></span><br><span class="line">总结:targetPort很好理解，targetPort是pod上的端口，从port和nodePort上到来的数据最终经过kube-proxy流入到后端pod的targetPort上进入容器。</span><br><span class="line">https://blog.csdn.net/yjk13703623757/article/details/79819415</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">      kind: Service</span><br><span class="line">      metadata:</span><br><span class="line">        name: test-service</span><br><span class="line">      spec:</span><br><span class="line">        ports:</span><br><span class="line">        - port: 8080</span><br><span class="line">          targetPort: 8170</span><br><span class="line">          nodePort: 33333</span><br><span class="line">          protocol: TCP </span><br><span class="line">        selector:</span><br><span class="line">          component: test-service-app</span><br></pre></td></tr></table></figure>
+<p>The port is 8080 which represents that test-service can be accessed by other services in the cluster at port 8080.<br>The targetPort is 8170 which represents the test-service is actually running on port 8170 on pods<br>The nodePort is 33333 which represents that test-service can be accessed via kube-proxy on port 33333.<br><strong>pod运行在targetPort为8170不代表就可以通过这个端口访问，还是得通过port的8080来访问他(cluster内部)，或者nodePort的33333来访问（外部）</strong></p>
+<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h2><p><em>nodeport是外部机器访问的端口，这个是刚刚到kube-proxy的时候，还没有进入具体的pod</em><br><em>targetport是具体的port的监听端口，比如mysql的3306，就是dockerfile里面的expose端口</em><br><em>port是内部pod直接的访问端口，这个端口也是刚刚到kube-proxy的时候，还没有进入具体的pod，这个跟nodeport一个级别，<br>他也是service上面的端口<br>比如mysql的targetport虽然是3306，但是cluster里面的pod可能通过33306来访问mysql pod</em></p>
+<p><em>Kubernetes 分配给 Service 一个固定 IP，这是一个虚拟 IP （也称为 ClusterIP），并不是一个真实存在的IP,而是由 Kubernetes 虚拟出来的。虚拟 IP 的范围通过 Kubernetes API Service 的启动参数–service-cluster-ip-range=10.254.0.0/16 配置</em><br><em>虚拟 IP 属于 Kubernetes 内部的虚拟网络，外部是寻址不到的，在 Kubernetes 系统中，实际上是由 Kubernetes Proxy 组件负责实现虚拟 IP 路由和转发的，所以在 Kubernetes Node 中我们都运行了 Kubernetes Proxy，从而在容器覆盖网络之上又实现了 Kubernetes 层级的虚拟转发网络。</em></p>
+<p>更新与2020/5/12<br>target port是 pod上面的端口， port是service的端口， nodeport是主机的端口， nodeport映射到port最终进入pod的端口targetport</p>
+<p><em><a href="https://blog.csdn.net/xinghun_4/article/details/50492041" target="_blank" rel="noopener">https://blog.csdn.net/xinghun_4/article/details/50492041</a></em><br><em><a href="https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291" target="_blank" rel="noopener">https://hk.saowen.com/a/e185eef3635890d22291e800f123eb2b1339d5e835017ab670c88832078ea291</a></em><br><em><a href="https://ieevee.com/tech/2017/01/20/k8s-service.html" target="_blank" rel="noopener">https://ieevee.com/tech/2017/01/20/k8s-service.html</a></em><br><em><a href="https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition" target="_blank" rel="noopener">https://stackoverflow.com/questions/49981601/difference-between-targetport-and-port-in-kubernetes-service-definition</a></em><br><em><a href="https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170" target="_blank" rel="noopener">https://wiki.shileizcc.com/confluence/pages/viewpage.action?pageId=2523170</a></em><br><em><a href="https://juejin.im/post/5bd6c14be51d455b7461cb46" target="_blank" rel="noopener">https://juejin.im/post/5bd6c14be51d455b7461cb46</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/01/08/k8s-port-targetport-nodeport-service/" data-id="ck272f0um001wy0jisz4wl7dp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

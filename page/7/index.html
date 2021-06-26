@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-aliyum-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-spark-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/26/aliyum-maven/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+    <a href="/2019/06/23/spark-cluster-setup/" class="article-date">
+  <time datetime="2019-06-23T14:51:52.000Z" itemprop="datePublished">2019-06-23</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/aliyum-maven/">aliyun maven</a>
+      <a class="article-title" href="/2019/06/23/spark-cluster-setup/">hadoop spark cluster setup</a>
     </h1>
   
 
@@ -84,141 +84,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>put below in pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">       &lt;repository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/repository&gt;</span><br><span class="line"></span><br><span class="line">   &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">   &lt;pluginRepositories&gt;</span><br><span class="line">       &lt;pluginRepository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/pluginRepository&gt;</span><br><span class="line">   &lt;/pluginRepositories&gt;</span><br></pre></td></tr></table></figure></p>
-<p>put below in build.gradle</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/aliyum-maven/" data-id="ck272f0th0004y0jiahrmmycr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/26/maven-compiler/" class="article-date">
-  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
-<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
-<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="ck272f0v4002sy0ji51d5x5cd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-dubbo" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-dubbo/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-dubbo/">first dubbo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p><a href="http://dubbo.apache.org/en-us/blog/dubbo-101.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/blog/dubbo-101.html</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic" target="_blank" rel="noopener">https://github.com/apache/incubator-dubbo-samples/tree/master/dubbo-samples-basic</a></p>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>直接ide运行server，然后运行client</p>
+        <p><img src="/images/spark-cluster.png" alt="spark architecture"><br><img src="/images/yarn.png" alt="yarn architecture"></p>
+<h2 id="伪分布式搭建"><a href="#伪分布式搭建" class="headerlink" title="伪分布式搭建"></a>伪分布式搭建</h2><p>主要为了学习spark，用的3.2.1版本，所以简单搭建了伪分布式，官方文档有几个坑,<br>首先把三台机器的hostname和ip配置下，有些case会hostname访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.77.130  k8s-master</span><br><span class="line">192.168.77.131  node1</span><br><span class="line">192.168.77.132  node2</span><br></pre></td></tr></table></figure></p>
+<p>这个一般立即生效的</p>
+<h2 id="参考官网修改配置文件"><a href="#参考官网修改配置文件" class="headerlink" title="参考官网修改配置文件"></a>参考官网修改配置文件</h2><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation</a><br>关于官网说的这两个文件，etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml<br><code>core-site.xml</code>比官网多了hadoop.tmp.dir, 同时用k8s-master或者ip比较好，localhost会导致远程连接失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;/root/hadoop-3.1.2/tmp&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://k8s-master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>hdfs-site.xml</code>,比官网多了dfs.datanode.data.dir，dfs.datanode.data.dir<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;configuration&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/name&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/root/hadoop-3.1.2/dfs/data&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>多这个几个配置目录是在启动出错的时候可以方便手动删除目录里的文件，当然提前要创建好这个三个目录</p>
+<h2 id="更新启动和停止脚本"><a href="#更新启动和停止脚本" class="headerlink" title="更新启动和停止脚本"></a>更新启动和停止脚本</h2><p><code>sbin/start-dfs.sh</code>, <code>sbin/stop-dfs.sh</code>分别添加如下<br>export HDFS_NAMENODE_USER=root<br>export HDFS_DATANODE_USER=root<br>export HDFS_SECONDARYNAMENODE_USER=root<br>export YARN_RESOURCEMANAGER_USER=root<br>export YARN_NODEMANAGER_USER=root</p>
+<p>其实应该有更好的地方，比如dfs-env.sh类似的被这两个脚本call的地方添加一次就够了<br>比如可以在hadoop-3.1.2/etc/hadoop/hadoop-env.sh统一设置一次</p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-dfs.sh</span><br></pre></td></tr></table></figure>
+<p>其实还可以启动./sbin/start-all来同时启动hdfs和yarn，当然这里只是搭建了一个假的分布式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master hadoop-3.1.2]# sbin/start-</span><br><span class="line">start-all.cmd        start-balancer.sh    start-dfs.sh         start-yarn.cmd</span><br><span class="line">start-all.sh         start-dfs.cmd        start-secure-dns.sh  start-yarn.sh</span><br><span class="line">[root@k8s-master hadoop-3.1.2]# sbin/start-all.sh</span><br><span class="line">Starting namenodes on [k8s-master]</span><br><span class="line">Last login: Thu Jun 13 21:16:03 CST 2019 from 192.168.77.3 on pts/0</span><br><span class="line">Starting datanodes</span><br><span class="line">Last login: Thu Jun 13 21:16:14 CST 2019 on pts/0</span><br><span class="line">Starting secondary namenodes [k8s-master]</span><br><span class="line">Last login: Thu Jun 13 21:16:17 CST 2019 on pts/0</span><br><span class="line">Starting resourcemanager</span><br><span class="line">Last login: Thu Jun 13 21:16:25 CST 2019 on pts/0</span><br><span class="line">Starting nodemanagers</span><br><span class="line">Last login: Thu Jun 13 21:16:30 CST 2019 on pts/0</span><br></pre></td></tr></table></figure></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>hdfs ui: <a href="http://k8s-master:9870" target="_blank" rel="noopener">http://k8s-master:9870</a><br>yarn ui: <a href="http://k8s-master:8088" target="_blank" rel="noopener">http://k8s-master:8088</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -mkdir /user</span><br><span class="line">bin/hdfs dfs -mkdir /user/xuhang</span><br><span class="line">bin/hdfs dfs -put etc/hadoop/*.xml /user/xuhang</span><br></pre></td></tr></table></figure>
+<h2 id="部署mapreduce"><a href="#部署mapreduce" class="headerlink" title="部署mapreduce"></a>部署mapreduce</h2><p><a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html</a><br>可以参考这个创建一个java的mapreduce然后编译打包，跑yarn上面</p>
+<h2 id="start-spark-cluster"><a href="#start-spark-cluster" class="headerlink" title="start spark cluster"></a>start spark cluster</h2><p><a href="https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/spark-standalone.html#starting-a-cluster-manually</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在master机器，k8s-master</span><br><span class="line">./sbin/start-master.sh</span><br><span class="line"></span><br><span class="line">在其他机器</span><br><span class="line">./sbin/start-slave.sh spark://k8s-master:7077</span><br></pre></td></tr></table></figure></p>
+<p>这里的spark不是运行在yarn上面，只是用了standalone的cluster，待会从hdfs取数据</p>
+<h2 id="spark-ui"><a href="#spark-ui" class="headerlink" title="spark ui"></a>spark ui</h2><p><a href="http://k8s-master:8080/" target="_blank" rel="noopener">http://k8s-master:8080/</a><br>driver， work nodes</p>
+<p><a href="http://k8s-master:4040" target="_blank" rel="noopener">http://k8s-master:4040</a><br>monitor ui 在job运行过程可以访问,如果想事后访问请参考history log章节</p>
+<h2 id="simple-spark-code"><a href="#simple-spark-code" class="headerlink" title="simple spark code"></a>simple spark code</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples</span><br><span class="line"></span><br><span class="line">import org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val logFile = &quot;hdfs://k8s-master:9000/user/xuhang/core-site.xml&quot; // Should be some file on your system</span><br><span class="line">    val spark = SparkSession.builder.appName(&quot;Simple Application&quot;).getOrCreate()</span><br><span class="line">    val logData = spark.read.textFile(logFile)</span><br><span class="line">    val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">    val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">    println(s&quot;Lines with a: $numAs, Lines with b: $numBs&quot;)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>java version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.spark.examples;/* SimpleApp.java */</span><br><span class="line">import org.apache.spark.api.java.function.FilterFunction;</span><br><span class="line">import org.apache.spark.sql.SparkSession;</span><br><span class="line">import org.apache.spark.sql.Dataset;</span><br><span class="line"></span><br><span class="line">public class SimpleApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        if (args.length &lt; 1) &#123;</span><br><span class="line">            System.err.println(&quot;Usage: JavaWordCount &lt;file&gt;&quot;);</span><br><span class="line">            System.exit(1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        SparkSession spark = SparkSession.builder().appName(&quot;Simple Application&quot;).getOrCreate();</span><br><span class="line">        Dataset&lt;String&gt; logData = spark.read().textFile(args[0]).cache();</span><br><span class="line">        logData.show();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FilterFunction&lt;String&gt; f1 = s -&gt; s.contains(&quot;a&quot;);</span><br><span class="line">        FilterFunction&lt;String&gt; f2 = s -&gt; s.contains(&quot;b&quot;);</span><br><span class="line"></span><br><span class="line">        Dataset&lt;String&gt; newDs = logData.filter(f1);</span><br><span class="line">        System.out.println(&quot;start to print new ds&quot;);</span><br><span class="line">        newDs.show();</span><br><span class="line">        System.out.println(&quot;stop to print new ds&quot;);</span><br><span class="line">        long numAs = newDs.count();</span><br><span class="line">        long numBs = logData.filter(f2).count();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;my Lines with a: &quot; + numAs + &quot;, lines with b: &quot; + numBs);</span><br><span class="line"></span><br><span class="line">        spark.stop();</span><br><span class="line">        System.out.println(&quot;hello world&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="saprk-history-log"><a href="#saprk-history-log" class="headerlink" title="saprk history log"></a>saprk history log</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> mkdir /tmp/spark-events(by default)</span><br><span class="line"></span><br><span class="line"> ./bin/spark-submit   --class org.apache.spark.examples.SimpleApp --master spark://192.168.77.130:7077 --deploy-mode client --executor-memory 700M --conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml</span><br><span class="line">./sbin/start-history-server.sh</span><br></pre></td></tr></table></figure>
+<p><code>http://k8s-master:18080</code> by default<br>ref: <a href="https://spark.apache.org/docs/latest/monitoring.html" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/monitoring.html</a></p>
+<h2 id="run-on-other-machine-client-mode"><a href="#run-on-other-machine-client-mode" class="headerlink" title="run on other machine(client mode)"></a>run on other machine(client mode)</h2><p>client mode可以在任意局域网机器运行<br>with client mode, you can run the spark submit on any machine, just make sure in the same local network.<br>for instance, in centostest node,<br>mkdir /tmp/spark-events<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br><a href="http://centostest:18080/" target="_blank" rel="noopener">http://centostest:18080/</a>  (view history on the machine running the submit binary)</p>
+<h2 id="run-cluster-mode"><a href="#run-cluster-mode" class="headerlink" title="run cluster mode"></a>run cluster mode</h2><p> ./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode cluster –executor-memory 700M –conf spark.eventLog.enabled=true /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/core-site.xml<br> 上面的命令可能会jar包找不到的错误<br>注意：standalone 模式的 cluster模式 要把jar 文件传到hdfs上面去，因为driver在集群中的任意一节点执行。</p>
+<h2 id="stage"><a href="#stage" class="headerlink" title="stage"></a>stage</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; lines = spark.read().textFile(args[0]).javaRDD();</span><br><span class="line">JavaRDD&lt;String&gt; words = lines.flatMap(s -&gt; Arrays.asList(SPACE.split(s)).iterator());</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; ones = words.mapToPair(s -&gt; new Tuple2&lt;&gt;(s, 1));</span><br><span class="line">JavaPairRDD&lt;String, Integer&gt; counts = ones.reduceByKey((i1, i2) -&gt; i1 + i2);</span><br><span class="line">List&lt;Tuple2&lt;String, Integer&gt;&gt; output = counts.collect();</span><br></pre></td></tr></table></figure>
+<p>对于这个程序有两个stage，一个到mapToPair结束，第二个到collect结束，点开可以看到DAG<br><img src="/images/workcount-rdd-stage.png" alt="stage"></p>
+<h2 id="指定分区数目"><a href="#指定分区数目" class="headerlink" title="指定分区数目"></a>指定分区数目</h2><p>spark.default.parallelism<br>./bin/spark-submit   –class org.apache.spark.examples.JavaWordCount –master spark://192.168.77.130:7077 –deploy-mode client –driver-memory=2g   –executor-memory 2000M   –conf spark.eventLog.enabled=true –conf spark.default.parallelism=4 /root/spark/spark-example-java-1.0.jar  hdfs://k8s-master:9000/user/xuhang/mylarge4.txt</p>
+<h2 id="Yarn的组件及架构"><a href="#Yarn的组件及架构" class="headerlink" title="Yarn的组件及架构"></a>Yarn的组件及架构</h2><ul>
+<li>ResourceManager：Global（全局）的进程</li>
+<li>NodeManager：运行在每个节点上的进程</li>
+<li>ApplicationMaster：Application-specific（应用级别）的进程</li>
+<li>Scheduler：是ResourceManager的一个组件</li>
+<li>Container：节点上一组CPU和内存资源<br>Container是Yarn对计算机计算资源的抽象，它其实就是一组CPU和内存资源，所有的应用都会运行在Container中。ApplicationMaster是对运行在Yarn中某个应用的抽象，它其实就是某个类型应用的实例，ApplicationMaster是应用级别的，它的主要功能就是向ResourceManager（全局的）申请计算资源（Containers）并且和NodeManager交互来执行和监控具体的task。Scheduler是ResourceManager专门进行资源管理的一个组件，负责分配NodeManager上的Container资源，NodeManager也会不断发送自己Container使用情况给ResourceManager。<br>ResourceManager和NodeManager两个进程主要负责系统管理方面的任务。ResourceManager有一个Scheduler，负责各个集群中应用的资源分配。对于每种类型的每个应用，都会对应一个ApplicationMaster实例，ApplicationMaster通过和ResourceManager沟通获得Container资源来运行具体的job，并跟踪这个job的运行状态、监控运行进度。<br>因为application master需要向ResourceManager（全局的）申请计算资源（Containers），他应该是跑在每个node manager上面<br><a href="https://mapr.com/docs/60/MapROverview/c_application_master.html" target="_blank" rel="noopener">https://mapr.com/docs/60/MapROverview/c_application_master.html</a><br><a href="https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好" target="_blank" rel="noopener">https://blog.csdn.net/suifeng3051/article/details/49486927（这个文章讲的很好</a>)</li>
+</ul>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>关于Hadoop本身，有namenode, datanode, resource manager, node manager四个节点，<br>关于这个4个节点，可以搭建真正的分布式测试下，同时搞起zookeeper防止单点故障<br>namenode, datanode是hdfs，resource manager, node manager是yarn</p>
+<h2 id="note"><a href="#note" class="headerlink" title="note"></a>note</h2><p>spark-submit –class com.cjh.test.WordCount –conf spark.default.parallelism=12 –conf spark.executor.memory=800m –conf spark.executor.cores=2 –conf spark.cores.max=6 my.jar<br>如果要多个参数在命令行，需要多个–conf</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-dubbo/" data-id="ck272f0u1000ty0jink9lyai8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-spark/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
-<p>输出Lines with a: xxx, Lines with b: xxx</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="ck272f0u2000uy0jinsjbecnn" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/23/spark-cluster-setup/" data-id="ck272f0wj005xy0jibfyefwfk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
@@ -230,10 +135,10 @@
 
 
   
-    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-spark-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/15/oauth2/" class="article-date">
-  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
+    <a href="/2019/06/21/spark-basic/" class="article-date">
+  <time datetime="2019-06-21T14:51:52.000Z" itemprop="datePublished">2019-06-21</time>
 </a>
     
   </div>
@@ -244,7 +149,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
+      <a class="article-title" href="/2019/06/21/spark-basic/">spark basic</a>
     </h1>
   
 
@@ -252,28 +157,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ul>
-<li>Authentication is the process of verifying an identity (who they say they are)</li>
-<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
-</ul>
-<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
-<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
-<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
-<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
-<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
-<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
-<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
-<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
+        <h2 id="分区和cpu核心数目"><a href="#分区和cpu核心数目" class="headerlink" title="分区和cpu核心数目"></a>分区和cpu核心数目</h2><p>分区数目一般是cpu核心数目的2到4倍<br>加入有50GB的数据存放在hdfs上面，除以128MB，差不多是160，但是我们的cpu总核心数目才50，<br>所以160个分区对应50个cores也是可以的，这样一个core差不多要运行3个task</p>
+<p>如果cpu核心有160，那么每个分区对应一个task，这样最快</p>
+<p>分区数目不能太多，太多了就太多的task，这样节点压力会很大</p>
+<p>每一个分区被一个task执行，如果160个分区也就是160个task，分布在50个cpu核心</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="ck272f0v9002zy0ji44f3ycky" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/21/spark-basic/" data-id="ck272f0vg003fy0ji2dmfystd" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -282,10 +177,10 @@
 
 
   
-    <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-postgres安装" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/06/16/postgres安装/" class="article-date">
+  <time datetime="2019-06-16T14:51:52.000Z" itemprop="datePublished">2019-06-16</time>
 </a>
     
   </div>
@@ -296,7 +191,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/redis5-centos7-setup/">redis5 centos7 setup</a>
+      <a class="article-title" href="/2019/06/16/postgres安装/">postgres安装</a>
     </h1>
   
 
@@ -304,20 +199,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Install-redis"><a href="#Install-redis" class="headerlink" title="Install redis"></a>Install redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.3.tar.gz</span><br><span class="line">tar xzf redis-5.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-5.0.3</span><br><span class="line">make distclean</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<h2 id="start-redis-server"><a href="#start-redis-server" class="headerlink" title="start redis server"></a>start redis server</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-server redis.conf</span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ src/redis-cli</span><br><span class="line">redis&gt; <span class="built_in">set</span> foo bar  (<span class="string">'auth 123456'</span> <span class="built_in">command</span> to login <span class="keyword">if</span> has password)</span><br><span class="line">OK</span><br><span class="line">redis&gt; get foo</span><br><span class="line"><span class="string">"bar"</span></span><br></pre></td></tr></table></figure>
-<h2 id="enable-remote-access"><a href="#enable-remote-access" class="headerlink" title="enable remote access"></a>enable remote access</h2><p>update redis.conf like below:<br>protected-mode no<br>bind 127.0.0.1<br>requirepass 123456</p>
-<h2 id="spring-boot-redis"><a href="#spring-boot-redis" class="headerlink" title="spring boot redis"></a>spring boot redis</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-crud</a><br>缓存流程：<br>失效：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。<br>命中：应用程序从cache中取数据，取到后返回。<br>更新：先把数据存到数据库中，成功后，再让缓存失效。（删除数据也让缓存失效)</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></p>
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="noopener">https://www.postgresql.org/download/linux/redhat/</a><br>官方提供的了新建repo然后yum的安装方式，非常的方便，可以指定版本<code>yum install postgresql10</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install postgresql10</span><br><span class="line">yum install postgresql10-server</span><br><span class="line">/usr/pgsql-10/bin/postgresql-10-setup initdb</span><br><span class="line">systemctl enable postgresql-10</span><br><span class="line">systemctl start postgresql-10</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>注意配置文件在/var/lib/pgsql/10/data不在/usr/pgsql-10<br>可以通过netstat -nlt查看ip的绑定情况，如果修改了/usr/pgsql-10的listen相关的配置，<br>会发现5432仍然listen在127.0.0.1,而不是远程任意ip地址可以访问<br><a href="https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了" target="_blank" rel="noopener">https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html这个文章价提到了</a></p>
+<p>pg_hba.conf的配置必须是trust，否则远程客户端比如datagrip还是不能登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host    all             all              0.0.0.0/0                       trust</span><br><span class="line">host    all             all              ::/0                            trust</span><br></pre></td></tr></table></figure></p>
+<p>同时注意postgres安装的时候会默认安装一个linux的用户postgres,<br>可以su - postgres之后然后psql命令进入shell的sql界面，<br>然后修改密码ALTER USER postgres WITH PASSWORD ‘xuhang’，<br>最后可以客户端用xuhang这个密码登陆</p>
+<h2 id="其他ref"><a href="#其他ref" class="headerlink" title="其他ref"></a>其他ref</h2><p><a href="https://www.postgresql.org/docs/10/auth-pg-hba-conf.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/10/auth-pg-hba-conf.html</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>直接看下面步骤进行安装for quick，进入root用户<br>yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="noopener">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a><br>yum install postgresql10<br>yum install postgresql10-server<br>/usr/pgsql-10/bin/postgresql-10-setup initdb<br>systemctl enable postgresql-10<br>systemctl start postgresql-10<br>安装好下面开始配置<br>su - postgres<br>psql<br>ALTER USER postgres WITH PASSWORD ‘xuhang’</p>
+<p>append<br><code>`
+host    all             all              0.0.0.0/0                       trust
+host    all             all              ::/0                            trust</code><br>to <code>/var/lib/pgsql/10/data/pg_hba.conf</code></p>
+<p>update to <code>listen_addresses = &#39;*&#39;</code><br>in <code>postgresql.conf</code></p>
+<p>systemctl restart postgresql-10<br>可以客户端登陆了，默认数据库postgres，默认用户名postgres，密码是alter修改过的</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/redis5-centos7-setup/" data-id="ck272f0ve003ay0jip6nvatyf" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/16/postgres安装/" data-id="ck272f0vb0034y0ji1gzt95z7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
 
     </footer>
   </div>
@@ -326,10 +227,10 @@
 
 
   
-    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-hadoop-early-architecture" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/spring-jpa/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/06/13/hadoop-early-architecture/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
 </a>
     
   </div>
@@ -340,7 +241,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/spring-jpa/">spring jpa</a>
+      <a class="article-title" href="/2019/06/13/hadoop-early-architecture/">old Hadoop Architecture</a>
     </h1>
   
 
@@ -348,33 +249,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
-<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
-</li>
-<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
-</li>
-<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
-</li>
-<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
-</li>
-<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
-</li>
-<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
-</li>
-<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
-</li>
-<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
-</li>
-</ul>
-<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
+        <p>关于yarn之前的hadooop架构请参考下面这个文章<br><a href="https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works" target="_blank" rel="noopener">https://www.journaldev.com/8808/hadoop1-architecture-and-how-major-components-works</a><br>mapreduce的jobtracker和hdfs的name node是在一起的， mapreduce的tasktracker和hdfs的data node是一起的</p>
+<p>yarn架构<br><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/opensource/os-cn-hadoop-yarn/</a><br>新旧 Hadoop MapReduce 框架比对<br>让我们来对新旧 MapReduce 框架做详细的分析和对比，可以看到有以下几点显著变化：</p>
+<p>首先客户端不变，其调用 API 及接口大部分保持兼容，这也是为了对开发使用者透明化，使其不必对原有代码做大的改变 ( 详见 2.3 Demo 代码开发及详解)，但是原框架中核心的 JobTracker 和 TaskTracker 不见了，取而代之的是 ResourceManager, ApplicationMaster 与 NodeManager 三个部分。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="ck272f0vr0044y0jig8eukd6e" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/13/hadoop-early-architecture/" data-id="ck272f0u70010y0ji8ixxo19w" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/">hadoop</a></li></ul>
 
     </footer>
   </div>
@@ -383,10 +268,10 @@
 
 
   
-    <article id="post-springboot-test" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-ibm小型机" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/springboot-test/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/06/13/ibm小型机/" class="article-date">
+  <time datetime="2019-06-13T14:51:52.000Z" itemprop="datePublished">2019-06-13</time>
 </a>
     
   </div>
@@ -397,7 +282,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-test/">springboot-test</a>
+      <a class="article-title" href="/2019/06/13/ibm小型机/">IBM 的 POWER 处理器比较 X86 处理器</a>
     </h1>
   
 
@@ -405,15 +290,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/springboot/tree/master/spring-boot-test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/spring-boot-test</a><br><a href="https://spring.io/guides/gs/testing-web/" target="_blank" rel="noopener">https://spring.io/guides/gs/testing-web/</a></p>
+        <h2 id="硬件体系"><a href="#硬件体系" class="headerlink" title="硬件体系"></a>硬件体系</h2><p>从处理能力来说，单Hz的处理能力x86已经超过了Power系列，这是毋庸置疑的。但是Power有其明显的优点。它采用了标准的SMP结构，也就是说对于内存来说所有CPU访问的速度都是一致的，而x86采用了NUMA结构，这就是说CPU和内存是分区的，每个CPU访问自己的这部分内存特别快，但是如果需要访问其它部分那就要走QPI总线（现在已经在不断改进了），这也客观上造成了随着CPU数量的增多，处理能力的增长Power系列的线性程度远好于x86（这也是为什么很少会用4路以上的x86服务器）。而且作为小型机，封闭系统，其设计更加完整紧凑，综合起来性能强于x86</p>
+<h2 id="软件体系"><a href="#软件体系" class="headerlink" title="软件体系"></a>软件体系</h2><p>硬件体系是自己的，操作系统也是自己的（AIX等），所以整合起来Power系列的整体稳定性要强于x86服务器，而且运维也方便（特别是对于一些外围硬件，如果使用IBM更加容易用），抗压能力也强（小型机90%的CPU占用率，运行几个星期可能都OK，x86几天就估计出问题了）<br>但是Power系列的小型机的价格太高了，而且已经赶不上技术的变化了，由于Google的崛起，云计算的兴盛，现在的分布式系统的成熟度越来越高，系统已经越来越不依赖几台小型机来提供稳定可靠性，而是通过集群来提供，性能也能够通过分布式的处理来解决。所以x86的使用越来越广泛，而最新的一些低成本但是能够带来高效能的新技术都在x86体系下得到应用（x86市场占有率高，也开放），而Power系列由于其封闭的特性，反而难以得到应用，所以Power系列的小型机优势越来越不明显，已经在逐渐退出历史舞台了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AIX is an open operating system from IBM that is based on a version of UNIX.<br>ibm小型机的系统是AIX， 所以相关的软件也要on aix， 比如oracle on aix,<br>不过ibm小型机也可以安装linux,因为linux也可以运行在power处理器， Power ISA指令集</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-test/" data-id="ck272f0vs0046y0jioep4re3y" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/13/ibm小型机/" data-id="ck272f0uc001ay0jiavobipri" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -422,10 +309,10 @@
 
 
   
-    <article id="post-springboot-docker" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-git-usage" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/31/springboot-docker/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/06/12/git-usage/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
 </a>
     
   </div>
@@ -436,7 +323,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/springboot-docker/">sprintboot docker deployment</a>
+      <a class="article-title" href="/2019/06/12/git-usage/">git 分支介绍</a>
     </h1>
   
 
@@ -444,18 +331,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="build-code"><a href="#build-code" class="headerlink" title="build code"></a>build code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mengxu2018/springboot.git</span><br><span class="line"><span class="built_in">cd</span> springboot/spring-boot-crud</span><br><span class="line">mvn package <span class="comment"># will generate spring-boot-crud.jar under target directory</span></span><br></pre></td></tr></table></figure>
-<h2 id="build-docker-image"><a href="#build-docker-image" class="headerlink" title="build docker image"></a>build docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t springboot-crud-sample .</span><br><span class="line">docker inspect springboot-crud-sample  <span class="comment">#  you will find userful info under node "ContainerConfig"</span></span><br></pre></td></tr></table></figure>
-<h2 id="run-docker-image"><a href="#run-docker-image" class="headerlink" title="run docker image"></a>run docker image</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9080:8080 springboot-crud-sample</span><br><span class="line">docker inspect 573fcd31c442  <span class="comment"># 573fcd31c442 is the container id, can find "Mounts" here</span></span><br></pre></td></tr></table></figure>
-<h2 id="test-the-client"><a href="#test-the-client" class="headerlink" title="test the client"></a>test the client</h2><p>visit <a href="http://192.168.77.140:9080/" target="_blank" rel="noopener">http://192.168.77.140:9080/</a></p>
+        <h2 id="local-branch"><a href="#local-branch" class="headerlink" title="local branch"></a>local branch</h2><p>You can view a list of all the local branches on your machine by running git branch:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">master</span><br><span class="line">new-feature</span><br></pre></td></tr></table></figure></p>
+<p>Each local branch has a file under .git/refs/heads/:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -F .git/refs/heads/</span><br><span class="line">master new-feature</span><br></pre></td></tr></table></figure></p>
+<p>There are two types of local branches on your machine: non-tracking local branches, and tracking local branches.</p>
+<h3 id="Non-tracking-local-branches"><a href="#Non-tracking-local-branches" class="headerlink" title="Non-tracking local branches"></a>Non-tracking local branches</h3><p>Non-tracking local branches are not associated with any other branch. You create one by running <code>git branch &lt;branchname&gt;</code>.</p>
+<h3 id="Tracking-local-branches"><a href="#Tracking-local-branches" class="headerlink" title="Tracking local branches"></a>Tracking local branches</h3><p>Tracking local branches are associated with another branch, usually a remote-tracking branch. You create one by running <code>git branch - track &lt;branchname&gt; [&lt;start-point&gt;]</code>.<br>You can view which one of your local branches are tracking branches using <code>git branch -vv</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -vv</span><br><span class="line">master b31f87c85 [origin/master] Example commit message</span><br><span class="line">new-feature b760e04ed Another example commit message</span><br></pre></td></tr></table></figure></p>
+<p>From this command’s output, you can see that the local branch master is tracking the <code>remote-tracking</code> branch <code>origin/master</code>, and the local branch new-feature is not tracking anything.<br>Another way to see which branches are tracking branches is by having a look at <code>.git/config</code>.<br>Tracking local branches are useful. They allow you to run git pull and git push, without specifying which upstream branch to use. If the branch is not set up to track another branch, you’ll get an error like this one:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout new-feature</span><br><span class="line">$ git pull</span><br><span class="line">There is no tracking information for the current branch.</span><br><span class="line">Please specify which branch you want to merge with.</span><br><span class="line">See git-pull(1) for details</span><br><span class="line">git pull &lt;remote&gt; &lt;branch&gt;</span><br><span class="line">If you wish to set tracking information for this branch you can do so with:</span><br><span class="line">git branch - set-upstream new-feature &lt;remote&gt;/&lt;branch&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Remote-tracking-branches-still-on-your-machine"><a href="#Remote-tracking-branches-still-on-your-machine" class="headerlink" title="Remote-tracking branches (still on your machine)"></a>Remote-tracking branches (still on your machine)</h2><p>You can view a list of all the remote-tracking branches on your machine by running <code>git branch -r</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -r</span><br><span class="line">bitbucket/master</span><br><span class="line">origin/master</span><br><span class="line">origin/new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Each remote-tracking branch has a file under <code>.git/refs/&lt;remote&gt;/</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ tree -F .git/refs/remotes/</span><br><span class="line">.git/refs/remotes/</span><br><span class="line">├── bitbucket/</span><br><span class="line">│ └── master</span><br><span class="line">└── origin/</span><br><span class="line">├── master</span><br><span class="line">└── new-branch</span><br></pre></td></tr></table></figure></p>
+<p>Think of your remote-tracking branches as your local cache for what the remote machines contain. You can update your remote-tracking branches using <code>git fetch</code>, which <code>git pull</code> uses behind the scenes.<br>Even though all the data for a remote-tracking branch is stored locally on your machine (like a cache), it’s still never called a local branch. (At least, I wouldn’t call it that!) It’s just called a remote-tracking branch.</p>
+<h2 id="Branches-on-a-remote-machine"><a href="#Branches-on-a-remote-machine" class="headerlink" title="Branches on a remote machine:"></a>Branches on a remote machine:</h2><p>You can view all the remote branches (that is, the branches on the remote machine), by running <code>git remote show &lt;remote&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ git remote show origin</span><br><span class="line">* remote origin</span><br><span class="line">Fetch URL: git@github.com:Flimm/example.git</span><br><span class="line">Push URL: git@github.com:Flimm/example.git</span><br><span class="line">HEAD branch: master</span><br><span class="line">Remote branches:</span><br><span class="line">io-socket-ip new (next fetch will store in remotes/origin)</span><br><span class="line">master tracked</span><br><span class="line">new-branch tracked</span><br><span class="line">Local ref configured for &apos;git pull&apos;:</span><br><span class="line">master merges with remote master</span><br><span class="line">new-branch merges with remote new-branch</span><br><span class="line">Local ref configured for &apos;git push&apos;:</span><br><span class="line">master pushes to master (up to date)</span><br><span class="line">new-branch pushes to new-branch (fast-forwardable)</span><br></pre></td></tr></table></figure></p>
+<p>This git remote command queries the remote machine over the network about its branches. It does not update the remote-tracking branches on your local machine, use <code>git fetch</code> or <code>git pull</code> for that.</p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>git pull [<options>] [<repository> [<refspec>…​]]</refspec></repository></options></p>
+<p>git merge [-n] [ - stat] [ - no-commit] [ - squash] [ - [no-]edit]<br> [-s <strategy>] [-X <strategy-option>] [-S[<keyid>]]<br> [ - [no-]allow-unrelated-histories]<br> [ - [no-]rerere-autoupdate] [-m <msg>] [-F <file>] [<commit>…​]<br>从官方的文档来看，git merge是没有repository参数的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull origin next</span><br></pre></td></tr></table></figure></commit></file></msg></keyid></strategy-option></strategy></p>
+<p>这个pull的直接就是远程的分支, 他是下面两个命令的结合体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git merge origin/next</span><br></pre></td></tr></table></figure></p>
+<p>这个先把远程的所有分支fetch过来，然后把远程跟踪分支merge到当前分支，origin/next这种分支是存在本地的,虽然叫远程跟踪分支<br>把远程的分支fetch过来可以看到如下， fetch就是把远程的东西拿到本地的仓库，也就是origin/develop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C:\git\testgit&gt;git fetch</span><br><span class="line">remote: Enumerating objects: 5, done.</span><br><span class="line">remote: Counting objects: 100% (5/5), done.</span><br><span class="line">remote: Compressing objects: 100% (3/3), done.</span><br><span class="line">remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0</span><br><span class="line">Unpacking objects: 100% (3/3), done.</span><br><span class="line">From https://gitprod.statestr.com/e587214/testgit</span><br><span class="line">8ce7bef..0605953 develop -&gt; origin/develop</span><br></pre></td></tr></table></figure></p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777" target="_blank" rel="noopener">https://stackoverflow.com/questions/16408300/what-are-the-differences-between-local-branch-local-tracking-branch-remote-bra/24785777</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/springboot-docker/" data-id="ck272f0vu0049y0ji885xsoxy" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/git-usage/" data-id="ck272f0u3000xy0jivhag6eo8" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
 
     </footer>
   </div>
@@ -464,10 +363,10 @@
 
 
   
-    <article id="post-grpc" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-hive-vs-hbase" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/26/grpc/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
+    <a href="/2019/06/12/hive-vs-hbase/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
 </a>
     
   </div>
@@ -478,7 +377,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/grpc/">grpc introduction</a>
+      <a class="article-title" href="/2019/06/12/hive-vs-hbase/">hive vs hbase</a>
     </h1>
   
 
@@ -486,15 +385,147 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>这个例子是用maven插件从.proto文件到java文件的<br><a href="https://github.com/mengxu2018/grpc" target="_blank" rel="noopener">https://github.com/mengxu2018/grpc</a></p>
+        <ol>
+<li>Hive中的表是纯逻辑表，就只是表的定义等，即表的元数据。Hive本身不存储数据，它完全依赖HDFS和MapReduce。这样就可以将结构化的数据文件映射为为一张数据库表，并提供完整的SQL查询功能，并将SQL语句最终转换为MapReduce任务进行运行。 而HBase表是物理表，适合存放非结构化的数据。</li>
+<li>Hive是基于MapReduce来处理数据,而MapReduce处理数据是基于行的模式；HBase处理数据是基于列的而不是基于行的模式，适合海量数据的随机访问。</li>
+<li>HBase的表是疏松的存储的，因此用户可以给行定义各种不同的列；而Hive表是稠密型，即定义多少列，每一行有存储固定列数的数据。</li>
+<li>Hive使用Hadoop来分析处理数据，而Hadoop系统是批处理系统，因此不能保证处理的低迟延问题；而HBase是近实时系统，支持实时查询。</li>
+<li>Hive不提供row-level的更新，它适用于大量append-only数据集（如日志）的批任务处理。而基于HBase的查询，支持和row-level的更新。</li>
+<li>Hive提供完整的SQL实现，通常被用来做一些基于历史数据的挖掘、分析。而HBase不适用与有join，多级索引，表关系复杂的应用场景。</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/grpc/" data-id="ck272f0u3000yy0jify7xtrn0" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/06/12/hive-vs-hbase/" data-id="ck272f0u90012y0jizmimgf29" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/">grpc</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hbase/">hbase</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-windows10-disable-update" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/windows10-disable-update/" class="article-date">
+  <time datetime="2019-06-12T14:51:52.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/windows10-disable-update/">win10 disable auto-update</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>被windows 10 自动更新折磨了很久，今天终于找到了办法<br>运行regedit打开注册表，找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下面的wuauserv服务，然后把右边的ImagePath改成一个错误的，然后update就彻底歇菜了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/12/windows10-disable-update/" data-id="ck272f0vv004by0jibxymjwv8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/win10/">win10</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spark闭包" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/05/spark闭包/" class="article-date">
+  <time datetime="2019-06-05T14:51:52.000Z" itemprop="datePublished">2019-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/05/spark闭包/">spark 闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>什么叫闭包： 跨作用域访问函数变量。又指的一个拥有许多变量和绑定了这些变量的环境的表达式（通常是一个函数），因而这些变量也是该表达式的一部分。</p>
+<p>Spark闭包的问题引出：<br>在spark中实现统计List(1,2,3)的和。如果使用下面的代码，程序打印的结果不是6，而是0。这个和我们编写单机程序的认识有很大不同。为什么呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">object Test &#123;</span><br><span class="line">  def main(args:Array[String]):Unit = &#123;</span><br><span class="line">      val conf = new SparkConf().setAppName(&quot;test&quot;);</span><br><span class="line">      val sc = new SparkContext(conf)</span><br><span class="line"></span><br><span class="line">      val rdd = sc.parallelize(List(1,2,3))</span><br><span class="line">      var counter = 0</span><br><span class="line">      //warn: don&apos;t do this</span><br><span class="line">      rdd.foreach(x =&gt; counter += x)</span><br><span class="line">      println(&quot;Counter value: &quot;+counter)</span><br><span class="line"></span><br><span class="line">      sc.stop()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题分析：<br>counter是在foreach函数外部定义的，也就是在driver程序中定义，而foreach函数是属于rdd对象的，rdd函数的执行位置是各个worker节点（或者说worker进程），main函数是在driver节点上（或者说driver进程上）执行的，所以当counter变量在driver中定义，被在rdd中使用的时候，出现了变量的“跨域”问题，也就是闭包问题。</p>
+<p>问题解释：<br>对于上面程序中的counter变量，由于在main函数和在rdd对象的foreach函数是属于不同“闭包”的，所以，传进foreach中的counter是一个副本，初始值都为0。foreach中叠加的是counter的副本，不管副本如何变化，都不会影响到main函数中的counter，所以最终打印出来的counter为0.</p>
+<p>当用户提交了一个用scala语言写的Spark程序，Spark框架会调用哪些组件呢？首先，这个Spark程序就是一个“Application”，程序里面的mian函数就是“Driver Program”， 前面已经讲到它的作用，只是，dirver程序的可能运行在客户端，也有可有可能运行在spark集群中，这取决于spark作业提交时参数的选定，比如，yarn-client和yarn-cluster就是分别运行在客户端和spark集群中。在driver程序中会有RDD对象的相关代码操作，比如下面代码的newRDD.map()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Test&#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val sc = new SparkContext(new SparkConf())</span><br><span class="line">    val newRDD = sc.textFile(&quot;&quot;)</span><br><span class="line"></span><br><span class="line">    newRDD.map(data =&gt; &#123;</span><br><span class="line">      //do something</span><br><span class="line">      println(data.toString)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及到RDD的代码，比如上面RDD的map操作，它们是在Worker节点上面运行的，所以spark会透明地帮用户把这些涉及到RDD操作的代码传给相应的worker节点。如果在RDD map函数中调用了在函数外部定义的对象，因为这些对象需要通过网络从driver所在节点传给其他的worker节点，所以要求这些类是可序列化的，比如在Java或者scala中实现Serializable类，除了java这种序列化机制，还可以选择其他方式，使得序列化工作更加高效。worker节点接收到程序之后，在spark资源管理器的指挥下运行RDD程序。不同worker节点之间的运行操作是并行的。</p>
+<p>​在worker节点上所运行的RDD中代码的变量是保存在worker节点上面的，在spark编程中，很多时候用户需要在driver程序中进行相关数据操作之后把该数据传给RDD对象的方法以做进一步处理，这时候，spark框架会自动帮用户把这些数据通过网络传给相应的worker节点。除了这种以变量的形式定义传输数据到worker节点之外，spark还另外提供了两种机制，分别是broadcast和accumulator。相比于变量的方式，在一定场景下使用broadcast比较有优势，因为所广播的数据在每一个worker节点上面只存一个副本，而在spark算子中使用到的外部变量会在每一个用到它的task中保存一个副本，即使这些task在同一个节点上面。所以当数据量比较大的时候，建议使用广播而不是外部变量。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/05/spark闭包/" data-id="ck272f0vp003zy0jitdxfiovs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/03/create-large-file/" class="article-date">
+  <time datetime="2019-06-03T14:51:52.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/03/create-large-file/">随机生成大文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.RandomAccessFile;</span><br><span class="line">import java.nio.ByteBuffer;</span><br><span class="line">import java.nio.channels.FileChannel;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        byte[] buffer = &quot;Help I am trapped in a fortune cookie factory\n&quot;.getBytes();</span><br><span class="line">        byte[] buffer2 = &quot;good morning boy&quot;.getBytes();</span><br><span class="line">        int number_of_lines = 400000*20;</span><br><span class="line"></span><br><span class="line">        Random rand = new Random();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FileChannel rwChannel = new RandomAccessFile(&quot;mylarge.txt&quot;, &quot;rw&quot;).getChannel();</span><br><span class="line">        ByteBuffer wrBuf = rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length * number_of_lines);</span><br><span class="line">        for (int i = 1; i &lt; number_of_lines; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            int n = rand.nextInt(50) + 1;</span><br><span class="line">            if (n % i == 0) &#123;</span><br><span class="line">                wrBuf.put(buffer);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                wrBuf.put(buffer2);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        rwChannel.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="ck272f0ts000fy0jijn3lzml7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
 
     </footer>
   </div>
@@ -507,7 +538,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -521,7 +552,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -531,7 +562,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -540,7 +571,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -553,23 +584,23 @@
       <ul>
         
           <li>
-            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
+            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
           <li>
-            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
+            <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
           </li>
         
           <li>
-            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>
@@ -584,7 +615,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 xu, hang<br>
+      &copy; 2021 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

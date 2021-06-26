@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-kakfa索引" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-java-exception" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/26/kakfa索引/" class="article-date">
-  <time datetime="2019-07-26T14:34:31.000Z" itemprop="datePublished">2019-07-26</time>
+    <a href="/2019/10/26/java-exception/" class="article-date">
+  <time datetime="2019-10-26T03:37:23.000Z" itemprop="datePublished">2019-10-26</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/kakfa索引/">kakfa索引</a>
+      <a class="article-title" href="/2019/10/26/java-exception/">java exception</a>
     </h1>
   
 
@@ -84,17 +84,239 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Index file stores the offsets and physical position of the message in the log file.</p>
-<p>If you need to read the message at offset 1, you first search for it in the index file and figure out that the message is in position 79. Then you directly go to position 79 in the log file and start reading. This makes it quite effective as you can use binary search to quickly get to the correct offset in the already sorted index file.</p>
-<p>kakfa内部用的是稀疏索引，一般来说每个block 512Kb，这样通过offset定位到512KB的数据，然后在这批数据中进行下一步查询，如果是 稠密索引就更简单了，直接定位到目标的record（因为segment中的消息是顺序写入的，稀疏索引定位到某个offset对应的512kB的block后是可以找到其中真正所需的消息的)</p>
-<p><img src="/images/kakfa-index.jpeg" alt="index"></p>
-<p>稀疏索引中，左边的offset对应右边的消息，一个索引记录对应3个消息，真是的case可能是512Kb，比如offset为5的消息怎么定位呢？先找到索引记录3，然后找到右边具体的block，就是3到5，这个block肯定包含offset为5的记录，然后在这个有限数据中通过二分查找找到offset为5的记录效率会很快</p>
-<p><a href="https://medium.com/r/?url=https%3A%2F%2Fwww2.cs.sfu.ca%2FCourseCentral%2F354%2Fzaiane%2Fmaterial%2Fnotes%2FChapter11%2Fnode5.html" target="_blank" rel="noopener">https://medium.com/r/?url=https%3A%2F%2Fwww2.cs.sfu.ca%2FCourseCentral%2F354%2Fzaiane%2Fmaterial%2Fnotes%2FChapter11%2Fnode5.html</a><br><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a><br><a href="https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory" target="_blank" rel="noopener">https://stackoverflow.com/questions/19394669/why-do-index-files-exist-in-the-kafka-log-directory</a><br><a href="https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html" target="_blank" rel="noopener">https://tech.meituan.com/2015/01/13/kafka-fs-design-theory.html</a><br><a href="https://blog.csdn.net/idber/article/details/8096941" target="_blank" rel="noopener">https://blog.csdn.net/idber/article/details/8096941</a></p>
+        <p>{<br>status: 1<br>message: “转账成功”<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 1<br>message: “您的余额不足” //余额不足可以当作正常业务流程提示用户<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 1<br>message: “您的套餐三个月内不能修改” //套餐不能修改可以当作正常业务流程提示用户<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 0<br>errorCode: 1001<br>errorMessage: “业务处理出现错误，请稍后再尝试” //数据库错误，socket错误等不应该让用户看到<br>exception: java.xx.socketException,etc<br>}</p>
+<p>但是有的业务是需要按照异常给用户的，比如 EmailNotUniqueException, InvalidUserStateException，需要自定义异常<a href="https://stackabuse.com/how-to-make-custom-exceptions-in-java/" target="_blank" rel="noopener">https://stackabuse.com/how-to-make-custom-exceptions-in-java/</a></p>
+<p><a href="http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/" target="_blank" rel="noopener">http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/</a><br>这个文章讲解了checked异常的不好的地方</p>
+<p><a href="https://stackoverflow.com/questions/7561550/list-of-spring-runtime-exceptions" target="_blank" rel="noopener">https://stackoverflow.com/questions/7561550/list-of-spring-runtime-exceptions</a></p>
+<p>spring内部基本都是用的unchecked exception, 因为uncheck exception不需要用户catch，如果有异常就直接输出到日志了，比如说下面的空指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NullPointerException: null</span><br><span class="line"> at com.ssc.rest.controller.ManagerControllerMiddleware.delete(ManagerControllerMiddleware.java:61)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line"> at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line"> at java.lang.reflect.Method.invoke(Method.java:497)</span><br></pre></td></tr></table></figure></p>
+<p>这段话会被输出到日志文件 </p>
+<p>一般业务系统的异常都是需要自定义异常，既然自定义异常，那么余额为0或者套餐变更要求不符合还会当作异常被抛出到spring全局处理器然后给js返回错误的数据格式{errormsg:xx, errorCode:xx}？<br>应该是不建议的，定义这种类别的自定义异常不是好的方法,但是不绝对，<br>一般自定义的异常，比如用户名不唯一，邮件格式不对等</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa索引/" data-id="ck272f0uy002iy0jik6gh8y29" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/10/26/java-exception/" data-id="ck272f0ug001iy0jilwa32t8h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-es6-promise" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/26/es6-promise/" class="article-date">
+  <time datetime="2019-10-26T03:35:01.000Z" itemprop="datePublished">2019-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/26/es6-promise/">es6 promise</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The arguments to then are optional, and catch(failureCallback) is short for then(null, failureCallback). You might see this expressed with arrow functions instead:</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises</a></p>
+<p>下面这个代码可以直接控制台执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line"> console.log(&apos;Initial&apos;);</span><br><span class="line"> throw new Error(&apos;Something failed&apos;);</span><br><span class="line"> // resolve();</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do this&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.then(null,</span><br><span class="line"> () =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do that&apos;);</span><br><span class="line"> &#125;</span><br><span class="line"> )</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> console.log(&apos;Do this, no matter what happened before&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上面这个代码等同于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line"> console.log(&apos;Initial&apos;);</span><br><span class="line"> throw new Error(&apos;Something failed&apos;);</span><br><span class="line"> // resolve();</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do this&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.catch(() =&gt; &#123;</span><br><span class="line"> console.error(&apos;Do that&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> console.log(&apos;Do this, no matter what happened before&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>When you return something from a then() callback, it’s a bit magic. If you return a value, the next then() is called with that value. However, if you return something promise-like, the next then() waits on it, and is only called when that promise settles (succeeds/fails).<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Promise.resolve(&apos;foo&apos;).</span><br><span class="line"> then(() =&gt; &#123;return &quot;bar&quot;&#125;).</span><br><span class="line"> then((v) =&gt; console.log(v))</span><br><span class="line">Promise.resolve(&apos;foo&apos;).</span><br><span class="line"> then(() =&gt; &#123;return Promise.resolve(&apos;bar&apos;)&#125;).</span><br><span class="line"> then((v) =&gt; console.log(v))</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://stackoverflow.com/questions/34094806/return-from-a-promise-then" target="_blank" rel="noopener">https://stackoverflow.com/questions/34094806/return-from-a-promise-then</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/10/26/es6-promise/" data-id="ck272f0ty000ny0jihc8i8rxu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jvm-classloader" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/26/jvm-classloader/" class="article-date">
+  <time datetime="2019-10-26T03:33:41.000Z" itemprop="datePublished">2019-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://tomcat.apache.org/tomcat-9.0-doc/class-loader-howto.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-9.0-doc/class-loader-howto.html</a></p>
+<p>关于Sharedclassloader 有个没说清楚， webappclassloader会先从自己的repository寻找，找不到才会从Sharedclassloader寻找</p>
+<p>log4j:ERROR A “org.apache.log4j.DailyRollingFileAppender” object is not assignable to a “org.apache.log4j.Appender” variable.<br>log4j:ERROR The class “org.apache.log4j.Appender” was loaded by<br>log4j:ERROR [java.net.URLClassLoader@2f0a098b] whereas object of type<br>log4j:ERROR “org.apache.log4j.DailyRollingFileAppender” was loaded by [WebappClassLoader<br> context: /cdt4middleware<br> delegate: false<br> repositories:<br> /WEB-INF/classes/<br> - - - - → Parent Classloader:<br>java.net.URLClassLoader@2f0a098b<br>].<br>log4j:ERROR Could not instantiate appender named “RollingAppender”.</p>
+<p>这个错误是因为webapp下面有个log4j，而且sharedclassloader下面也有个log4j<br>因为osa框架里面的类是由sharedclassloader加载的，他如果事先加载了org.apache.log4j.Appender，而后如果DailyRollingFileAppender被webappclassloader加载的话就会报这个错误了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/10/26/jvm-classloader/" data-id="ck272f0uj001py0jixojx21ro" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jdk8-new-features" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/11/jdk8-new-features/" class="article-date">
+  <time datetime="2019-08-11T05:27:07.000Z" itemprop="datePublished">2019-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="为什么jdk8的interface要引入default-method"><a href="#为什么jdk8的interface要引入default-method" class="headerlink" title="为什么jdk8的interface要引入default method?"></a>为什么jdk8的interface要引入default method?</h3><p>To give you an example take the case of the Collection.forEach method, which is designed to take an instance of the Consumer functional interface and has a default implementation in the Collection interface:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default void forEach(Consumer&lt;? super T&gt; action) &#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    for (T t : this) &#123;</span><br><span class="line">        action.accept(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If the JDK designers didn’t introduce the concept of default methods then all the implementing classes of the Collection interface would have to implement the forEach method so it would be problematic to switch to Java - 8 without breaking your code.</p>
+<p>So to facilitate the adoption of lambdas and the use of the new functional interfaces like Consumer, Supplier, Predicate, etc. the JDK designers introduced the concept of default methods to provide backward compatibility and it is now easier to switch to Java - 8 without making any changes.</p>
+<p>If you don’t like the default implementation in the interface you can override it and supply your own.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/08/11/jdk8-new-features/" data-id="ck272f0ui001my0jig092v23a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FileChannel-ByteBuffer" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/11/FileChannel-ByteBuffer/" class="article-date">
+  <time datetime="2019-08-11T05:17:41.000Z" itemprop="datePublished">2019-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/11/FileChannel-ByteBuffer/">FileChannel ByteBuffer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>FileChannel示例代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class FileChannelWriter &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String file = &quot;test_write_using_filechannel.txt&quot;;</span><br><span class="line">        try (RandomAccessFile writer = new RandomAccessFile(file, &quot;rw&quot;);</span><br><span class="line">             FileChannel channel = writer.getChannel()) &#123;</span><br><span class="line">            ByteBuffer buff = ByteBuffer.wrap(&quot;Hello&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">            channel.write(buff);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line"></span><br><span class="line">            System.out.println(buff.position());</span><br><span class="line">//            ByteBuffer buff2 = ByteBuffer.wrap(&quot;Hello world&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            channel.position(3);</span><br><span class="line">            buff.position(4);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line">            channel.write(buff);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line"></span><br><span class="line">            // verify</span><br><span class="line">            RandomAccessFile reader = new RandomAccessFile(file, &quot;r&quot;);</span><br><span class="line">            System.out.println(reader.readLine());</span><br><span class="line">            reader.close();</span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发现channel写buffer的时候buffer自己的文件指针也随着变化 ，position如果是11，下次读写从12开始</p>
+<p><a href="https://medium.com/@xunnan.xu/its-all-about-buffers-zero-copy-mmap-and-java-nio-50f2a1bfc05c" target="_blank" rel="noopener">https://medium.com/@xunnan.xu/its-all-about-buffers-zero-copy-mmap-and-java-nio-50f2a1bfc05c</a></p>
+<p>linux sendfile是用来实现zero-copy的，就是java的FileChannel.transferTo<br>linux epoll是用来实现nio的selector的<br>前者是网络传输增强性能避免用户空间的buffer的，后者是io的模型用来减少所需要的线程数量</p>
+<p><a href="http://man7.org/linux/man-pages/man7/epoll.7.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man7/epoll.7.html</a><br>The epoll API performs a similar task to poll(2): monitoring multiple file descriptors to see if I/O is possible on any of them.  The epoll API can be used either as an edge-triggered or a level-triggered interface and scales well to large numbers of watched file descriptors.</p>
+<p>A new java.nio.channels.SelectorProvider implementation that is based on the Linux epoll event notification facility is included<br>If linux kernel &gt;= 2.6 is detected, then the java.nio.channels.spi.SelectorProvider will use epoll.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static Selector open() throws IOException &#123;</span><br><span class="line">    return SelectorProvider.provider().openSelector();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://www.baeldung.com/java-nio-selector" target="_blank" rel="noopener">https://www.baeldung.com/java-nio-selector</a><br><a href="https://github.com/mengxu2018/java-code-sample/tree/master/simple-nio/src/com/xu/nio/EchoTest.java" target="_blank" rel="noopener">https://github.com/mengxu2018/java-code-sample/tree/master/simple-nio/src/com/xu/nio/EchoTest.java</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/08/11/FileChannel-ByteBuffer/" data-id="ck272f0tg0003y0jip7kio5nj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/">IO</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka源码开发环境" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/10/kafka源码开发环境/" class="article-date">
+  <time datetime="2019-08-10T13:43:59.000Z" itemprop="datePublished">2019-08-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/10/kafka源码开发环境/">kafka源码开发环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><p>cd kafka_source_dir<br>gradle</p>
+<p>./gradlew jar （如果不能下载wrapper可以直接用local的gradle命令)<br>./gradlew idea</p>
+<h2 id="去掉编译warning（build-gradle"><a href="#去掉编译warning（build-gradle" class="headerlink" title="去掉编译warning（build.gradle)"></a>去掉编译warning（build.gradle)</h2><p>tasks.withType(JavaCompile) {<br>      options.encoding = ‘UTF-8’<br>增加  options.warnings = false   </p>
+<h2 id="准备配置文件"><a href="#准备配置文件" class="headerlink" title="准备配置文件"></a>准备配置文件</h2><p>把config下面的log4j.properties文件copy到kafka-2.3.0-src\core\src\main\resources\log4j.properties<br>同时修改config下面的server.properties的log.dirs=c:/tmp/kafka-logs</p>
+<h2 id="启动windows-zookeeper"><a href="#启动windows-zookeeper" class="headerlink" title="启动windows zookeeper"></a>启动windows zookeeper</h2><p>直接执行zkServer.cmd（提前修改zoo.cfg的路径为windows路径)</p>
+<h2 id="导入intellij"><a href="#导入intellij" class="headerlink" title="导入intellij"></a>导入intellij</h2><p>intellij open然后选择kafka-2.3.0-src\build.gradle</p>
+<p>修改classpath<br><img src="/images/kakfa-build.PNG" alt="kakfa-build"><br>注意箭头的地方</p>
+<p>运行main方法，注意-Dkafka.logs.dir=c:/tmp/log4j-kafka-logs是针对的log4j.properties,<br>和log.dirs=c:/tmp/kafka-logs里面的不一样<br><img src="/images/kafka-main.PNG" alt="kakfa-main"></p>
+<h2 id="查错"><a href="#查错" class="headerlink" title="查错"></a>查错</h2><p>java.io.IOException: No snapshot found, but there are log entries. Something，清空zoo.cfg所配置的dataDir目录下面的东西</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/08/10/kafka源码开发环境/" data-id="ck272f0uu002dy0ji6c81nii0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
@@ -106,10 +328,10 @@
 
 
   
-    <article id="post-kakfa-in-aws" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-kafka-client-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/26/kakfa-in-aws/" class="article-date">
-  <time datetime="2019-07-26T14:19:51.000Z" itemprop="datePublished">2019-07-26</time>
+    <a href="/2019/08/10/kafka-client-sample/" class="article-date">
+  <time datetime="2019-08-10T12:35:58.000Z" itemprop="datePublished">2019-08-10</time>
 </a>
     
   </div>
@@ -120,7 +342,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/kakfa-in-aws/">kakfa in aws</a>
+      <a class="article-title" href="/2019/08/10/kafka-client-sample/">kafka client sample</a>
     </h1>
   
 
@@ -128,12 +350,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://aws.amazon.com/cn/blogs/big-data/best-practices-for-running-apache-kafka-on-aws/" target="_blank" rel="noopener">https://aws.amazon.com/cn/blogs/big-data/best-practices-for-running-apache-kafka-on-aws/</a></p>
+        <p><a href="https://github.com/mengxu2018/kafka-sample" target="_blank" rel="noopener">https://github.com/mengxu2018/kafka-sample</a><br>例子在 producer/src/main/java/kafka/examples/xuhang/<br>包含一个producer，两个consumer group</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa-in-aws/" data-id="ck272f0ux002hy0jibsqkjcxt" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/08/10/kafka-client-sample/" data-id="ck272f0uo001zy0jilt5puueb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
@@ -145,10 +367,10 @@
 
 
   
-    <article id="post-kakfa-in-production" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-linux-issues" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/26/kakfa-in-production/" class="article-date">
-  <time datetime="2019-07-26T14:16:37.000Z" itemprop="datePublished">2019-07-26</time>
+    <a href="/2019/08/10/linux-issues/" class="article-date">
+  <time datetime="2019-08-10T12:31:52.000Z" itemprop="datePublished">2019-08-10</time>
 </a>
     
   </div>
@@ -159,7 +381,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/kakfa-in-production/">kakfa in production</a>
+      <a class="article-title" href="/2019/08/10/linux-issues/">linux issues</a>
     </h1>
   
 
@@ -167,318 +389,101 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://docs.confluent.io/current/kafka/deployment.html" target="_blank" rel="noopener">https://docs.confluent.io/current/kafka/deployment.html</a></p>
+        <p>今天遇到了新机器yum一直不成功，需要安装几个工具<br>sudo yum update<br>sudo yum install yum-utils<br>sudo yum groupinstall development</p>
+<p>另外/etc/resolv.conf也有问题，可以加个nameserver 9.9.9.9</p>
+<p>pip3.6 install torch torchvision</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa-in-production/" data-id="ck272f0uz002ky0ji5m4ri00o" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2019/08/10/linux-issues/" data-id="ck272f0v3002qy0jit36qslqd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/03/kafka-cluster-setup/" class="article-date">
+  <time datetime="2019-08-03T06:40:56.000Z" itemprop="datePublished">2019-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/03/kafka-cluster-setup/">kafka cluster setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>bin/kafka-server-start.sh -daemon config/server.properties<br>bin/kafka-server-stop.sh</p>
+<p>broker.id不要写错</p>
+<p>而且启动日志开头打印了[2019-08-03 04:36:30,484] INFO Client environment:host.name=218.93.250.18 (org.apache.zookeeper.ZooKeeper)很奇怪，这个是<br> try {<br>            put(l, “host.name”,<br>                InetAddress.getLocalHost().getCanonicalHostName());<br>        } catch (UnknownHostException e) {<br>            put(l, “host.name”, “<na>“);<br>        }<br>只有第一个机器正常<br>[2019-08-03 04:35:41,120] INFO Client environment:host.name=k8s-master (org.apache.zookeeper.ZooKeeper)</na></p>
+<p>所以listeners=PLAINTEXT://192.168.77.132:9092 写ip才可以，hostname就不行</p>
+<p>producer发送完成需要close</p>
+<p><strong>consumer</strong>offsets何时创建?用户启动了一个消费者组(下称consumer group)进行消费或调用kafka-consumer-groups –describe等<br><a href="https://www.cnblogs.com/huxi2b/p/8316289.html" target="_blank" rel="noopener">https://www.cnblogs.com/huxi2b/p/8316289.html</a></p>
+<p><a href="https://kafka.apache.org/23/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html" target="_blank" rel="noopener">https://kafka.apache.org/23/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html</a></p>
+<p> bin/kafka-topics.sh –create –bootstrap-server k8s-master:9092 –replication-factor 2 –partitions 6 –topic my-replicated-topic2<br> 这个可以在任意一台集群机器执行，执行后可以看到每台机器都有4个 my-replicated-topic2-x的文件夹，有两个是replication，<br> 每个replication都有一个leader</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/08/03/kafka-cluster-setup/" data-id="ck272f0up0021y0jixiuecl23" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka0-9-after" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/03/kafka0-9-after/" class="article-date">
+  <time datetime="2019-08-03T06:10:25.000Z" itemprop="datePublished">2019-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/03/kafka0-9-after/">kafka0.9-after</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="offset存储不一样了"><a href="#offset存储不一样了" class="headerlink" title="offset存储不一样了"></a>offset存储不一样了</h2><p>Older versions of Kafka (pre 0.9) store offsets in ZK only, while newer version of Kafka, by default store offsets in an internal Kafka topic called __consumer_offsets (newer version might still commit to ZK though).</p>
+<p>The advantage of committing offsets to the broker is, that the consumer does not depend on ZK and thus clients only need to talk to brokers which simplifies the overall architecture. Also, for large deployments with a lot of consumers, ZK can become a bottleneck while Kafka can handle this load easily (committing offsets is the same thing as writing to a topic and Kafka scales very well here – in fact, by default __consumer_offsets is created with 50 partitions IIRC).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/08/03/kafka0-9-after/" data-id="ck272f0us0029y0ji54181jxo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kakfa自我随记" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/kakfa自我随记/" class="article-date">
-  <time datetime="2019-07-26T13:24:32.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/kakfa自我随记/">kakfa自我随记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>kafka利用page cache提升性能，但是page cache有风险，如果机器crash了，数据会丢失，但是kakfa利用replica保证了可用性</p>
-</li>
-<li><p>For a topic with replication factor N, we will tolerate up to N-1 server failures without losing any records committed to the log.<br>一个topic ，默认分区的replication个数，不能大于集群中broker的个数。<br>分区数量可以超过机器数量，但是replication数量超过机器数量没意义了，因为这个本来就是用来容错的</p>
-</li>
-<li><p>consumer-offset这个内置topic的 分区数量和replication数量是server.proxx配置的<br>其他的topic可以命令行创建的时候设定分区数量和replication数量</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/kakfa自我随记/" data-id="ck272f0v1002my0jinvg561e0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-zero-copy" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/zero-copy/" class="article-date">
-  <time datetime="2019-07-26T13:24:19.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/zero-copy/">zero-copy</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>“Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to another. This is frequently used to save CPU cycles and memory bandwidth when transmitting a file over a network.[1]</p>
-<p><a href="https://en.wikipedia.org/wiki/Zero-copy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Zero-copy</a></p>
-<p><a href="https://blog.csdn.net/u013256816/article/details/52589524" target="_blank" rel="noopener">https://blog.csdn.net/u013256816/article/details/52589524</a></p>
-<p>Kafka在 消息消费的时候使用该技术<br>Consumer从Broker获取文件数据的时候，直接通过下面的方法进行channel到channel的数据传输。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.nio.FileChannel.transferTo(</span><br><span class="line">long position,</span><br><span class="line">long count,</span><br><span class="line">WritableByteChannel target)`</span><br></pre></td></tr></table></figure></p>
-<p>也就是说你的数据源是一个Channel,数据接收端也是一个Channel(SocketChannel),则通过该方式进行数据传输，是直接在内核态进行的，避免拷贝数据导致的内核态和用户态的多次切换。</p>
-<p><a href="https://cloud.tencent.com/developer/article/1195251" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1195251</a></p>
-<p>Java input streams can support zero-copy through the java.nio.channels.FileChannel’s transferTo() method if the underlying operating system also supports zero copy.[5]</p>
-<p><a href="https://www.jianshu.com/p/7e5e558bf93e" target="_blank" rel="noopener">https://www.jianshu.com/p/7e5e558bf93e</a><br><a href="http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/" target="_blank" rel="noopener">http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/zero-copy/" data-id="ck272f0vw004ey0jizvsxzikf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-用户空间-内核空间" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/用户空间-内核空间/" class="article-date">
-  <time datetime="2019-07-26T13:22:20.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/用户空间-内核空间/">用户空间-内核空间</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>RAM is divided into two distinct regions- the user space and the kernal space.</p>
-<p>User Space- It is set of locations where normal user processes run. These processes can’t access kernal space directly. Some part of kernal space can be accessed via system calls.These system calls acts as software interrupts in kernal space.</p>
-<p>Kernal Space - kernal runs in the dedicated part of memory. Role of kernal space is to manage applications/ processes running in user space. It can access all the memory. If a process perform a system call, a software interrupt is sent to kernal which then dispatches an appropriate interrupt handler.</p>
-<p><a href="https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space" target="_blank" rel="noopener">https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/用户空间-内核空间/" data-id="ck272f0w0004oy0jim7l528qm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-用户模式-内核模式" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/用户模式-内核模式/" class="article-date">
-  <time datetime="2019-07-26T13:20:48.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/用户模式-内核模式/">用户模式-内核模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kernel Mode<br>In Kernel mode, the executing code has complete and unrestricted access to the underlying hardware. It can execute any CPU instruction and reference any memory address. Kernel mode is generally reserved for the lowest-level, most trusted functions of the operating system. Crashes in kernel mode are catastrophic; they will halt the entire PC.</p>
-<p>User Mode<br>In User mode, the executing code has no ability to directly access hardware or reference memory. Code running in user mode must delegate to system APIs to access hardware or memory. Due to the protection afforded by this sort of isolation, crashes in user mode are always recoverable. Most of the code running on your computer will execute in user mode.</p>
-<p><a href="https://blog.codinghorror.com/understanding-user-and-kernel-mode/" target="_blank" rel="noopener">https://blog.codinghorror.com/understanding-user-and-kernel-mode/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/用户模式-内核模式/" data-id="ck272f0vy004jy0jiep6yc4sf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-内存管理" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/内存管理/" class="article-date">
-  <time datetime="2019-07-26T12:47:28.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/内存管理/">内存管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Logical address<br>Included in the machine language instructions to specify the address of an operand or of an instruction. This type of address embodies the well-known 80 × 86 segmented architecture that forces MS-DOS and Windows programmers to divide their programs into segments. Each logical address consists of a segment and an offset (or displacement) that denotes the distance from the start of the segment to the actual address.</p>
-<p>Linear address (also known as virtual address)<br>A single 32-bit unsigned integer that can be used to address up to 4 GB - that is,up to 4,294,967,296 memory cells. Linear addresses are usually represented in hexadecimal notation; their values range from 0x00000000 to 0xffffffff.</p>
-<p>Physical address<br>Used to address memory cells in memory chips. They correspond to the electrical. signals sent along the address pins of the microprocessor to the memory bus.Physical addresses are represented as 32-bit or 36-bit unsigned integers.<br>The Memory Management Unit (MMU) transforms a logical address into a linear address by means of a hardware circuit called a segmentation unit; subsequently, a second hardware circuit called a paging unit transforms the linear address into a physical address.<br>现代操作系统普遍采用虚拟内存管理机制，这需要MMU的支持。MMU通常是CPU的一部分，如果处理器没有MMU，或者有MMU但没有启用，CPU执行单元发出的内存地址将直接传到芯片引脚上，被内存芯片（物理内存）接收，这称为物理地址（Physical Address），如果处理器启用了MMU，CPU执行单元发出的内存地址将被MMU截获，从CPU到MMU的地址称为虚拟地址（Virtual Address），而MMU将这个地址翻译成另一个地址发到CPU芯片的外部地址引脚上，也就是将虚拟地址映射成物理地址</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/内存管理/" data-id="ck272f0vz004ly0ji17korehi" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-io读写" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/io读写/" class="article-date">
-  <time datetime="2019-07-26T12:45:59.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/io读写/">io读写</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="随机-顺序读写"><a href="#随机-顺序读写" class="headerlink" title="随机-顺序读写"></a>随机-顺序读写</h2><p>这个问题要分情况讨论：在机械硬盘上写还是在固态硬盘上写。尽管结论都是顺序写比随机写快，但是原因却是不一样的。<br>首先说机械硬盘，我先介绍一下它的存储原理。机械硬盘的结构你可以想象成一个唱片机，它有一个旋转的盘片和一个能沿半径方向移动的磁头。处理读取和写入请求时，首先可以根据请求的开始地址算出要处理的数据在磁盘上的位置，之后要进行以下几步工作：<br>1、磁头沿半径方向移动，直至移动到数据所在的柱面（相同半径的磁道组成的环面）<br>2、盘片高速旋转，使磁头到达数据的起始位置<br>3、磁头沿磁道从磁盘读取或写入数据<br>当一次读取的数据量很少的时候，1、2步骤带来的开销是无法忽略的，这使得随机写相对于顺序写会有巨大的性能劣势。因为在顺序写的时候，1、2步骤只需要执行一次，剩下的全是数据传输所需要的固有开销；而每次随机写的时候，前两个步骤都需要执行，带来了极大的额外开销。<br>比如kafka的那么多个消息如果每次都随机写的话要经历很多次的寻道，但是顺序写就简单多了，比如累计到1M的消息可以一次性顺序append到commit log后面去<br>你平时使用java访问文件既可以是顺序的也可以是随机的，取决于你使用的Java API。比如RandomAccessFile和FileInputStream/FileOutputStream这样的stream类就是两种不同的方式。<br>具体到Kafka而言，它使用了基于日志结构(log-structured)的数据格式，即每个分区日志只能在尾部追加写入(append)，而不允许随机”跳到”某个位置开始写入，故此实现了顺序写入。 kafka没有必要把N个消息随即写入到文件的各个position<br>其次说固态硬盘。理论上来说，它不应该存在明显的随机写与顺序写的速度差异，因为它就是一块支持随机寻址的存储芯片，没有寻道和旋转盘片的开销，但是随机写实际上还是比顺序写要慢。这是由于其存储介质闪存的一些特性导致的，简单来说：<br>1、闪存不支持in-place update：你更新一个数据，不可以直接在原有数据上改，而要写到新的空白的地方，并把原有数据标记为失效。<br>2、标记失效的数据不是浪费空间么？可以将其清除。但是闪存上清除操作的最小单位是一个大块，大约128K-256K的大小。一次清除会影响到还未标记失效的有用的数据，要先把它们移走。<br>这种感觉就如同你在网格纸上写一篇文章，一格一格往下写，只能写在空白的格子里；但是你若要清除之前写的内容，只能整行擦除。非常难受而且浪费空间对吧？所以固态硬盘里实现了垃圾回收算法，用来更好地利用存储空间，同时减少数据迁移，保护闪存寿命。<br>那么随机写显然比顺序写带来更大的碎片化，从而带来更多的垃圾回收开销、数据迁移开销，自然就比顺序写要慢了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/io读写/" data-id="ck272f0ud001dy0jienlbikh0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardware/">hardware</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-磁盘" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/26/磁盘/" class="article-date">
-  <time datetime="2019-07-26T12:44:15.000Z" itemprop="datePublished">2019-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/26/磁盘/">磁盘</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="物理概念"><a href="#物理概念" class="headerlink" title="物理概念"></a>物理概念</h2><p>物理接口<br>M.2 , U.2 , AIC, NGFF 这些属于物理接口。<br>高速信号协议<br>SAS，SATA，PCIe 这三个是同一个层面上的，模拟串行高速接口。<br>传输层协议<br>SCSI，ATA，NVMe 都属于这一层。主要是定义命令集，数字逻辑层。<br>NVMe，AHCI和IDE是传输协议（语言）。 它们运行在诸如PCIe或SATA（口头，书写）之类的传输接口之上。<br>现在市面上 SSD接入PC 的主要接口 是 SATA。其采用命令协议AHCI（它还支持IDE）是为寻道旋转磁盘设计的, 而不是闪存。 SATA三代 传输速率 每秒在150 MB ~ 600 MB 之间。对于SSD的大多数消费者来说，这绝对是足够的。<br>PCIe（PCI Express）取代SATA 作为最新的高带宽接口。<br>NVMe是最新的高性能和优化协议，取代了AHCI，并支持PCIe技术。<br>RAID 0：如果你有n块磁盘，原来只能同时写一块磁盘，写满了再下一块，做了RAID 0之后，n块可以同时写（并发write），速度提升很快，但由于没有备份，可靠性很差。n最少为2。<br>RAID 1：正因为RAID 0太不可靠，所以衍生出了RAID 1。如果你有n块磁盘，把其中n/2块磁盘作为镜像磁盘，在往其中一块磁盘写入数据时，也同时往另一块写数据。坏了其中一块时，镜像磁盘自动顶上，可靠性最佳，但空间利用率太低。n最少为2。<br>RAID0性能最高，RAID1可靠性最高<br>可以用ssd来做磁盘阵列，如果要性能就RAID0，可靠性就RAID1</p>
-<h2 id="文件系统相关"><a href="#文件系统相关" class="headerlink" title="文件系统相关"></a>文件系统相关</h2><p>Once a file system is established the block size remains the same. Some partitioning tools can change this after the fact, but not while the OS is running.</p>
-<p>A sector has traditional been a fixed 512 byte size, but a few drives have 4096 bytes sectors.</p>
-<p>A sector is the smallest individual reference-able regions on a disk.</p>
-<p>The block size refers to the allocation size the file system uses. The common options are 512, 1024, 2048, 4096, 8192, 16384, or 32678. Generally anything larger would be so inefficient nobody would use it, and you can’t go smaller than 1 disk sector.</p>
-<p>Sure you can write 10 bytes to a file, but behind the scenes it is allocated 1 block whether you use it all or not.</p>
-<p>操作系统记录了文件的block number，读取的时候是根据block number定位到具体的sector，block是操作系统分配的，操作系统（文件系统)记录block和sector的对应关系</p>
-<p>所以操作系统一次读取是以block为单位的，比如sector size是4 kb, block size可能是4kb也可能是8kb或者更多，哪怕你只需要一个字节的数据，但是读取的时候仍然读取了8kb在操作系统缓存</p>
-<p>格式化是操作系统的功能，操作系统可以对整个硬盘格式化分区为ntfs格式，但是分区后也可以用windows自带的压缩卷功能分出一块新的区域用来安装linux，linux再对这块新的空闲区域进行格式化分区为ext3格式</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://medium.com/r/?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDisk_sector" target="_blank" rel="noopener">https://medium.com/r/?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDisk_sector</a><br><a href="https://medium.com/r/?url=http%3A%2F%2Fwww.mathcs.emory.edu%2F~cheung%2FCourses%2F377%2FSyllabus%2F1-files%2Fintro-disk.html" target="_blank" rel="noopener">https://medium.com/r/?url=http%3A%2F%2Fwww.mathcs.emory.edu%2F~cheung%2FCourses%2F377%2FSyllabus%2F1-files%2Fintro-disk.html</a><br><a href="https://docstore.mik.ua/orelly/other/LRH/chp-2-sect-4.html" target="_blank" rel="noopener">https://docstore.mik.ua/orelly/other/LRH/chp-2-sect-4.html</a><br><a href="https://www.zhihu.com/question/48972075" target="_blank" rel="noopener">https://www.zhihu.com/question/48972075</a><br>kafka存储 <a href="https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f" target="_blank" rel="noopener">https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-internals-d5b544f6925f</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/26/磁盘/" data-id="ck272f0w2004qy0ji8e2zatrr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hardware/">hardware</a></li></ul>
 
     </footer>
   </div>
@@ -491,7 +496,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -505,7 +510,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -515,7 +520,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -524,7 +529,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -537,23 +542,23 @@
       <ul>
         
           <li>
-            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
+            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
           <li>
-            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
+            <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
           </li>
         
           <li>
-            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>
@@ -568,7 +573,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 xu, hang<br>
+      &copy; 2021 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

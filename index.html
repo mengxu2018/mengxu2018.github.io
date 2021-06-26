@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-jwt-first" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-kubernetes-basic-definition" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/02/23/jwt-first/" class="article-date">
-  <time datetime="2020-02-23T14:51:52.000Z" itemprop="datePublished">2020-02-23</time>
+    <a href="/2021/03/06/kubernetes-basic-definition/" class="article-date">
+  <time datetime="2021-03-06T14:51:52.000Z" itemprop="datePublished">2021-03-06</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/23/jwt-first/">jwt spring security</a>
+      <a class="article-title" href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
     </h1>
   
 
@@ -84,130 +84,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/" target="_blank" rel="noopener">https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/</a></p>
-<p><a href="https://github.com/mengxu2018/jwt" target="_blank" rel="noopener">https://github.com/mengxu2018/jwt</a></p>
-<p>During the authentication process, when a user successfully logs in using their credentials, a JSON Web Token is returned and must be saved locally (typically in local storage). Whenever the user wants to access a protected route or resource (an endpoint), the user agent must send the JWT, usually in the Authorization header using the Bearer schema, along with the request.</p>
-<p>JWT is commonly used for authorization，jwt与authentiation没有关系，用户还是得用户名密码或者open connect id来登录，但是后续的访问资源，可以携带之前收到的jwt token来访问，这个token这个时候就起到授权的作用</p>
+        <h2 id="ingress"><a href="#ingress" class="headerlink" title="ingress"></a>ingress</h2><p>In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services.</p>
+<p><a href="https://stackoverflow.com/questions/56896490/what-exactly-kubernetes-services-are-and-how-they-are-different-from-deployments" target="_blank" rel="noopener">https://stackoverflow.com/questions/56896490/what-exactly-kubernetes-services-are-and-how-they-are-different-from-deployments</a></p>
+<h2 id="cluster-context-user"><a href="#cluster-context-user" class="headerlink" title="cluster context user"></a>cluster context user</h2><p>Cluster defines connection endpoint for Kubernetes API of a cluster.</p>
+<p>User defines credentials for connecting to cluster.</p>
+<p>Context defines both cluster and user.</p>
+<p><a href="https://stackoverflow.com/questions/56299440/kubectl-context-vs-cluster" target="_blank" rel="noopener">https://stackoverflow.com/questions/56299440/kubectl-context-vs-cluster</a></p>
+<h2 id="volumes"><a href="#volumes" class="headerlink" title="volumes"></a>volumes</h2><p>Volume decouples the storage from the Container. Its lifecycle is coupled to a pod. It enables safe container restarts and sharing data between containers in a pod.</p>
+<p>Persistent Volume decouples the storage from the Pod. Its lifecycle is independent. It enables safe pod restarts and sharing data between pods.</p>
+<p><a href="https://stackoverflow.com/questions/51420621/what-is-the-difference-between-a-volume-and-persistent-volume" target="_blank" rel="noopener">https://stackoverflow.com/questions/51420621/what-is-the-difference-between-a-volume-and-persistent-volume</a></p>
+<h2 id="ip"><a href="#ip" class="headerlink" title="ip"></a>ip</h2><p>Each Pod has a single IP address assigned from the Pod CIDR range of its node. This IP address is shared by all containers running within the Pod, and connects them to other Pods running in the cluster.</p>
+<p>Each Service has an IP address, called the ClusterIP, assigned from the cluster’s VPC network. You can optionally customize the VPC network when you create the cluster.</p>
+<p>Each Pod gets its own IP address, however in a Deployment, the set of Pods running in one moment in time could be different from the set of Pods running that application a moment later.</p>
+<p>This leads to a problem: if some set of Pods (call them “backends”) provides functionality to other Pods (call them “frontends”) inside your cluster, how do the frontends find out and keep track of which IP address to connect to, so that the frontend can use the backend part of the workload? enter service.</p>
+<h2 id="exec-container-or-pod"><a href="#exec-container-or-pod" class="headerlink" title="exec container or pod"></a>exec container or pod</h2><p><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/</a></p>
+<h2 id="headless-service"><a href="#headless-service" class="headerlink" title="headless service"></a>headless service</h2><p>The working principle of a ClusterIP Service is as follows:</p>
+<p>One Service may be backed by multiple endpoints (pods). A client accesses the cluster IP address and the request is forwarded to the real server based on the iptables rules to implement load balancing. For example, a Service is backed by two endpoints, but only the Service address is returned during DNS query. iptables determines the real server accessed by the client. However, when a headless Service is accessed, two actual endpoint records (pod IP addresses) are returned.</p>
+<p>Therefore, the headless Service points directly to each endpoint, that is, each pod has a DNS domain name. In this way, pods can access each other, achieving inter-pod discovery and access.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/02/23/jwt-first/" data-id="ck6yot4rb0001csuxuub61mmx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-istio-adapter" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/15/istio-adapter/" class="article-date">
-  <time datetime="2020-02-15T12:31:52.000Z" itemprop="datePublished">2020-02-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="安装troubleshooting"><a href="#安装troubleshooting" class="headerlink" title="安装troubleshooting"></a>安装troubleshooting</h1><p><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough</a></p>
-<h2 id="step1-‘inconsistent-vendoring’-error"><a href="#step1-‘inconsistent-vendoring’-error" class="headerlink" title="step1 ‘inconsistent vendoring’ error"></a>step1 ‘inconsistent vendoring’ error</h2><p><a href="https://github.com/golang/go/issues/34657" target="_blank" rel="noopener">https://github.com/golang/go/issues/34657</a><br>解决的办法就是export GOROOT=单独的go目录，不要go下面的src有istio的那个<br>export GOROOT=/root/software/go</p>
-<h2 id="Step-2-BUILD-WITH-CONTAINER-1-make-gen"><a href="#Step-2-BUILD-WITH-CONTAINER-1-make-gen" class="headerlink" title="Step 2 BUILD_WITH_CONTAINER=1 make gen"></a>Step 2 BUILD_WITH_CONTAINER=1 make gen</h2><p>Just to ensure everything is good, let’s generate the file and build the code. Go to the top of the repo and do:<br><code>BUILD_WITH_CONTAINER=1 make gen</code><br>实际上是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export BUILD_WITH_CONTAINER=1</span><br><span class="line">cd /root/kube/go/src/istio.io/istio</span><br><span class="line">make gen</span><br></pre></td></tr></table></figure></p>
-<p>不过这个里面有个证书的错误，暂时没有影响，可以再观察</p>
-<h2 id="step3-mygrpcadapter"><a href="#step3-mygrpcadapter" class="headerlink" title="step3 mygrpcadapter"></a>step3 mygrpcadapter</h2><p>mygrpcadapter.go:40:2: no matching versions for query “latest”</p>
-<p>“istio.io/istio/pkg/log” -&gt; “istio.io/pkg/log”</p>
-<h2 id="step-5-hang-on"><a href="#step-5-hang-on" class="headerlink" title="step 5 hang on"></a>step 5 hang on</h2><p>第五步中的 pushd $ISTIO/istio &amp;&amp; make mixs貌似需要minikube服务是shutdown的时候才可以安装成功，<br>但是docker daemon要启动</p>
-<p>mixc，mixs都在/root/kube/go/src/istio.io/istio/out/linux_amd64/下面，<br>也就是说在$ISTIO/istio/out/linux_amd64下面，<br>但是文档里面说的是在$GOPATH/out/linux_amd64/release/</p>
-<h2 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h2><p>When compiling multiple packages or a single non-main package, build compiles the packages but discards the resulting object, serving only as a check that the packages can be built.</p>
-<p>go build编译main package的会生成执行文件，非main的就没有输出，just 验证下</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>按照这个文章弄好的其实还是需要打包部署成一个kubenetes的service， 不可能每次都是cmd下面的脚本运行adapter，<br>其实就是把cmd下面的go文件编译一下，部署成kubernetes里面的service。</p>
-<p>mygrpcadapter/config下面的.proto文件其实是为了生成mygrpcadapter.yaml，这个文件也是kubernetes的一个资源，需要kubectl apply<br>至于config/config.proto里面的Params是给sample_operator_cfg.yaml里面的kind: handler使用的，<br>sample_operator_cfg.yaml里面的instance用了metric template，会封装数据参数传给adapter。<br>The operator that configures Istio controls how this template-specific data is constructed and dispatched to adapters.<br><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide</a></p>
-<p>adapter的rule也会定义规则，比如只允许特定的host访问，<br>到时候浏览器访问某个service的时候，首先gateway会转发到特定的service，这个是gateway和virtualservice来做的，<br>adapter这边的rule是另外一码事</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/02/15/istio-adapter/" data-id="ck6yot4r70000csuxr6x4hgpc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/istio/">istio</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-minikube-intro" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/01/27/minikube-intro/" class="article-date">
-  <time datetime="2020-01-27T12:44:15.000Z" itemprop="datePublished">2020-01-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h2><p><a href="https://kubernetes.io/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/learning-environment/minikube/</a></p>
-<p>安装好centos后因为之前设置静态ip的时候对vmware进行了设置，所以现在除了nmtui之外，也必须修改/etc/sysconfig/network-scripts/ifcfg-ens33</p>
-<p>yum install -y yum-utils \<br>  device-mapper-persistent-data \<br>  lvm2</p>
-<p>yum-config-manager \<br>      –add-repo \<br>      <a href="https://download.docker.com/linux/centos/docker-ce.repo" target="_blank" rel="noopener">https://download.docker.com/linux/centos/docker-ce.repo</a></p>
-<p>yum install -y docker-ce</p>
-<p>systemctl disable firewalld</p>
-<p>swapoff -a<br>vi /etc/fstab<br>注释掉下面这一行永久关闭swap</p>
-<p>#/dev/mapper/centos-swap swap                    swap    defaults        0 0</p>
-<p>sysctl net.bridge.bridge-nf-call-iptables=1</p>
-<p>minikube start –vm-driver=none（not suggest,可能会有kubernetes版本不被istio支持的问题)<br>minikube start –memory=4096 –cpus=4 –kubernetes-version=v1.15 –vm-driver=none(–kubernetes-version可以不带，有时候带会有错误)<br>minikube start –memory=4096 –cpus=4 –vm-driver=none<br>minikube dashboard –url</p>
-<p>下面是部署一个sample<br>kubectl create deployment hello-minikube –image=k8s.gcr.io/echoserver:1.10<br>kubectl expose deployment hello-minikube –type=NodePort –port=8080<br>kubectl get pod<br>minikube service hello-minikube –url<br>kubectl describe services hello-minikube<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kubectl describe services hello-minikube</span><br><span class="line">Name:                     hello-minikube</span><br><span class="line">Namespace:                default</span><br><span class="line">Labels:                   app=hello-minikube</span><br><span class="line">Annotations:              &lt;none&gt;</span><br><span class="line">Selector:                 app=hello-minikube</span><br><span class="line">Type:                     NodePort</span><br><span class="line">IP:                       10.96.132.162</span><br><span class="line">Port:                     &lt;unset&gt;  8080/TCP</span><br><span class="line">TargetPort:               8080/TCP</span><br><span class="line">NodePort:                 &lt;unset&gt;  31451/TCP</span><br><span class="line">Endpoints:                172.17.0.4:8080</span><br><span class="line">Session Affinity:         None</span><br><span class="line">External Traffic Policy:  Cluster</span><br><span class="line">Events:                   &lt;none&gt;</span><br></pre></td></tr></table></figure></p>
-<p>Endpoints:                172.17.0.4:8080是内网的<br>NodePort:                 <unset>  31451/TCP 是外网的</unset></p>
-<p>kubectl get namespace<br>kubectl get pods -n istio-system<br>kubectl describe pod  -n istio-system istio-galley-69674cb559-chxtg<br>kubectl logs -n istio-system istio-policy-5cdbc47674-q7flx</p>
-<h2 id="istio-gateway"><a href="#istio-gateway" class="headerlink" title="istio gateway"></a>istio gateway</h2><p>kubectl get gateway<br>istioctl -n istio-system pc routes istio-ingressgateway-5db78457f5-h49tm –name http.80 -o json</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: Gateway</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo-gateway</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    istio: ingressgateway # use istio default controller</span><br><span class="line">  servers:</span><br><span class="line">  - port:</span><br><span class="line">      number: 80</span><br><span class="line">      name: http</span><br><span class="line">      protocol: HTTP</span><br><span class="line">    hosts:</span><br><span class="line">    - &quot;*&quot;</span><br></pre></td></tr></table></figure>
-<p>In the gateway resource, the selector refers to Istio’s default ingress controller by its label, in which the key of the label is istio and the value is ingressgateway<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kubectl get pods -listio=ingressgateway -n istio-system</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">istio-ingressgateway-649f9646d4-nc88s   1/1     Running   0          10h</span><br><span class="line"></span><br><span class="line">感觉像是默认是要去和gateway resource同一个namespace下面去找gateway controller pod，找不到就找istio-system下面这个</span><br><span class="line"></span><br><span class="line">https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller</span><br><span class="line">上面这个文章讲的比较详细，如果不是默认的istio: ingressgateway的话，需要gateway resource和gateway controller的namespace一致,</span><br><span class="line">或者可以理解为gateway resource的默认namespace就是istio-system</span><br><span class="line"></span><br><span class="line">https://discuss.istio.io/t/istio-ingressgateway-controller-and-namespaces/1217/5 的一个回答</span><br><span class="line">In 1.1 this is changing a bit - the Gateway resource should be in same namespace as the gateway(the service, deployment, certificates). The default is istio-system - but you can run it in other namespace, or in multiple namespaces if you need to. Each namespace will have a different load balancer IP and may handle different domains with different certs.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">https://blog.jayway.com/2018/10/22/understanding-istio-ingress-gateway-in-kubernetes/</span><br></pre></td></tr></table></figure></p>
-<p>但是对于官网下面的话不理解<br>One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. The scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance.</p>
-<p>最后这里总结下：<br>gateway resource和gateway controller pod是两个东西，前者可以通过kubeclt get gateway获得，后者其实就是一个pod，<br>我们平常一般创建gateway resource的时候默认没有指定namespace的时候是默认为isito-system，比如istio: ingressgateway，他会去<br>istio-system这个namespace下面去找label为istio: ingressgateway的gateway pod<br>如果要自己创建一个自定义的gateway controller pod的话，参考<a href="https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller，简单说就是需要创建一个新的gateway" target="_blank" rel="noopener">https://stackoverflow.com/questions/51835752/how-to-create-custom-istio-ingress-gateway-controller，简单说就是需要创建一个新的gateway</a> pod资源，这个资源会在某个namespace下面，<br>然后在创建gateway resource并且指定他的namespace，同时指定selector匹配gateway pod资源</p>
-<p><a href="https://istio.io/blog/2019/custom-ingress-gateway/这个文章的第七点说明type" target="_blank" rel="noopener">https://istio.io/blog/2019/custom-ingress-gateway/这个文章的第七点说明type</a>: LoadBalancer可以创建一个gateway controller pod，<br>在上面的so文章也有人回答‘In fact, it is very simple. Istio’s ingress is just a regular Kubernetes Service of “Load Balancer” type.’<br>但是有待验证</p>
-<p>关于gateway，这个文章<a href="https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/最好，" target="_blank" rel="noopener">https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/最好，</a><br>在minikube上面其实就是默认的ingress gateway通过nodeport暴露出来，所以访问具体的service其实是访问的这个gateway，<br>ingress说的其实就是这个gateway。<br>VirtualService里面的hosts应该说的重复字段，实际上destination里也有这个字段<br><a href="https://blog.csdn.net/kozazyh/article/details/81477629这里就说明了这个重复" target="_blank" rel="noopener">https://blog.csdn.net/kozazyh/article/details/81477629这里就说明了这个重复</a></p>
-<h2 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h2><h3 id="network-issue-due-to-iptables"><a href="#network-issue-due-to-iptables" class="headerlink" title="network issue due to iptables"></a>network issue due to iptables</h3><p>kubectl get pods -n istio-system<br>kubectl get pods -n kube-system<br>上面两个namespace下面的pod如果有下面的问题的话，就刷新iptables<br>none: coredns CrashLoopBackOff: dial tcp ip:443: connect: no route to host #4350</p>
-<p>systemctl stop kubelet<br>systemctl stop docker<br>iptables –flush<br>iptables -tnat –flush<br>systemctl start kubelet<br>systemctl start docker</p>
-<h3 id="multiply-container-due-to-the-istio"><a href="#multiply-container-due-to-the-istio" class="headerlink" title="multiply container due to the istio"></a>multiply container due to the istio</h3><p>When retrieving logs for pods that have multiple containers, you need to specify the container you want the logs for.<br>For example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs productpage-v1-84f77f8747-8zklx -c productpage</span><br></pre></td></tr></table></figure></p>
-<p>The reason is because Istio adds a second container to deployments via the istio-sidecar-injector. This is what adds the envoy proxy in front of all of your pods traffic.</p>
-<h3 id="why-kube-dns-and-core-dns-both-exist"><a href="#why-kube-dns-and-core-dns-both-exist" class="headerlink" title="why kube-dns and core-dns both exist"></a>why kube-dns and core-dns both exist</h3><p>kubectl get deployments -n kube-system<br>kubectl get pods -n kube-public<br>上面得到coredns<br>kubectl get svc -n kube-system<br>上面得到kube-dns<br>但是如果kubectl describe -n kube-system service/kube-dns就会发现<br>他的Selector: k8s-app=kube-dns其实就是指向kubectl get pods -lk8s-app=kube-dns -n kube-system</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://istio.io/docs/examples/bookinfo/" target="_blank" rel="noopener">https://istio.io/docs/examples/bookinfo/</a><br><a href="https://www.cnblogs.com/psy-code/p/9311104.html" target="_blank" rel="noopener">https://www.cnblogs.com/psy-code/p/9311104.html</a><br>kubectl get node -o wide</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/01/27/minikube-intro/" data-id="ck5wdwasg00013kji7b281v3t" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2021/03/06/kubernetes-basic-definition/" data-id="ckqdtl1mi0000f08eboyx8zgw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
@@ -219,10 +117,10 @@
 
 
   
-    <article id="post-不能启动k8s" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-spring-boot-debug" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/01/27/不能启动k8s/" class="article-date">
-  <time datetime="2020-01-27T12:44:15.000Z" itemprop="datePublished">2020-01-27</time>
+    <a href="/2021/03/04/spring-boot-debug/" class="article-date">
+  <time datetime="2021-03-04T14:51:52.000Z" itemprop="datePublished">2021-03-04</time>
 </a>
     
   </div>
@@ -233,7 +131,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+      <a class="article-title" href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
     </h1>
   
 
@@ -241,17 +139,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>可能是证书过期导致的，因为之前配置好的环境只要执行下面两个命令（在三台机器)<br>systemctl enable kubelet<br>systemctl enable docker</p>
-<p>然后分别启动两个work node，然后过几分钟启动master node</p>
-<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#manual-certificate-renewal" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#manual-certificate-renewal</a></p>
+        <p>spring-boot:run -Dspring-boot.run.fork=false -f pom.xml</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/01/27/不能启动k8s/" data-id="ck5wdwasi00033kji957fop8c" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2021/03/04/spring-boot-debug/" data-id="ckqdtl1mr0001f08eiqj5iv1t" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring-boot/">spring-boot</a></li></ul>
 
     </footer>
   </div>
@@ -260,10 +156,10 @@
 
 
   
-    <article id="post-machine-learning-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-postgres-cluster" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/12/31/machine-learning-basic/" class="article-date">
-  <time datetime="2019-12-31T14:51:52.000Z" itemprop="datePublished">2019-12-31</time>
+    <a href="/2020/07/16/postgres-cluster/" class="article-date">
+  <time datetime="2020-07-16T14:51:52.000Z" itemprop="datePublished">2020-07-16</time>
 </a>
     
   </div>
@@ -274,7 +170,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+      <a class="article-title" href="/2020/07/16/postgres-cluster/">postgres cluster</a>
     </h1>
   
 
@@ -282,19 +178,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://keras.io/examples/image_ocr/" target="_blank" rel="noopener">https://keras.io/examples/image_ocr/</a><br>这个研究下，主要是要安装  <a href="https://cairographics.org/" target="_blank" rel="noopener">https://cairographics.org/</a></p>
-<p>import sys<br>print(sys.path)<br>其实还是path的问题，主要是安装需要的dll到path里面，如果是redhat比较简单，win10要研究下</p>
-<p><a href="https://www.geeksforgeeks.org/python-image-classification-using-keras/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-image-classification-using-keras/</a><br><a href="https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras" target="_blank" rel="noopener">https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras</a></p>
-<p>image classification<br><a href="https://github.com/mengxu2018/machine-learning" target="_blank" rel="noopener">https://github.com/mengxu2018/machine-learning</a></p>
-<p>看这个文章<br><a href="https://my.oschina.net/andyfeng/blog/2208657" target="_blank" rel="noopener">https://my.oschina.net/andyfeng/blog/2208657</a></p>
+        <p><a href="https://severalnines.com/database-blog/postgresql-replication-disaster-recovery" target="_blank" rel="noopener">https://severalnines.com/database-blog/postgresql-replication-disaster-recovery</a><br><a href="https://wiki.postgresql.org/wiki/Replication,_Clustering,_and_Connection_Pooling" target="_blank" rel="noopener">https://wiki.postgresql.org/wiki/Replication,_Clustering,_and_Connection_Pooling</a><br><a href="https://www.postgresql.org/docs/current/protocol-replication.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/current/protocol-replication.html</a><br><a href="https://www.cnblogs.com/marsprj/archive/2013/03/04/2943373.html" target="_blank" rel="noopener">https://www.cnblogs.com/marsprj/archive/2013/03/04/2943373.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/12/31/machine-learning-basic/" data-id="ck5wdwas500003kji1sgtim3e" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/07/16/postgres-cluster/" data-id="ckqdtl1mu0003f08e1oihmh4r" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
 
     </footer>
   </div>
@@ -303,10 +195,10 @@
 
 
   
-    <article id="post-java-servlet" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-elasticsearch-remote-access" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/26/java-servlet/" class="article-date">
-  <time datetime="2019-10-26T03:42:16.000Z" itemprop="datePublished">2019-10-26</time>
+    <a href="/2020/06/27/elasticsearch-remote-access/" class="article-date">
+  <time datetime="2020-06-27T14:51:52.000Z" itemprop="datePublished">2020-06-27</time>
 </a>
     
   </div>
@@ -317,7 +209,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/26/java-servlet/">java servlet</a>
+      <a class="article-title" href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
     </h1>
   
 
@@ -325,20 +217,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这个文章主要说明servlet2.5, 3.0, 3.1的差异</p>
-<h2 id="servlet2-5"><a href="#servlet2-5" class="headerlink" title="servlet2.5"></a>servlet2.5</h2><p><img src="/images/tomcat-servlet-version.png" alt="tomcat-nio"><br>tomcat本身在servlet2.5也就是tomcat6的时候就已经实现了nio，但是仅仅在建立连接和解析request header方面nio，这个在上图可以看的很清楚</p>
-<h2 id="servlet3-0"><a href="#servlet3-0" class="headerlink" title="servlet3.0"></a>servlet3.0</h2><p>在servlet3.0就是tomcat7以后，实现了异步的servlet，但是这个异步仅仅是对request的处理是异步的，就是将这次请求走到servlet的时候放到一个单独的线程池，不要占用container本身处理请求的线程池。这个感觉提升并不大，因为对request stream io本身还是普通的io, Servlet 3.0 allowed asynchronous request processing but only traditional I/O was permitted. In other words, with Servlet 3.0, only the request processing part became async, but not the I/O for serving the requests and responses. If enough threads block, this results in thread starvation and affects performance. 3.0只能叫异步，3.1才是nio<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import javax.servlet.AsyncContext;</span><br><span class="line">import javax.servlet.ServletException;</span><br><span class="line">import javax.servlet.annotation.WebServlet;</span><br><span class="line">import javax.servlet.http.HttpServlet;</span><br><span class="line">import javax.servlet.http.HttpServletRequest;</span><br><span class="line">import javax.servlet.http.HttpServletResponse;</span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">@WebServlet(value = &quot;/simpleAsync&quot;, asyncSupported = true)</span><br><span class="line">public class SimpleAsyncHelloServlet extends HttpServlet &#123;</span><br><span class="line"></span><br><span class="line">    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;</span><br><span class="line">        AsyncContext asyncContext = request.startAsync();</span><br><span class="line"></span><br><span class="line">        asyncContext.start(() -&gt; &#123;</span><br><span class="line">            new LongRunningProcess().run();</span><br><span class="line">            try &#123;</span><br><span class="line">                asyncContext.getResponse().getWriter().write(&quot;Hello World!&quot;);</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            asyncContext.complete();</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>此时，我们先通过request.startAsync()获取到该请求对应的AsyncContext，然后调用AsyncContext的start()方法进行异步处理，处理完毕后需要调用complete()方法告知Servlet容器。start()方法会向Servlet容器另外申请一个新的线程（可以是从Servlet容器中已有的主线程池获取，也可以另外维护一个线程池，不同容器实现可能不一样），然后在这个新的线程中继续处理请求，而原先的线程将被回收到主线程池中。事实上，这种方式对性能的改进不大，因为如果新的线程和初始线程共享同一个线程池的话，相当于闲置下了一个线程，但同时又占用了另一个线程。</p>
-<h2 id="servlet3-1"><a href="#servlet3-1" class="headerlink" title="servlet3.1"></a>servlet3.1</h2><p>在servlet3.1后，就是tomcat8以后实现了non blocking io, With Servlet 3.1 NIO, this problem is solved by ReadListener and WriteListener interfaces. These are registered in ServletInputStream and ServletOutputStream. The listeners have callback methods that are invoked when the content is available to be read or can be written without the servlet container blocking on the I/O threads. So these I/O threads are freed up and can now serve other request increasing performance.<br>参考例子 <a href="https://github.com/mengxu2018/java-code-sample/tree/master/servlet3.1" target="_blank" rel="noopener">https://github.com/mengxu2018/java-code-sample/tree/master/servlet3.1</a></p>
-<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://www.cnblogs.com/davenkin/p/async-servlet.html" target="_blank" rel="noopener">https://www.cnblogs.com/davenkin/p/async-servlet.html</a><br><img src="/images/servlet-spec.png" alt="servlet-spec"></p>
+        <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/file-descriptors.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/file-descriptors.html</a><br><a href="https://discuss.elastic.co/t/problems-with-access-to-elasticsearch-form-outside-machine/172450" target="_blank" rel="noopener">https://discuss.elastic.co/t/problems-with-access-to-elasticsearch-form-outside-machine/172450</a></p>
+<p>修改配置elasticsearch.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">network.host: 0.0.0.0</span><br></pre></td></tr></table></figure></p>
+<p>文件句柄问题就是修改/etc/security/limits.conf，下面的xuhang就是启动es的用户名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xuhang soft nofile 65536</span><br><span class="line">xuhang hard nofile 65536</span><br></pre></td></tr></table></figure></p>
+<p>the default discovery settings are unsuitable for production use, 修改elasticsearch.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">discovery.seed_hosts: []</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/10/26/java-servlet/" data-id="ck272f0uh001ky0ji86jqz9k6" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/06/27/elasticsearch-remote-access/" data-id="ckbxofai20000couxh5gafswo" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
 
     </footer>
   </div>
@@ -347,10 +237,10 @@
 
 
   
-    <article id="post-java-exception" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-powershell概念" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/26/java-exception/" class="article-date">
-  <time datetime="2019-10-26T03:37:23.000Z" itemprop="datePublished">2019-10-26</time>
+    <a href="/2020/06/22/powershell概念/" class="article-date">
+  <time datetime="2020-06-22T12:44:15.000Z" itemprop="datePublished">2020-06-22</time>
 </a>
     
   </div>
@@ -361,7 +251,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/26/java-exception/">java exception</a>
+      <a class="article-title" href="/2020/06/22/powershell概念/">powershell 概念</a>
     </h1>
   
 
@@ -369,21 +259,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>{<br>status: 1<br>message: “转账成功”<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 1<br>message: “您的余额不足” //余额不足可以当作正常业务流程提示用户<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 1<br>message: “您的套餐三个月内不能修改” //套餐不能修改可以当作正常业务流程提示用户<br>data: {} //业务成功有时候会数据返回到前台<br>}<br>{<br>status: 0<br>errorCode: 1001<br>errorMessage: “业务处理出现错误，请稍后再尝试” //数据库错误，socket错误等不应该让用户看到<br>exception: java.xx.socketException,etc<br>}</p>
-<p>但是有的业务是需要按照异常给用户的，比如 EmailNotUniqueException, InvalidUserStateException，需要自定义异常<a href="https://stackabuse.com/how-to-make-custom-exceptions-in-java/" target="_blank" rel="noopener">https://stackabuse.com/how-to-make-custom-exceptions-in-java/</a></p>
-<p><a href="http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/" target="_blank" rel="noopener">http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/</a><br>这个文章讲解了checked异常的不好的地方</p>
-<p><a href="https://stackoverflow.com/questions/7561550/list-of-spring-runtime-exceptions" target="_blank" rel="noopener">https://stackoverflow.com/questions/7561550/list-of-spring-runtime-exceptions</a></p>
-<p>spring内部基本都是用的unchecked exception, 因为uncheck exception不需要用户catch，如果有异常就直接输出到日志了，比如说下面的空指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NullPointerException: null</span><br><span class="line"> at com.ssc.rest.controller.ManagerControllerMiddleware.delete(ManagerControllerMiddleware.java:61)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line"> at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line"> at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line"> at java.lang.reflect.Method.invoke(Method.java:497)</span><br></pre></td></tr></table></figure></p>
-<p>这段话会被输出到日志文件 </p>
-<p>一般业务系统的异常都是需要自定义异常，既然自定义异常，那么余额为0或者套餐变更要求不符合还会当作异常被抛出到spring全局处理器然后给js返回错误的数据格式{errormsg:xx, errorCode:xx}？<br>应该是不建议的，定义这种类别的自定义异常不是好的方法,但是不绝对，<br>一般自定义的异常，比如用户名不唯一，邮件格式不对等</p>
+        <h2 id="net-powershell"><a href="#net-powershell" class="headerlink" title=".net powershell"></a>.net powershell</h2><p>The reason for this is that PowerShell commands can read and write objects, as opposed to conventional shells that can only process strings of text. Because PowerShell runs on the .NET platform, the objects that are used are .NET objects, which makes it an ideal scripting language for .NET programs.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/10/26/java-exception/" data-id="ck272f0ug001iy0jilwa32t8h" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/06/22/powershell概念/" data-id="ckbxofaj20006coux3tukd7zn" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
 
     </footer>
   </div>
@@ -392,10 +276,10 @@
 
 
   
-    <article id="post-es6-promise" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-powershell-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/26/es6-promise/" class="article-date">
-  <time datetime="2019-10-26T03:35:01.000Z" itemprop="datePublished">2019-10-26</time>
+    <a href="/2020/06/22/powershell-sample/" class="article-date">
+  <time datetime="2020-06-22T12:44:15.000Z" itemprop="datePublished">2020-06-22</time>
 </a>
     
   </div>
@@ -406,7 +290,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/26/es6-promise/">es6 promise</a>
+      <a class="article-title" href="/2020/06/22/powershell-sample/">powershell sample</a>
     </h1>
   
 
@@ -414,20 +298,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>The arguments to then are optional, and catch(failureCallback) is short for then(null, failureCallback). You might see this expressed with arrow functions instead:</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises</a></p>
-<p>下面这个代码可以直接控制台执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line"> console.log(&apos;Initial&apos;);</span><br><span class="line"> throw new Error(&apos;Something failed&apos;);</span><br><span class="line"> // resolve();</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do this&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.then(null,</span><br><span class="line"> () =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do that&apos;);</span><br><span class="line"> &#125;</span><br><span class="line"> )</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> console.log(&apos;Do this, no matter what happened before&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>上面这个代码等同于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line"> console.log(&apos;Initial&apos;);</span><br><span class="line"> throw new Error(&apos;Something failed&apos;);</span><br><span class="line"> // resolve();</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> // throw new Error(&apos;Something failed&apos;); </span><br><span class="line"> console.log(&apos;Do this&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.catch(() =&gt; &#123;</span><br><span class="line"> console.error(&apos;Do that&apos;);</span><br><span class="line">&#125;)</span><br><span class="line">.then(() =&gt; &#123;</span><br><span class="line"> console.log(&apos;Do this, no matter what happened before&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>When you return something from a then() callback, it’s a bit magic. If you return a value, the next then() is called with that value. However, if you return something promise-like, the next then() waits on it, and is only called when that promise settles (succeeds/fails).<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Promise.resolve(&apos;foo&apos;).</span><br><span class="line"> then(() =&gt; &#123;return &quot;bar&quot;&#125;).</span><br><span class="line"> then((v) =&gt; console.log(v))</span><br><span class="line">Promise.resolve(&apos;foo&apos;).</span><br><span class="line"> then(() =&gt; &#123;return Promise.resolve(&apos;bar&apos;)&#125;).</span><br><span class="line"> then((v) =&gt; console.log(v))</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://stackoverflow.com/questions/34094806/return-from-a-promise-then" target="_blank" rel="noopener">https://stackoverflow.com/questions/34094806/return-from-a-promise-then</a></p>
+        <h2 id="create-excel-前提是ms-office是安装好的"><a href="#create-excel-前提是ms-office是安装好的" class="headerlink" title="create excel(前提是ms office是安装好的)"></a>create excel(前提是ms office是安装好的)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># create new excel instance</span><br><span class="line"> $objExcel = New-Object -comobject Excel.Application</span><br><span class="line"> $objExcel.Visible = $True</span><br><span class="line"> $objWorkbook = $objExcel.Workbooks.Add()</span><br><span class="line"> $objWorksheet = $objWorkbook.Worksheets.Item(1)</span><br><span class="line"></span><br><span class="line"> # write information to the excel file</span><br><span class="line">$i = 0</span><br><span class="line">$first10 = (ps | sort ws -Descending | select -first 10)</span><br><span class="line">$first10 | foreach -Process &#123;$i++; $objWorksheet.Cells.Item($i,1) = $_.name; $objWorksheet.Cells.Item($i,2) = $_.ws&#125;</span><br><span class="line">$otherMem = (ps | measure ws -s).Sum - ($first10 | measure ws -s).Sum</span><br><span class="line">$objWorksheet.Cells.Item(11,1) = &quot;Others&quot;; $objWorksheet.Cells.Item(11,2) = $otherMem</span><br><span class="line"></span><br><span class="line"># draw the pie chart</span><br><span class="line">$objCharts = $objWorksheet.ChartObjects()</span><br><span class="line">$objChart = $objCharts.Add(0, 0, 500, 300)</span><br><span class="line">$objChart.Chart.SetSourceData($objWorksheet.range(&quot;A1:B11&quot;), 2)</span><br><span class="line">$objChart.Chart.ChartType = 70</span><br><span class="line">$objChart.Chart.ApplyDataLabels(5)</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/10/26/es6-promise/" data-id="ck272f0ty000ny0jihc8i8rxu" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/06/22/powershell-sample/" data-id="ckbxofaj50007coux3zhmkel8" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
 
     </footer>
   </div>
@@ -436,10 +315,10 @@
 
 
   
-    <article id="post-jvm-classloader" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-powershell-module" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/10/26/jvm-classloader/" class="article-date">
-  <time datetime="2019-10-26T03:33:41.000Z" itemprop="datePublished">2019-10-26</time>
+    <a href="/2020/06/18/powershell-module/" class="article-date">
+  <time datetime="2020-06-18T12:44:15.000Z" itemprop="datePublished">2020-06-18</time>
 </a>
     
   </div>
@@ -450,7 +329,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/26/jvm-classloader/">jvm classloader</a>
+      <a class="article-title" href="/2020/06/18/powershell-module/">powershell module</a>
     </h1>
   
 
@@ -458,18 +337,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://tomcat.apache.org/tomcat-9.0-doc/class-loader-howto.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-9.0-doc/class-loader-howto.html</a></p>
-<p>关于Sharedclassloader 有个没说清楚， webappclassloader会先从自己的repository寻找，找不到才会从Sharedclassloader寻找</p>
-<p>log4j:ERROR A “org.apache.log4j.DailyRollingFileAppender” object is not assignable to a “org.apache.log4j.Appender” variable.<br>log4j:ERROR The class “org.apache.log4j.Appender” was loaded by<br>log4j:ERROR [java.net.URLClassLoader@2f0a098b] whereas object of type<br>log4j:ERROR “org.apache.log4j.DailyRollingFileAppender” was loaded by [WebappClassLoader<br> context: /cdt4middleware<br> delegate: false<br> repositories:<br> /WEB-INF/classes/<br> - - - - → Parent Classloader:<br>java.net.URLClassLoader@2f0a098b<br>].<br>log4j:ERROR Could not instantiate appender named “RollingAppender”.</p>
-<p>这个错误是因为webapp下面有个log4j，而且sharedclassloader下面也有个log4j<br>因为osa框架里面的类是由sharedclassloader加载的，他如果事先加载了org.apache.log4j.Appender，而后如果DailyRollingFileAppender被webappclassloader加载的话就会报这个错误了</p>
+        <h2 id="guide"><a href="#guide" class="headerlink" title="guide"></a>guide</h2><p><a href="https://www.pstips.net/create-mini-module.html" target="_blank" rel="noopener">https://www.pstips.net/create-mini-module.html</a></p>
+<h2 id="打开-powershell-ise"><a href="#打开-powershell-ise" class="headerlink" title="打开 powershell ise"></a>打开 powershell ise</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function Get-BIOS</span><br><span class="line">&#123;  param($ComputerName, $Credential)</span><br><span class="line">   Get-WmiObject -Class Win32_BIOS @PSBoundParameters</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$name = &apos;Get-BIOS&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">New-Item -Path $home\Documents\WindowsPowerShell\Modules\$name\$name.psm1 -ItemType File -Force -Value &quot;function $name &#123; $((Get-Item function:\$name).Definition) &#125;&quot; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">打开新窗口</span><br><span class="line"></span><br><span class="line">Get-Module  -Name Get-BIOS</span><br><span class="line">Get-BIOS</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/10/26/jvm-classloader/" data-id="ck272f0uj001py0jixojx21ro" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/06/18/powershell-module/" data-id="ckbxofaj00005couxhkoiw2x8" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
 
     </footer>
   </div>
@@ -478,10 +355,10 @@
 
 
   
-    <article id="post-jdk8-new-features" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-powershell常用命令" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/08/11/jdk8-new-features/" class="article-date">
-  <time datetime="2019-08-11T05:27:07.000Z" itemprop="datePublished">2019-08-11</time>
+    <a href="/2020/06/18/powershell常用命令/" class="article-date">
+  <time datetime="2020-06-18T12:44:15.000Z" itemprop="datePublished">2020-06-18</time>
 </a>
     
   </div>
@@ -492,7 +369,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/11/jdk8-new-features/">jdk8 new features</a>
+      <a class="article-title" href="/2020/06/18/powershell常用命令/">powershell 基础知识</a>
     </h1>
   
 
@@ -500,19 +377,102 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="为什么jdk8的interface要引入default-method"><a href="#为什么jdk8的interface要引入default-method" class="headerlink" title="为什么jdk8的interface要引入default method?"></a>为什么jdk8的interface要引入default method?</h3><p>To give you an example take the case of the Collection.forEach method, which is designed to take an instance of the Consumer functional interface and has a default implementation in the Collection interface:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default void forEach(Consumer&lt;? super T&gt; action) &#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    for (T t : this) &#123;</span><br><span class="line">        action.accept(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>If the JDK designers didn’t introduce the concept of default methods then all the implementing classes of the Collection interface would have to implement the forEach method so it would be problematic to switch to Java - 8 without breaking your code.</p>
-<p>So to facilitate the adoption of lambdas and the use of the new functional interfaces like Consumer, Supplier, Predicate, etc. the JDK designers introduced the concept of default methods to provide backward compatibility and it is now easier to switch to Java - 8 without making any changes.</p>
-<p>If you don’t like the default implementation in the interface you can override it and supply your own.</p>
+        <h2 id="todo"><a href="#todo" class="headerlink" title="todo"></a>todo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 返回的就是一个object，所有可以call stop方法</span><br><span class="line">(Get-Service -Name w32time).Stop()</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/08/11/jdk8-new-features/" data-id="ck272f0ui001my0jig092v23a" class="article-share-link">Share</a>
+      <a data-url="https://mengxu2018.github.io/2020/06/18/powershell常用命令/" data-id="ckbxofaj9000acouxv3lsir30" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-网络协议" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/10/网络协议/" class="article-date">
+  <time datetime="2020-06-10T14:51:52.000Z" itemprop="datePublished">2020-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/10/网络协议/">ping网络协议</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ping  没有指定端口这个选项吧，他是网络层的，端口可是传输层的概念啊。</p>
+<p>Ping程序使用的是ICMP协议，ICMP不像http，FTP应用层有传输层的端口号，（它们使用TCP的端口号80和20/21）。ICMP直接封装在IP包内</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/06/10/网络协议/" data-id="ckbxofajb000ccouxyyyeuxeo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络/">网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ansible-windows踩坑" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/04/ansible-windows踩坑/" class="article-date">
+  <time datetime="2020-06-04T12:44:15.000Z" itemprop="datePublished">2020-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/04/ansible-windows踩坑/">ansible windows setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p>/etc/ansible/hosts如下，ansible_winrm_transport是关键，否则会报错    “msg”: “plaintext: the specified credentials were rejected by the server”,<br><a href="https://www.jianshu.com/p/0ad50049adb7" target="_blank" rel="noopener">https://www.jianshu.com/p/0ad50049adb7</a></p>
+<p>[windows]<br>node3 ansible_user=xuhang ansible_password=xuhang ansible_connection=winrm ansible_winrm_transport=ntlm ansible_port=5985 ansible_winrm_scheme=http</p>
+<h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p><a href="https://www.cnblogs.com/herui1991/p/12304487.html" target="_blank" rel="noopener">https://www.cnblogs.com/herui1991/p/12304487.html</a><br>重点：千万不要yum安装ansible。选择pip3安装，或者二进制包安装。否则，即便安装了pywinrm插件也无法管理Windows主机。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --user ansible</span><br></pre></td></tr></table></figure></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3"></a>3</h2><p>[xuhang@localhost ansible]$ ansible all -m ping<br>[WARNING]: No python interpreters found for host node3 (tried [‘/usr/bin/python’, ‘python3.7’, ‘python3.6’, ‘python3.5’, ‘python2.7’, ‘python2.6’, ‘/usr/libexec/platform-python’, ‘/usr/bin/python3’,<br>‘python’])</p>
+<p>这个是因为远程主机是windows，他当成了linux，linux 远程主机需要安装python，至于他为什么当成linux可能是因为这个用的方式不对，不能直接测试ping，应该用下面的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"># The playbook install 7zip</span><br><span class="line">- hosts: windows</span><br><span class="line">  tasks:</span><br><span class="line">   - name: Ensure 7-Zip is installed via Chocolatey</span><br><span class="line">     win_chocolatey:</span><br><span class="line">       name: 7zip</span><br><span class="line">       state: present</span><br></pre></td></tr></table></figure>
+<h2 id="wrm服务"><a href="#wrm服务" class="headerlink" title="wrm服务"></a>wrm服务</h2><p>这个服务在windows server2016是默认打开的，通过命令winrm quickconfig可以打开，提示默认打开，当然这个只是http的方式，https需要证书打开</p>
+<h2 id="authentication"><a href="#authentication" class="headerlink" title="authentication"></a>authentication</h2><p><a href="https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html#basic" target="_blank" rel="noopener">https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html#basic</a><br>Basic authentication is one of the simplest authentication options to use, but is also the most insecure. This is because the username and password are simply base64 encoded, and if a secure channel is not in use (eg, HTTPS) then it can be decoded by anyone. Basic authentication can only be used for local accounts (not domain accounts).</p>
+<p><a href="https://docs.ansible.com/ansible/latest/user_guide/windows_setup.html#winrm-setup" target="_blank" rel="noopener">https://docs.ansible.com/ansible/latest/user_guide/windows_setup.html#winrm-setup</a><br>这一步把basic authentication给打开了，basic需要用户名密码，但是可能需要先执行这个powershell脚本来enable</p>
+<h2 id="总结下就是google和百度一起搜找问题的答案"><a href="#总结下就是google和百度一起搜找问题的答案" class="headerlink" title="总结下就是google和百度一起搜找问题的答案"></a>总结下就是google和百度一起搜找问题的答案</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/06/04/ansible-windows踩坑/" data-id="ckbxofaif0003couxmq1vnh1w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/automation/">automation</a></li></ul>
 
     </footer>
   </div>
@@ -525,7 +485,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -539,7 +499,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -549,7 +509,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.67px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 16.67px;">OS</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/docker/" style="font-size: 11.67px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.67px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.33px;">java</a> <a href="/tags/javascript/" style="font-size: 11.67px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/maven/" style="font-size: 11.67px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 11.67px;">search</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 13.33px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -558,7 +518,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -571,23 +531,23 @@
       <ul>
         
           <li>
-            <a href="/2020/02/23/jwt-first/">jwt spring security</a>
+            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
           <li>
-            <a href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/minikube-intro/">使用minikube学习环境</a>
+            <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
           </li>
         
           <li>
-            <a href="/2020/01/27/不能启动k8s/">failed to start k8s</a>
+            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
           </li>
         
           <li>
-            <a href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>
@@ -602,7 +562,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 xu, hang<br>
+      &copy; 2021 xu, hang<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

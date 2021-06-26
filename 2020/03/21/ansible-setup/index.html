@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>ansible setup | No pains,no gains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="先升级到python3参考另外的文章 安装可以下载centos版本的rpmhttps://cbs.centos.org/koji/buildinfo?buildID=27713至于依赖的其他package，可以yum来安装,如果需要管理windows机器就需要使用pip来安装ansible，否则管理windows的python模块不能识别1pip3 install --user ansible s">
+<meta name="keywords" content="automation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ansible setup">
+<meta property="og:url" content="https://mengxu2018.github.io/2020/03/21/ansible-setup/index.html">
+<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:description" content="先升级到python3参考另外的文章 安装可以下载centos版本的rpmhttps://cbs.centos.org/koji/buildinfo?buildID=27713至于依赖的其他package，可以yum来安装,如果需要管理windows机器就需要使用pip来安装ansible，否则管理windows的python模块不能识别1pip3 install --user ansible s">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-13T07:58:37.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ansible setup">
+<meta name="twitter:description" content="先升级到python3参考另外的文章 安装可以下载centos版本的rpmhttps://cbs.centos.org/koji/buildinfo?buildID=27713至于依赖的其他package，可以yum来安装,如果需要管理windows机器就需要使用pip来安装ansible，否则管理windows的python模块不能识别1pip3 install --user ansible s">
+  
+    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">No pains,no gains</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mengxu2018.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ansible-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/21/ansible-setup/" class="article-date">
+  <time datetime="2020-03-21T12:44:15.000Z" itemprop="datePublished">2020-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ansible setup
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="先升级到python3"><a href="#先升级到python3" class="headerlink" title="先升级到python3"></a>先升级到python3</h2><p>参考另外的文章</p>
+<h2 id="安装可以下载centos版本的rpm"><a href="#安装可以下载centos版本的rpm" class="headerlink" title="安装可以下载centos版本的rpm"></a>安装可以下载centos版本的rpm</h2><p><a href="https://cbs.centos.org/koji/buildinfo?buildID=27713" target="_blank" rel="noopener">https://cbs.centos.org/koji/buildinfo?buildID=27713</a><br>至于依赖的其他package，可以yum来安装,如果需要管理windows机器就需要使用pip来安装ansible，否则管理windows的python模块不能识别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --user ansible</span><br></pre></td></tr></table></figure></p>
+<h2 id="ssh免登录"><a href="#ssh免登录" class="headerlink" title="ssh免登录"></a>ssh免登录</h2><p><a href="http://getansible.com/begin/an_zhuang_ansile" target="_blank" rel="noopener">http://getansible.com/begin/an_zhuang_ansile</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 生成ssh key</span><br><span class="line">ssh-keygen</span><br><span class="line"></span><br><span class="line"># 拷贝ssh key到远程主机，ssh的时候就不需要输入密码了</span><br><span class="line">ssh-copy-id remoteuser@remoteserver</span><br><span class="line"></span><br><span class="line"># ssh的时候不会提示是否保存key</span><br><span class="line">$ssh-keyscan remote_servers &gt;&gt; ~/.ssh/known_hosts</span><br></pre></td></tr></table></figure></p>
+<p>配置root-&gt;root， ccms-&gt;ccms免登录</p>
+<h2 id="ad-hoc-commands"><a href="#ad-hoc-commands" class="headerlink" title="ad-hoc commands"></a>ad-hoc commands</h2><p><a href="https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html" target="_blank" rel="noopener">https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html</a></p>
+<p>下面的命令都可以直接在root执行或者ccms执行<br>ansible all -m copy -a “src=/tmp/xu dest=/tmp/xu2”<br>ansible all -m ping<br>ansible all -a “/sbin/reboot”</p>
+<p>如果在root用户下面执行下面的会报错，需要实现root到对方ccms的免登录<br>这个只要执行上面的第二步ssh-copy-id ccms@remoteserver就可以了，因为1，3步在同用户名之间的免登录已经执行过了<br>ansible all -m ping -u ccms</p>
+<h2 id="sudo-issue-TODO"><a href="#sudo-issue-TODO" class="headerlink" title="sudo issue (TODO)"></a>sudo issue (TODO)</h2><p>在对方机器执行sudo需要把用户ccms加入到wheel组里面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usermod -aG wheel user</span><br></pre></td></tr></table></figure></p>
+<p>sudo是ccms的密码，但是需要加入到wheel组里面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible all -m copy -a &quot;src=/tmp/xu dest=/etc/xu3&quot; -u ccms  --ask-become-pass</span><br></pre></td></tr></table></figure></p>
+<p>但是下面的重启会报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;/sbin/reboot&quot; -u ccms --ask-become-pass 会报错</span><br></pre></td></tr></table></figure></p>
+<h2 id="playbook"><a href="#playbook" class="headerlink" title="playbook"></a>playbook</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">-</span><br><span class="line">  hosts: all</span><br><span class="line">  name: &quot;install httpd&quot;</span><br><span class="line">  tasks:</span><br><span class="line">    -</span><br><span class="line">      name: &quot;install httpd*&quot;</span><br><span class="line">      yum: &quot;name=httpd state=latest&quot;</span><br></pre></td></tr></table></figure>
+<p>上面是一个可以work的例子，安装一个httpd，最顶部的三个dash代表文档的开始，其他的dash可以单独一行也可以不单独一行</p>
+<h2 id="ansible-tower"><a href="#ansible-tower" class="headerlink" title="ansible tower"></a>ansible tower</h2><p><a href="https://computingforgeeks.com/install-and-configure-ansible-tower-on-centos-rhel/" target="_blank" rel="noopener">https://computingforgeeks.com/install-and-configure-ansible-tower-on-centos-rhel/</a><br> /bin/ansible-tower-service {start|stop|restart|status}</p>
+<h2 id="yaml"><a href="#yaml" class="headerlink" title="yaml"></a>yaml</h2><p>关于yaml中dash的解释，<a href="https://www.reddit.com/r/ansible/comments/5jhff3/when_to_use_dash_in_yaml/" target="_blank" rel="noopener">https://www.reddit.com/r/ansible/comments/5jhff3/when_to_use_dash_in_yaml/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tasks:</span><br><span class="line">    - name: date/time stamp</span><br><span class="line">      command: /usr/bin/date</span><br><span class="line">      register: timestamp_start</span><br><span class="line">    - debug: var=timestamp_start</span><br><span class="line">    - name: another task</span><br></pre></td></tr></table></figure></p>
+<p>dash表示一个list的开始，如果转换成json你可以看的很清楚有没有dash的差异<br><a href="https://onlineyamltools.com/convert-yaml-to-json" target="_blank" rel="noopener">https://onlineyamltools.com/convert-yaml-to-json</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/03/21/ansible-setup/" data-id="ck81l9zif0000mcuxw2s8xdh6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/automation/">automation</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/05/jwt-first/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jwt introduction
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/21/aliyun-yum源/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">aliyun yum仓库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 xu, hang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
