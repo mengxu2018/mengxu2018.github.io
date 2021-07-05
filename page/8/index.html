@@ -62,6 +62,92 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spark闭包" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/05/spark闭包/" class="article-date">
+  <time datetime="2019-06-05T14:51:52.000Z" itemprop="datePublished">2019-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/05/spark闭包/">spark 闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>什么叫闭包： 跨作用域访问函数变量。又指的一个拥有许多变量和绑定了这些变量的环境的表达式（通常是一个函数），因而这些变量也是该表达式的一部分。</p>
+<p>Spark闭包的问题引出：<br>在spark中实现统计List(1,2,3)的和。如果使用下面的代码，程序打印的结果不是6，而是0。这个和我们编写单机程序的认识有很大不同。为什么呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">object Test &#123;</span><br><span class="line">  def main(args:Array[String]):Unit = &#123;</span><br><span class="line">      val conf = new SparkConf().setAppName(&quot;test&quot;);</span><br><span class="line">      val sc = new SparkContext(conf)</span><br><span class="line"></span><br><span class="line">      val rdd = sc.parallelize(List(1,2,3))</span><br><span class="line">      var counter = 0</span><br><span class="line">      //warn: don&apos;t do this</span><br><span class="line">      rdd.foreach(x =&gt; counter += x)</span><br><span class="line">      println(&quot;Counter value: &quot;+counter)</span><br><span class="line"></span><br><span class="line">      sc.stop()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题分析：<br>counter是在foreach函数外部定义的，也就是在driver程序中定义，而foreach函数是属于rdd对象的，rdd函数的执行位置是各个worker节点（或者说worker进程），main函数是在driver节点上（或者说driver进程上）执行的，所以当counter变量在driver中定义，被在rdd中使用的时候，出现了变量的“跨域”问题，也就是闭包问题。</p>
+<p>问题解释：<br>对于上面程序中的counter变量，由于在main函数和在rdd对象的foreach函数是属于不同“闭包”的，所以，传进foreach中的counter是一个副本，初始值都为0。foreach中叠加的是counter的副本，不管副本如何变化，都不会影响到main函数中的counter，所以最终打印出来的counter为0.</p>
+<p>当用户提交了一个用scala语言写的Spark程序，Spark框架会调用哪些组件呢？首先，这个Spark程序就是一个“Application”，程序里面的mian函数就是“Driver Program”， 前面已经讲到它的作用，只是，dirver程序的可能运行在客户端，也有可有可能运行在spark集群中，这取决于spark作业提交时参数的选定，比如，yarn-client和yarn-cluster就是分别运行在客户端和spark集群中。在driver程序中会有RDD对象的相关代码操作，比如下面代码的newRDD.map()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Test&#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    val sc = new SparkContext(new SparkConf())</span><br><span class="line">    val newRDD = sc.textFile(&quot;&quot;)</span><br><span class="line"></span><br><span class="line">    newRDD.map(data =&gt; &#123;</span><br><span class="line">      //do something</span><br><span class="line">      println(data.toString)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及到RDD的代码，比如上面RDD的map操作，它们是在Worker节点上面运行的，所以spark会透明地帮用户把这些涉及到RDD操作的代码传给相应的worker节点。如果在RDD map函数中调用了在函数外部定义的对象，因为这些对象需要通过网络从driver所在节点传给其他的worker节点，所以要求这些类是可序列化的，比如在Java或者scala中实现Serializable类，除了java这种序列化机制，还可以选择其他方式，使得序列化工作更加高效。worker节点接收到程序之后，在spark资源管理器的指挥下运行RDD程序。不同worker节点之间的运行操作是并行的。</p>
+<p>​在worker节点上所运行的RDD中代码的变量是保存在worker节点上面的，在spark编程中，很多时候用户需要在driver程序中进行相关数据操作之后把该数据传给RDD对象的方法以做进一步处理，这时候，spark框架会自动帮用户把这些数据通过网络传给相应的worker节点。除了这种以变量的形式定义传输数据到worker节点之外，spark还另外提供了两种机制，分别是broadcast和accumulator。相比于变量的方式，在一定场景下使用broadcast比较有优势，因为所广播的数据在每一个worker节点上面只存一个副本，而在spark算子中使用到的外部变量会在每一个用到它的task中保存一个副本，即使这些task在同一个节点上面。所以当数据量比较大的时候，建议使用广播而不是外部变量。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/05/spark闭包/" data-id="ck272f0vp003zy0jitdxfiovs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-create-large-file" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/03/create-large-file/" class="article-date">
+  <time datetime="2019-06-03T14:51:52.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/03/create-large-file/">随机生成大文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.RandomAccessFile;</span><br><span class="line">import java.nio.ByteBuffer;</span><br><span class="line">import java.nio.channels.FileChannel;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        byte[] buffer = &quot;Help I am trapped in a fortune cookie factory\n&quot;.getBytes();</span><br><span class="line">        byte[] buffer2 = &quot;good morning boy&quot;.getBytes();</span><br><span class="line">        int number_of_lines = 400000*20;</span><br><span class="line"></span><br><span class="line">        Random rand = new Random();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        FileChannel rwChannel = new RandomAccessFile(&quot;mylarge.txt&quot;, &quot;rw&quot;).getChannel();</span><br><span class="line">        ByteBuffer wrBuf = rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length * number_of_lines);</span><br><span class="line">        for (int i = 1; i &lt; number_of_lines; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            int n = rand.nextInt(50) + 1;</span><br><span class="line">            if (n % i == 0) &#123;</span><br><span class="line">                wrBuf.put(buffer);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                wrBuf.put(buffer2);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        rwChannel.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/06/03/create-large-file/" data-id="ck272f0ts000fy0jijn3lzml7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-centos7-ssh免密码" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/01/centos7-ssh免密码/" class="article-date">
@@ -399,101 +485,6 @@
 
 
   
-    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/26/first-spark/" class="article-date">
-  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
-<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
-<p>输出Lines with a: xxx, Lines with b: xxx</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="ck272f0u2000uy0jinsjbecnn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/15/oauth2/" class="article-date">
-  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>Authentication is the process of verifying an identity (who they say they are)</li>
-<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
-</ul>
-<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
-<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
-<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
-<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
-<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
-<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
-<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
-<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="ck272f0v9002zy0ji44f3ycky" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -522,7 +513,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/automation/" style="font-size: 11.25px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.25px;">database</a> <a href="/tags/docker/" style="font-size: 11.25px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.25px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/javascript/" style="font-size: 11.25px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.25px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.25px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/maven/" style="font-size: 11.25px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15px;">powershell</a> <a href="/tags/python/" style="font-size: 11.25px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.5px;">search</a> <a href="/tags/security/" style="font-size: 13.75px;">security</a> <a href="/tags/spark/" style="font-size: 18.75px;">spark</a> <a href="/tags/spring/" style="font-size: 12.5px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -531,7 +522,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -544,6 +535,14 @@
       <ul>
         
           <li>
+            <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
@@ -553,14 +552,6 @@
         
           <li>
             <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>

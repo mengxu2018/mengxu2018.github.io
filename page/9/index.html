@@ -62,6 +62,101 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-first-spark" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/26/first-spark/" class="article-date">
+  <time datetime="2019-04-26T14:51:52.000Z" itemprop="datePublished">2019-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/26/first-spark/">first spark sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="intro"><a href="#intro" class="headerlink" title="intro"></a>intro</h2><p>这是个本地运行模式，没有standalone spark cluster or spark cluster on yarn</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p><a href="https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark" target="_blank" rel="noopener">https://github.com/mengxu2018/bigdata/tree/master/learn-spark/first-spark</a></p>
+<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p><code>mvn package</code></p>
+<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[2] \</span><br><span class="line">  simple-project-1.0.jar</span><br></pre></td></tr></table></figure>
+<p>输出Lines with a: xxx, Lines with b: xxx</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/26/first-spark/" data-id="ck272f0u2000uy0jinsjbecnn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-oauth2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/15/oauth2/" class="article-date">
+  <time datetime="2019-04-15T14:51:52.000Z" itemprop="datePublished">2019-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/15/oauth2/">oauth2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>Authentication is the process of verifying an identity (who they say they are)</li>
+<li>Authorization is the process of verifying what someone is allowed to do (permissions)</li>
+</ul>
+<p>这篇文章讲了outh2，比较权威<br><a href="https://oauth.net/articles/authentication/" target="_blank" rel="noopener">https://oauth.net/articles/authentication/</a></p>
+<p>这篇讲了oauth应用于微服务<br><a href="https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth" target="_blank" rel="noopener">https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth</a></p>
+<p>这个文章讲oauth不是用于authentication而是authorization<br><a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br><code>OAuth authentication?</code><br>Authentication deals information about “who one is”. Authorization deals information about “who grants what permissions to whom”. Authorization flow contains authentication as its first step. It is the reason people are often confused.<br>There are many libraries and services that use OAuth 2.0 for authentication. It is often called “social login” and It makes people more confused. If you see “OAuth authentication” (not “OAuth authorization”), it is a solution using OAuth for authentication.</p>
+<p>oauth2的specs也可以看看，已经明确说明oauth2不是用于认证的<br><code>OAuth 2.0 is a specification for authorization, but NOT for authentication. RFC 6749, 3.1. Authorization Endpoint explicitly says as follows:</code><br>The authorization endpoint is used to interact with the resource owner and obtain an authorization grant. The authorization server MUST first verify the identity of the resource owner. The way in which the authorization server authenticates the resource owner (e.g., username and password login, session cookies) is beyond the scope of this specification.<br>oauth2和oauth1的区别如下<br><a href="https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1" target="_blank" rel="noopener">https://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1</a></p>
+<p>OpenID Connect<br>OpenID 1.0 and OpenID 2.0 are old specifications for authentication. Those who made the specifications expected people to use OpenID for authentication. However, some people began to use OAuth 2.0 for authentication (not for authorization) and OAuth authentication has prevailed rapidly.<br>From a viewpoint of OpenID guys, authentication based on OAuth was not secure enough, but they had to admit that people preferred OAuth authentication. As a result, OpenID guys decided to define a new specification, OpenID Connect, on top of OAuth 2.0.<br>Yes, this has made people much more confused.</p>
+<p>Let’s start with the biggest reason why OAuth isn’t authentication: access tokens are not intended for the client application.<br><a href="https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication" target="_blank" rel="noopener">https://www.scottbrady91.com/OAuth/OAuth-is-Not-Authentication</a></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/github-oauth2" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/github-oauth2</a><br>文档<a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" rel="noopener">https://spring.io/guides/tutorials/spring-boot-oauth2/</a></p>
+<p>代码<a href="https://github.com/mengxu2018/springboot/tree/master/oauth2_test" target="_blank" rel="noopener">https://github.com/mengxu2018/springboot/tree/master/oauth2_test</a><br>文档<a href="https://www.javainuse.com/spring/spring-boot-oauth-access-token" target="_blank" rel="noopener">https://www.javainuse.com/spring/spring-boot-oauth-access-token</a><br><a href="https://www.aha.io/api/oauth2" target="_blank" rel="noopener">https://www.aha.io/api/oauth2</a></p>
+<p><a href="https://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="noopener">https://projects.spring.io/spring-security-oauth/docs/oauth2.html</a><br><a href="https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2" target="_blank" rel="noopener">https://security.stackexchange.com/questions/37818/why-use-openid-connect-instead-of-plain-oauth2</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>oauth是一个授权框架， 只不过授权之前需要登陆，但是这个并不代表oauth是认证框架，<br>但是很多人就开始用oauth2来做认证<br>主要这个文章<a href="https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication" target="_blank" rel="noopener">https://stackoverflow.com/questions/33702826/oauth-authorization-vs-authentication</a><br>(Identity, Authentication) + OAuth 2.0 = OpenID Connect<br><a href="https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3" target="_blank" rel="noopener">https://medium.com/@darutk/full-scratch-implementor-of-oauth-and-openid-connect-talks-about-findings-55015f36d1c3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/04/15/oauth2/" data-id="ck272f0v9002zy0ji44f3ycky" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/security/">security</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-redis5-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/31/redis5-centos7-setup/" class="article-date">
@@ -98,65 +193,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spring-jpa" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/spring-jpa/" class="article-date">
-  <time datetime="2019-03-31T14:51:52.000Z" itemprop="datePublished">2019-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/spring-jpa/">spring jpa</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="spring-jpa-tips"><a href="#spring-jpa-tips" class="headerlink" title="spring jpa tips"></a>spring jpa tips</h2><ul>
-<li><p>Jpa entitymanager不是线程安全的 ，但是我们可以在单列的DAO里面注入他是因为注入的实际是代理，这个proxy会为每一个线程创建一个entitymanager</p>
-</li>
-<li><p>springboot是默认打开spring.jpa.open-in-view=true</p>
-</li>
-<li><p>spring data repository是默认开启事务的， entitymanager并没有, 可以看debug TransactionInterceptor.java</p>
-</li>
-<li><p>spring data repository当然也是通过entitymanager 去操作entity</p>
-</li>
-<li><p>@Transactional默认只会回滚unchecked/runtime exception</p>
-</li>
-<li><p>spring的java配置比xml配置好的地方，比如可以很方便代码里面控制dev/uat/prod使用的数据库，也可以很方便的指定h2数据库的位置，可以很方便的看源码配置bean的参数，不像xml需要查询文档，当然xml和java config是可以配合使用的</p>
-</li>
-<li><p>h2是非常好的数据库，可以方便他人迅速部署自己的项目</p>
-</li>
-<li><p>hibernate N+1问题通过join fetch来解决是一个可以选择的办法</p>
-</li>
-<li><p>在 JPA 中不建议使用 Entity 实体对象间的一对多、多对多之类的功能，也就是说 Entity 之间尽量独立，要关联查询时，通过 JPQL 或者 SQL 查询或更新就行，避免一些级联关系之间的隐式操作，代码含义更透明，方便应对后续的扩展或针对性的优化改造。</p>
-</li>
-</ul>
-<h2 id="code-example"><a href="#code-example" class="headerlink" title="code example"></a>code example</h2><p><a href="https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2" target="_blank" rel="noopener">https://gitprod.company.com/employeeid/spring/tree/master/spring-mvc-jpa-h2</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/31/spring-jpa/" data-id="ck272f0vr0044y0jig8eukd6e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li></ul>
 
     </footer>
   </div>
@@ -471,65 +507,6 @@
 
 
   
-    <article id="post-mysql8-centos7-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/09/mysql8-centos7-setup/" class="article-date">
-  <time datetime="2019-03-09T14:51:52.000Z" itemprop="datePublished">2019-03-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/09/mysql8-centos7-setup/">mysql8 centos7 setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/mysql-8.png" alt="mysql 8"></p>
-<h2 id="Install-MySQL-YUM-repository-and-mysql"><a href="#Install-MySQL-YUM-repository-and-mysql" class="headerlink" title="Install MySQL YUM repository and mysql"></a>Install MySQL YUM repository and mysql</h2><ul>
-<li>yum localinstall <a href="https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm" target="_blank" rel="noopener">https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</a> (这个仅仅是安装/etc/yum.repos.d)</li>
-<li>yum install mysql-community-server</li>
-</ul>
-<h2 id="Start-MySQL-server-and-autostart-MySQL-on-boot"><a href="#Start-MySQL-server-and-autostart-MySQL-on-boot" class="headerlink" title="Start MySQL server and autostart MySQL on boot"></a>Start MySQL server and autostart MySQL on boot</h2><ul>
-<li>systemctl start mysqld.service ## use restart after update</li>
-<li>systemctl enable mysqld.service</li>
-</ul>
-<h2 id="Get-Your-Generated-Random-root-Password"><a href="#Get-Your-Generated-Random-root-Password" class="headerlink" title="Get Your Generated Random root Password"></a>Get Your Generated Random root Password</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">'A temporary password is generated for root@localhost'</span> /var/<span class="built_in">log</span>/mysqld.log |tail -1</span><br></pre></td></tr></table></figure>
-<p>Example Output:<br><code>2015-11-20T21:11:44.229891Z 1 [Note] A temporary password is generated for root@localhost: -et)QoL4MLid</code><br>And root password is: -et)QoL4MLid</p>
-<h2 id="Connect-to-MySQL-database-localhost-with-password"><a href="#Connect-to-MySQL-database-localhost-with-password" class="headerlink" title="Connect to MySQL database (localhost) with password"></a>Connect to MySQL database (localhost) with password</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-<p>会提示修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;Python3&amp;&amp;890&apos;;</span><br></pre></td></tr></table></figure></p>
-<p>但是至此是不能从远程访问此mysqld</p>
-<h2 id="enable-root-remote-access"><a href="#enable-root-remote-access" class="headerlink" title="enable root remote access"></a>enable root remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">UPDATE user SET host = <span class="string">'%'</span> WHERE user = <span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="create-user-and-enable-remote-access"><a href="#create-user-and-enable-remote-access" class="headerlink" title="create user and enable remote access"></a>create user and enable remote access</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">CREATE USER <span class="string">'xuhang'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'Python3&amp;&amp;890'</span>;  -- 创建用户</span><br><span class="line">GRANT ALL ON *.* TO <span class="string">'xuhang'</span>@<span class="string">'%'</span> WITH GRANT OPTION;  -- 授权</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h2 id="backup-data"><a href="#backup-data" class="headerlink" title="backup data"></a>backup data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// backup all db</span><br><span class="line">mysqldump --all-databases -uroot -p&gt; /tmp/dump.sql</span><br><span class="line"></span><br><span class="line">// backup specific db</span><br><span class="line">mysqldump --databases test1 -uroot -p&gt; /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="recover-data"><a href="#recover-data" class="headerlink" title="recover data"></a>recover data</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="built_in">source</span> /tmp/dump.sql</span><br></pre></td></tr></table></figure>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/using-mysqldump.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/09/mysql8-centos7-setup/" data-id="ck272f0v8002xy0jix43qwzm3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -558,7 +535,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/automation/" style="font-size: 11.25px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.25px;">database</a> <a href="/tags/docker/" style="font-size: 11.25px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.25px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/javascript/" style="font-size: 11.25px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.25px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.25px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/maven/" style="font-size: 11.25px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15px;">powershell</a> <a href="/tags/python/" style="font-size: 11.25px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.5px;">search</a> <a href="/tags/security/" style="font-size: 13.75px;">security</a> <a href="/tags/spark/" style="font-size: 18.75px;">spark</a> <a href="/tags/spring/" style="font-size: 12.5px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -567,7 +544,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -580,6 +557,14 @@
       <ul>
         
           <li>
+            <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
@@ -589,14 +574,6 @@
         
           <li>
             <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>

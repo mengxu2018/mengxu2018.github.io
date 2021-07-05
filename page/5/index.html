@@ -62,6 +62,94 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-zero-copy" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/zero-copy/" class="article-date">
+  <time datetime="2019-07-26T13:24:19.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/zero-copy/">zero-copy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to another. This is frequently used to save CPU cycles and memory bandwidth when transmitting a file over a network.[1]</p>
+<p><a href="https://en.wikipedia.org/wiki/Zero-copy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Zero-copy</a></p>
+<p><a href="https://blog.csdn.net/u013256816/article/details/52589524" target="_blank" rel="noopener">https://blog.csdn.net/u013256816/article/details/52589524</a></p>
+<p>Kafka在 消息消费的时候使用该技术<br>Consumer从Broker获取文件数据的时候，直接通过下面的方法进行channel到channel的数据传输。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.nio.FileChannel.transferTo(</span><br><span class="line">long position,</span><br><span class="line">long count,</span><br><span class="line">WritableByteChannel target)`</span><br></pre></td></tr></table></figure></p>
+<p>也就是说你的数据源是一个Channel,数据接收端也是一个Channel(SocketChannel),则通过该方式进行数据传输，是直接在内核态进行的，避免拷贝数据导致的内核态和用户态的多次切换。</p>
+<p><a href="https://cloud.tencent.com/developer/article/1195251" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1195251</a></p>
+<p>Java input streams can support zero-copy through the java.nio.channels.FileChannel’s transferTo() method if the underlying operating system also supports zero copy.[5]</p>
+<p><a href="https://www.jianshu.com/p/7e5e558bf93e" target="_blank" rel="noopener">https://www.jianshu.com/p/7e5e558bf93e</a><br><a href="http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/" target="_blank" rel="noopener">http://tech.dianwoda.com/2019/01/02/linux-iohe-zero-copyzong-jie/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/zero-copy/" data-id="ck272f0vw004ey0jizvsxzikf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用户空间-内核空间" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/26/用户空间-内核空间/" class="article-date">
+  <time datetime="2019-07-26T13:22:20.000Z" itemprop="datePublished">2019-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/26/用户空间-内核空间/">用户空间-内核空间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RAM is divided into two distinct regions- the user space and the kernal space.</p>
+<p>User Space- It is set of locations where normal user processes run. These processes can’t access kernal space directly. Some part of kernal space can be accessed via system calls.These system calls acts as software interrupts in kernal space.</p>
+<p>Kernal Space - kernal runs in the dedicated part of memory. Role of kernal space is to manage applications/ processes running in user space. It can access all the memory. If a process perform a system call, a software interrupt is sent to kernal which then dispatches an appropriate interrupt handler.</p>
+<p><a href="https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space" target="_blank" rel="noopener">https://www.quora.com/What-is-the-difference-between-user-space-and-the-kernel-space</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/07/26/用户空间-内核空间/" data-id="ck272f0w0004oy0jim7l528qm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-用户模式-内核模式" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/07/26/用户模式-内核模式/" class="article-date">
@@ -457,96 +545,6 @@
 
 
   
-    <article id="post-kafka-schema" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/20/kafka-schema/" class="article-date">
-  <time datetime="2019-07-20T08:11:33.000Z" itemprop="datePublished">2019-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/20/kafka-schema/">kafka schema</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>kafka消息的数据格式</p>
-<p><a href="https://www.confluent.io/blog/avro-kafka-data/" target="_blank" rel="noopener">https://www.confluent.io/blog/avro-kafka-data/</a><br><a href="https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321" target="_blank" rel="noopener">https://medium.com/@stephane.maarek/introduction-to-schemas-in-apache-kafka-with-the-confluent-schema-registry-3bf55e401321</a><br><a href="https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c" target="_blank" rel="noopener">https://medium.com/@sderosiaux/governing-data-with-kafka-avro-ecfb665f266c</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/20/kafka-schema/" data-id="ck272f0us0027y0jiujdk5l94" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-pyspark-introduction" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/14/pyspark-introduction/" class="article-date">
-  <time datetime="2019-07-14T05:40:42.000Z" itemprop="datePublished">2019-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/14/pyspark-introduction/">pyspark introduction</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>spark内置提供了机器学习的很多api，有scala，java，python版本的，但是如果需要用到深度学习，需要安装第三方的package，<br>而且需要python来写，也就是pyspark<br>这里主要使用的是Deep Learning Pipelines，由spark官方提供<br><a href="https://github.com/databricks/spark-deep-learning#working-with-images-in-spark" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning#working-with-images-in-spark</a><br><a href="https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html" target="_blank" rel="noopener">https://docs.databricks.com/applications/deep-learning/single-node-training/deep-learning-pipelines.html</a></p>
-<h2 id="安装深度学习的第三方package"><a href="#安装深度学习的第三方package" class="headerlink" title="安装深度学习的第三方package"></a>安装深度学习的第三方package</h2><p>$SPARK_HOME/bin/spark-shell –packages databricks:spark-deep-learning:1.5.0-spark2.4-s_2.11</p>
-<h2 id="install-python3-6-pip"><a href="#install-python3-6-pip" class="headerlink" title="install python3.6, pip"></a>install python3.6, pip</h2><p>yum install -y <a href="https://centos7.iuscommunity.org/ius-release.rpm" target="_blank" rel="noopener">https://centos7.iuscommunity.org/ius-release.rpm</a><br>yum install -y python36u python36u-libs python36u-devel python36u-pip</p>
-<p>测试<br>python3.6 -V</p>
-<p>升级下pip<br>pip install –upgrade pip</p>
-<h2 id="python环境变量"><a href="#python环境变量" class="headerlink" title="python环境变量"></a>python环境变量</h2><p>conf/spark-env.sh下面添加<code>export PYSPARK_PYTHON=/usr/bin/python3.6</code></p>
-<h2 id="第一个程序"><a href="#第一个程序" class="headerlink" title="第一个程序"></a>第一个程序</h2><p>先安装这个第三方package<br>pip install numpy</p>
-<p>进入shell<br>./bin/pyspark</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from pyspark.ml.image import ImageSchema</span><br><span class="line">image_df = ImageSchema.readImages(&quot;/data/myimages&quot;)</span><br></pre></td></tr></table></figure>
-<p>from sparkdl.image import imageIO as imageIO<br>这个module也需要pip来安装</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为什么要修改spakr默认的python环境变量，我发现默认的是python2.6，这样即便是安装了第三方的package还是会not found</p>
-<p><a href="https://github.com/databricks/spark-deep-learning/tree/master/python" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/python</a> 里面是python的api<br><a href="https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala" target="_blank" rel="noopener">https://github.com/databricks/spark-deep-learning/tree/master/src/main/scala</a> 里面是具体的实现</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/07/14/pyspark-introduction/" data-id="ck272f0vc0036y0jiv8w7a2tg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -575,7 +573,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/automation/" style="font-size: 11.25px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.25px;">database</a> <a href="/tags/docker/" style="font-size: 11.25px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.25px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/javascript/" style="font-size: 11.25px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.25px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.25px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/maven/" style="font-size: 11.25px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15px;">powershell</a> <a href="/tags/python/" style="font-size: 11.25px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.5px;">search</a> <a href="/tags/security/" style="font-size: 13.75px;">security</a> <a href="/tags/spark/" style="font-size: 18.75px;">spark</a> <a href="/tags/spring/" style="font-size: 12.5px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -584,7 +582,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -597,6 +595,14 @@
       <ul>
         
           <li>
+            <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
@@ -606,14 +612,6 @@
         
           <li>
             <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>

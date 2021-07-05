@@ -62,6 +62,93 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-machine-learning-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/31/machine-learning-basic/" class="article-date">
+  <time datetime="2019-12-31T14:51:52.000Z" itemprop="datePublished">2019-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://keras.io/examples/image_ocr/" target="_blank" rel="noopener">https://keras.io/examples/image_ocr/</a><br>这个研究下，主要是要安装  <a href="https://cairographics.org/" target="_blank" rel="noopener">https://cairographics.org/</a></p>
+<p>import sys<br>print(sys.path)<br>其实还是path的问题，主要是安装需要的dll到path里面，如果是redhat比较简单，win10要研究下</p>
+<p><a href="https://www.geeksforgeeks.org/python-image-classification-using-keras/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-image-classification-using-keras/</a><br><a href="https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras" target="_blank" rel="noopener">https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras</a></p>
+<p>image classification<br><a href="https://github.com/mengxu2018/machine-learning" target="_blank" rel="noopener">https://github.com/mengxu2018/machine-learning</a></p>
+<p>看这个文章<br><a href="https://my.oschina.net/andyfeng/blog/2208657" target="_blank" rel="noopener">https://my.oschina.net/andyfeng/blog/2208657</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/12/31/machine-learning-basic/" data-id="ck5wdwas500003kji1sgtim3e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java-servlet" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/26/java-servlet/" class="article-date">
+  <time datetime="2019-10-26T03:42:16.000Z" itemprop="datePublished">2019-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/26/java-servlet/">java servlet</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这个文章主要说明servlet2.5, 3.0, 3.1的差异</p>
+<h2 id="servlet2-5"><a href="#servlet2-5" class="headerlink" title="servlet2.5"></a>servlet2.5</h2><p><img src="/images/tomcat-servlet-version.png" alt="tomcat-nio"><br>tomcat本身在servlet2.5也就是tomcat6的时候就已经实现了nio，但是仅仅在建立连接和解析request header方面nio，这个在上图可以看的很清楚</p>
+<h2 id="servlet3-0"><a href="#servlet3-0" class="headerlink" title="servlet3.0"></a>servlet3.0</h2><p>在servlet3.0就是tomcat7以后，实现了异步的servlet，但是这个异步仅仅是对request的处理是异步的，就是将这次请求走到servlet的时候放到一个单独的线程池，不要占用container本身处理请求的线程池。这个感觉提升并不大，因为对request stream io本身还是普通的io, Servlet 3.0 allowed asynchronous request processing but only traditional I/O was permitted. In other words, with Servlet 3.0, only the request processing part became async, but not the I/O for serving the requests and responses. If enough threads block, this results in thread starvation and affects performance. 3.0只能叫异步，3.1才是nio<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import javax.servlet.AsyncContext;</span><br><span class="line">import javax.servlet.ServletException;</span><br><span class="line">import javax.servlet.annotation.WebServlet;</span><br><span class="line">import javax.servlet.http.HttpServlet;</span><br><span class="line">import javax.servlet.http.HttpServletRequest;</span><br><span class="line">import javax.servlet.http.HttpServletResponse;</span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">@WebServlet(value = &quot;/simpleAsync&quot;, asyncSupported = true)</span><br><span class="line">public class SimpleAsyncHelloServlet extends HttpServlet &#123;</span><br><span class="line"></span><br><span class="line">    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;</span><br><span class="line">        AsyncContext asyncContext = request.startAsync();</span><br><span class="line"></span><br><span class="line">        asyncContext.start(() -&gt; &#123;</span><br><span class="line">            new LongRunningProcess().run();</span><br><span class="line">            try &#123;</span><br><span class="line">                asyncContext.getResponse().getWriter().write(&quot;Hello World!&quot;);</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            asyncContext.complete();</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时，我们先通过request.startAsync()获取到该请求对应的AsyncContext，然后调用AsyncContext的start()方法进行异步处理，处理完毕后需要调用complete()方法告知Servlet容器。start()方法会向Servlet容器另外申请一个新的线程（可以是从Servlet容器中已有的主线程池获取，也可以另外维护一个线程池，不同容器实现可能不一样），然后在这个新的线程中继续处理请求，而原先的线程将被回收到主线程池中。事实上，这种方式对性能的改进不大，因为如果新的线程和初始线程共享同一个线程池的话，相当于闲置下了一个线程，但同时又占用了另一个线程。</p>
+<h2 id="servlet3-1"><a href="#servlet3-1" class="headerlink" title="servlet3.1"></a>servlet3.1</h2><p>在servlet3.1后，就是tomcat8以后实现了non blocking io, With Servlet 3.1 NIO, this problem is solved by ReadListener and WriteListener interfaces. These are registered in ServletInputStream and ServletOutputStream. The listeners have callback methods that are invoked when the content is available to be read or can be written without the servlet container blocking on the I/O threads. So these I/O threads are freed up and can now serve other request increasing performance.<br>参考例子 <a href="https://github.com/mengxu2018/java-code-sample/tree/master/servlet3.1" target="_blank" rel="noopener">https://github.com/mengxu2018/java-code-sample/tree/master/servlet3.1</a></p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p><a href="https://www.cnblogs.com/davenkin/p/async-servlet.html" target="_blank" rel="noopener">https://www.cnblogs.com/davenkin/p/async-servlet.html</a><br><img src="/images/servlet-spec.png" alt="servlet-spec"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/10/26/java-servlet/" data-id="ck272f0uh001ky0ji86jqz9k6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-java-exception" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/10/26/java-exception/" class="article-date">
@@ -408,90 +495,6 @@
 
 
   
-    <article id="post-kafka-cluster-setup" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/03/kafka-cluster-setup/" class="article-date">
-  <time datetime="2019-08-03T06:40:56.000Z" itemprop="datePublished">2019-08-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/03/kafka-cluster-setup/">kafka cluster setup</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>bin/kafka-server-start.sh -daemon config/server.properties<br>bin/kafka-server-stop.sh</p>
-<p>broker.id不要写错</p>
-<p>而且启动日志开头打印了[2019-08-03 04:36:30,484] INFO Client environment:host.name=218.93.250.18 (org.apache.zookeeper.ZooKeeper)很奇怪，这个是<br> try {<br>            put(l, “host.name”,<br>                InetAddress.getLocalHost().getCanonicalHostName());<br>        } catch (UnknownHostException e) {<br>            put(l, “host.name”, “<na>“);<br>        }<br>只有第一个机器正常<br>[2019-08-03 04:35:41,120] INFO Client environment:host.name=k8s-master (org.apache.zookeeper.ZooKeeper)</na></p>
-<p>所以listeners=PLAINTEXT://192.168.77.132:9092 写ip才可以，hostname就不行</p>
-<p>producer发送完成需要close</p>
-<p><strong>consumer</strong>offsets何时创建?用户启动了一个消费者组(下称consumer group)进行消费或调用kafka-consumer-groups –describe等<br><a href="https://www.cnblogs.com/huxi2b/p/8316289.html" target="_blank" rel="noopener">https://www.cnblogs.com/huxi2b/p/8316289.html</a></p>
-<p><a href="https://kafka.apache.org/23/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html" target="_blank" rel="noopener">https://kafka.apache.org/23/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html</a></p>
-<p> bin/kafka-topics.sh –create –bootstrap-server k8s-master:9092 –replication-factor 2 –partitions 6 –topic my-replicated-topic2<br> 这个可以在任意一台集群机器执行，执行后可以看到每台机器都有4个 my-replicated-topic2-x的文件夹，有两个是replication，<br> 每个replication都有一个leader</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/08/03/kafka-cluster-setup/" data-id="ck272f0up0021y0jixiuecl23" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka0-9-after" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/03/kafka0-9-after/" class="article-date">
-  <time datetime="2019-08-03T06:10:25.000Z" itemprop="datePublished">2019-08-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/03/kafka0-9-after/">kafka0.9-after</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="offset存储不一样了"><a href="#offset存储不一样了" class="headerlink" title="offset存储不一样了"></a>offset存储不一样了</h2><p>Older versions of Kafka (pre 0.9) store offsets in ZK only, while newer version of Kafka, by default store offsets in an internal Kafka topic called __consumer_offsets (newer version might still commit to ZK though).</p>
-<p>The advantage of committing offsets to the broker is, that the consumer does not depend on ZK and thus clients only need to talk to brokers which simplifies the overall architecture. Also, for large deployments with a lot of consumers, ZK can become a bottleneck while Kafka can handle this load easily (committing offsets is the same thing as writing to a topic and Kafka scales very well here – in fact, by default __consumer_offsets is created with 50 partitions IIRC).</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/08/03/kafka0-9-after/" data-id="ck272f0us0029y0ji54181jxo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -520,7 +523,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.43px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15.71px;">OS</a> <a href="/tags/automation/" style="font-size: 11.43px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/docker/" style="font-size: 11.43px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.43px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 18.57px;">java</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.43px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 17.14px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.14px;">linux</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15.71px;">powershell</a> <a href="/tags/python/" style="font-size: 11.43px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.86px;">search</a> <a href="/tags/security/" style="font-size: 14.29px;">security</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/spring/" style="font-size: 12.86px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a> <a href="/tags/automation/" style="font-size: 11.25px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.25px;">database</a> <a href="/tags/docker/" style="font-size: 11.25px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.25px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.5px;">java</a> <a href="/tags/javascript/" style="font-size: 11.25px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.25px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.25px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/maven/" style="font-size: 11.25px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 15px;">powershell</a> <a href="/tags/python/" style="font-size: 11.25px;">python</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.5px;">search</a> <a href="/tags/security/" style="font-size: 13.75px;">security</a> <a href="/tags/spark/" style="font-size: 18.75px;">spark</a> <a href="/tags/spring/" style="font-size: 12.5px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -529,7 +532,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -542,6 +545,14 @@
       <ul>
         
           <li>
+            <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
           </li>
         
@@ -551,14 +562,6 @@
         
           <li>
             <a href="/2020/07/16/postgres-cluster/">postgres cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/22/powershell概念/">powershell 概念</a>
           </li>
         
       </ul>
