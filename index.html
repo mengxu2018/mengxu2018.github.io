@@ -5,17 +5,17 @@
   
 
   
-  <title>No pains,no gains</title>
+  <title>平凡的码农</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="No pains,no gains">
+<meta property="og:title" content="平凡的码农">
 <meta property="og:url" content="https://mengxu2018.github.io/index.html">
-<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:site_name" content="平凡的码农">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="No pains,no gains">
+<meta name="twitter:title" content="平凡的码农">
   
-    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="平凡的码农" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">No pains,no gains</a>
+        <a href="/" id="logo">平凡的码农</a>
       </h1>
       
     </div>
@@ -61,6 +61,163 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-microservice-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/25/microservice-basic/" class="article-date">
+  <time datetime="2021-11-25T14:51:52.000Z" itemprop="datePublished">2021-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/25/microservice-basic/">microservice basics</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="service-to-service-call"><a href="#service-to-service-call" class="headerlink" title="service to service call"></a>service to service call</h3><p>一般都是通过服务发现的方式找到对方service的ip，然后直接call，feign和spring cloud loadbalancer可以干这个事情，如果k8s那都不需要专门的服务发现框架，比如eureka，直接k8s的svc name就可以做到服务发现，负载均衡</p>
+<h3 id="微服务各组件选择"><a href="#微服务各组件选择" class="headerlink" title="微服务各组件选择"></a>微服务各组件选择</h3><p><a href="https://cloud.tencent.com/developer/article/1888723" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1888723</a></p>
+<p>注册中心：nacos，替代方案eureka、consul、zookeeper<br>配置中心: nacos ，替代方案spring cloud config、consul<br>调用:feign，替代方案：resttempate<br>熔断：sentinel、，替代方案：Resilience4j，Hystrix<br>熔断监控：sentinel dashboard<br>负载均衡:spring cloud loadbalancer<br>网关：spring cloud gateway<br>链路：spring cloud sleuth+zipkin，替代方案：skywalking等</p>
+<p>nacos, sentinel都属于阿里巴巴的组件，如果使用阿里巴巴组件，也可以使用代替品</p>
+<p>spring cloud的官网介绍了spring cloud alibaba，spring cloud Netflix，还有各个组件比如spring cloud config，其实spring cloud alibaba和spring cloud config不是一类东西，spring cloud alibaba提供了很多组件，但是也许并不全，还是可以结合使用spring cloud提供的单独的组件，比如spring cloud feign， spring cloud gateway</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2021/11/25/microservice-basic/" data-id="ckwefvhz40001no8e1c4xmuv2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/microservices/">microservices</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-maven-parent-bom" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/25/maven-parent-bom/" class="article-date">
+  <time datetime="2021-11-25T14:51:52.000Z" itemprop="datePublished">2021-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/25/maven-parent-bom/">BOM dependency vs Parent Dependancy in Maven</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="如题"><a href="#如题" class="headerlink" title="如题"></a>如题</h3><p><a href="https://stackoverflow.com/questions/61364842/bom-dependency-vs-parent-dependancy-in-maven" target="_blank" rel="noopener">https://stackoverflow.com/questions/61364842/bom-dependency-vs-parent-dependancy-in-maven</a></p>
+<p>其实大部分功效是一样的</p>
+<ul>
+<li>但是bom可以有多个，parent只能有一个</li>
+<li>parent还有个不一样的是继承了父pom所有的东西，bom应该就是dependency继承</li>
+<li>parent还有个就是在多模块项目的时候，可以直接引用兄弟模块 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line">	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">	&lt;parent&gt;</span><br><span class="line">		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">		&lt;version&gt;2.6.0&lt;/version&gt;</span><br><span class="line">		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;</span><br><span class="line">	&lt;/parent&gt;</span><br><span class="line">	&lt;groupId&gt;com.example&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;demo&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;</span><br><span class="line">	&lt;name&gt;demo&lt;/name&gt;</span><br><span class="line">	&lt;description&gt;Demo project for Spring Boot&lt;/description&gt;</span><br><span class="line">	&lt;properties&gt;</span><br><span class="line">		&lt;java.version&gt;11&lt;/java.version&gt;</span><br><span class="line">		&lt;spring-cloud.version&gt;2021.0.0-RC1&lt;/spring-cloud.version&gt;</span><br><span class="line">	&lt;/properties&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">			&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">	&lt;/dependencies&gt;</span><br><span class="line">	&lt;dependencyManagement&gt;</span><br><span class="line">		&lt;dependencies&gt;</span><br><span class="line">			&lt;dependency&gt;</span><br><span class="line">				&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">				&lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;</span><br><span class="line">				&lt;version&gt;$&#123;spring-cloud.version&#125;&lt;/version&gt;</span><br><span class="line">				&lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">				&lt;scope&gt;import&lt;/scope&gt;</span><br><span class="line">			&lt;/dependency&gt;</span><br><span class="line">		&lt;/dependencies&gt;</span><br><span class="line">	&lt;/dependencyManagement&gt;</span><br><span class="line"></span><br><span class="line">	&lt;build&gt;</span><br><span class="line">		&lt;plugins&gt;</span><br><span class="line">			&lt;plugin&gt;</span><br><span class="line">				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">			&lt;/plugin&gt;</span><br><span class="line">		&lt;/plugins&gt;</span><br><span class="line">	&lt;/build&gt;</span><br><span class="line">	&lt;repositories&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;spring-milestones&lt;/id&gt;</span><br><span class="line">			&lt;name&gt;Spring Milestones&lt;/name&gt;</span><br><span class="line">			&lt;url&gt;https://repo.spring.io/milestone&lt;/url&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">	&lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2021/11/25/maven-parent-bom/" data-id="ckwefvhz70003no8e565asdw8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-machine-learning-basics" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/06/machine-learning-basics/" class="article-date">
+  <time datetime="2021-11-06T05:27:07.000Z" itemprop="datePublished">2021-11-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/06/machine-learning-basics/">machine learning basic</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="方差"><a href="#方差" class="headerlink" title="方差"></a>方差</h3><p>统计中的方差（样本方差）是每个样本值与全体样本值的平均数之差的平方值的平均数</p>
+<h3 id="随机变量"><a href="#随机变量" class="headerlink" title="随机变量"></a>随机变量</h3><p>简单地说，随机变量是指随机事件的数量表现。例如一批注入某种毒物的动物，在一定时间内死亡的只数；某地若干名男性健康成人中，每人血红蛋白量的测定值；等等</p>
+<h3 id="sk-learn-fit-predict"><a href="#sk-learn-fit-predict" class="headerlink" title="sk-learn(fit,predict)"></a>sk-learn(fit,predict)</h3><p><a href="https://towardsdatascience.com/fit-vs-predict-vs-fit-predict-in-python-scikit-learn-f15a34a8d39f" target="_blank" rel="noopener">https://towardsdatascience.com/fit-vs-predict-vs-fit-predict-in-python-scikit-learn-f15a34a8d39f</a></p>
+<p>fit() is implemented by every estimator and it accepts an input for the sample data (X) and for supervised models it also accepts an argument for labels (i.e. target data y ). Optionally, it can also accept additional sample properties such as weights etc.<br>这里fit就是拟合，应该就是一个训练的过程</p>
+<p>fit:<br>This is good terminology to use in machine learning, because supervised machine learning algorithms seek to approximate the unknown underlying mapping function for the output variables given the input variables.<br>Statistics often describe the goodness of fit which refers to measures used to estimate how well the approximation of the function matches the target function.</p>
+<p>predict() will perform a prediction for each test instance and it usually accepts only a single input (X)</p>
+<h3 id="feature-vs-label"><a href="#feature-vs-label" class="headerlink" title="feature vs label"></a>feature vs label</h3><p><a href="https://stackoverflow.com/questions/40898019/what-is-the-difference-between-a-feature-and-a-label/40899529" target="_blank" rel="noopener">https://stackoverflow.com/questions/40898019/what-is-the-difference-between-a-feature-and-a-label/40899529</a><br>Briefly, feature is input; label is output. This applies to both classification and regression problems.</p>
+<p>A feature is one column of the data in your input set. For instance, if you’re trying to predict the type of pet someone will choose, your input features might include age, home region, family income, etc. The label is the final choice, such as dog, fish, iguana, rock, etc.</p>
+<p>Once you’ve trained your model, you will give it sets of new input containing those features; it will return the predicted “label” (pet type) for that person.</p>
+<p>对于预测房间的线性回归算法，feature其实就是楼层啊，户型啊，楼龄啊等等， label就是最后的房价<br>sklearn的回归算法的拟合函数描述如下：<br>fit() is implemented by every estimator and it accepts an input for the sample data (X) and for supervised models it also accepts an argument for labels (i.e. target data y )<br>可以看到target data其实就是label</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>损失函数（loss function）是用来估量模型的预测值(我们例子中的output)与真实值（例子中的y_train）的不一致程度，它是一个非负实值函数，损失函数越小，模型的鲁棒性就越好。 我们训练模型的过程，就是通过不断的迭代计算，使用梯度下降的优化算法，使得损失函数越来越小。损失函数越小就表示算法达到意义上的最优。</p>
+<h3 id="Text-Vectorization"><a href="#Text-Vectorization" class="headerlink" title="Text Vectorization"></a>Text Vectorization</h3><p><a href="https://towardsdatascience.com/getting-started-with-text-vectorization-2f2efbec6685" target="_blank" rel="noopener">https://towardsdatascience.com/getting-started-with-text-vectorization-2f2efbec6685</a><br><a href="https://monkeylearn.com/blog/what-is-tf-idf/" target="_blank" rel="noopener">https://monkeylearn.com/blog/what-is-tf-idf/</a></p>
+<p>Text Vectorization is the process of converting text into numerical representation. Here is some popular methods to accomplish text vectorization:<br>Binary Term Frequency<br>Bag of Words (BoW) Term Frequency<br>(L1) Normalized Term Frequency<br>(L2) Normalized TF-IDF<br>Word2Vec</p>
+<p>Machine learning with natural language is faced with one major hurdle – its algorithms usually deal with numbers, and natural language is, well, text. So we need to transform that text into numbers, otherwise known as text vectorization. It’s a fundamental step in the process of machine learning for analyzing data, and different vectorization algorithms will drastically affect end results, so you need to choose one that will deliver the results you’re hoping for.</p>
+<h3 id="梯度下降与梯度上升"><a href="#梯度下降与梯度上升" class="headerlink" title="梯度下降与梯度上升"></a>梯度下降与梯度上升</h3><p>在机器学习算法中，在最小化损失函数时，可以通过梯度下降思想来求得最小化的损失函数和对应的参数值，反过来，如果要求最大化的损失函数，可以通过梯度上升思想来求取。</p>
+<h3 id="Definitions-of-Train-Validation-and-Test-Datasets"><a href="#Definitions-of-Train-Validation-and-Test-Datasets" class="headerlink" title="Definitions of Train, Validation, and Test Datasets"></a>Definitions of Train, Validation, and Test Datasets</h3><p><a href="https://machinelearningmastery.com/difference-test-validation-datasets/" target="_blank" rel="noopener">https://machinelearningmastery.com/difference-test-validation-datasets/</a></p>
+<p>训练集———–学生的课本；学生 根据课本里的内容来掌握知识。</p>
+<p>验证集———–作业，通过作业可以知道 不同学生学习情况、进步的速度快慢。</p>
+<p>测试集———–考试，考的题是平常都没有见过，考察学生举一反三的能力。</p>
+<p>那么为什么要测试集呢？</p>
+<p>a)训练集直接参与了模型调参的过程，显然不能用来反映模型真实的能力（防止课本死记硬背的学生拥有最好的成绩，即防止过拟合)。</p>
+<p>b)验证集参与了人工调参(超参数)的过程，也不能用来最终评判一个模型（刷题库的学生不能算是学习好的学生）。</p>
+<p>c)所以要通过最终的考试(测试集)来考察一个学(模)生(型)真正的能力（期末考试）。</p>
+<p>验证数据应该也是有label的，但是测试数据应该是没有label的，就是用来测试看看结果怎么样</p>
+<h3 id="What-is-Noise-in-Machine-Learning"><a href="#What-is-Noise-in-Machine-Learning" class="headerlink" title="What is Noise in Machine Learning"></a>What is Noise in Machine Learning</h3><p><a href="https://deepchecks.com/glossary/noise-in-machine-learning/" target="_blank" rel="noopener">https://deepchecks.com/glossary/noise-in-machine-learning/</a></p>
+<p>Humans are prone to making mistakes when collecting data, and data collection instruments may be unreliable, resulting in dataset errors. The errors are referred to as noise. Data noise in machine learning can cause problems since the algorithm interprets the noise as a pattern and can start generalizing from it.</p>
+<h3 id="keras-vs-tf-keras"><a href="#keras-vs-tf-keras" class="headerlink" title="keras vs tf.keras"></a>keras vs tf.keras</h3><p><a href="https://www.pyimagesearch.com/2019/10/21/keras-vs-tf-keras-whats-the-difference-in-tensorflow-2-0/" target="_blank" rel="noopener">https://www.pyimagesearch.com/2019/10/21/keras-vs-tf-keras-whats-the-difference-in-tensorflow-2-0/</a></p>
+<h3 id="false-positive-假阳性"><a href="#false-positive-假阳性" class="headerlink" title="false positive 假阳性"></a>false positive 假阳性</h3><p><a href="https://www.pico.net/kb/what-is-a-false-positive-rate/" target="_blank" rel="noopener">https://www.pico.net/kb/what-is-a-false-positive-rate/</a><br>False Positive<br>A False Positive is the incorrect identification of anomalous data as such, i.e. classifying as “abnormal” data which is in fact normal.<br>实际上是对的，但是predict出来说有问题，比如我们邮件敏感信息预测，我们告诉用户有敏感信息，但是实际上没有，我们需要降低fp</p>
+<h3 id="回归评价指标MSE、RMSE、MAE、R-Squared"><a href="#回归评价指标MSE、RMSE、MAE、R-Squared" class="headerlink" title="回归评价指标MSE、RMSE、MAE、R-Squared"></a>回归评价指标MSE、RMSE、MAE、R-Squared</h3><p><a href="https://www.jianshu.com/p/9ee85fdad150" target="_blank" rel="noopener">https://www.jianshu.com/p/9ee85fdad150</a></p>
+<h3 id="欠拟合与过拟合"><a href="#欠拟合与过拟合" class="headerlink" title="欠拟合与过拟合"></a>欠拟合与过拟合</h3><p><a href="https://zhuanlan.zhihu.com/p/72038532" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/72038532</a><br>对于深度学习或机器学习模型而言，我们不仅要求它对训练数据集有很好的拟合（训练误差），同时也希望它可以对未知数据集（测试集）有很好的拟合结果（泛化能力），所产生的测试误差被称为泛化误差。度量泛化能力的好坏，最直观的表现就是模型的过拟合（overfitting）和欠拟合（underfitting）</p>
+<h3 id="hyperparameter-vs-parameter"><a href="#hyperparameter-vs-parameter" class="headerlink" title="hyperparameter vs parameter"></a>hyperparameter vs parameter</h3><p><a href="https://www.geeksforgeeks.org/difference-between-model-parameters-vs-hyperparameters/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/difference-between-model-parameters-vs-hyperparameters/</a><br>简单说就是parameter就是模型训练的过程中自己自动调节的，比如线性回归的x前面的系数<br>hyperparameter就是我们给模型设置的参数，比如sklearn那些方法的参数，比如sklearn.cluster.KMeans的n_clusters</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2021/11/06/machine-learning-basics/" data-id="ckwefvhyz0000no8e1631l5mx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-k8s-pv" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
@@ -279,7 +436,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>spring-boot:run -Dspring-boot.run.fork=false -f pom.xml</p>
+        <p>jvm参数里面添加，不是环境变量， -f pom.xml可以不需要<br>spring-boot:run -Dspring-boot.run.fork=false -f pom.xml</p>
 
       
     </div>
@@ -374,126 +531,6 @@
 
 
   
-    <article id="post-elasticsearch-remote-access" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/27/elasticsearch-remote-access/" class="article-date">
-  <time datetime="2020-06-27T14:51:52.000Z" itemprop="datePublished">2020-06-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/elasticsearch-remote-access/">elasticsearch cluster</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/file-descriptors.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/file-descriptors.html</a><br><a href="https://discuss.elastic.co/t/problems-with-access-to-elasticsearch-form-outside-machine/172450" target="_blank" rel="noopener">https://discuss.elastic.co/t/problems-with-access-to-elasticsearch-form-outside-machine/172450</a></p>
-<p>修改配置elasticsearch.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">network.host: 0.0.0.0</span><br></pre></td></tr></table></figure></p>
-<p>文件句柄问题就是修改/etc/security/limits.conf，下面的xuhang就是启动es的用户名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xuhang soft nofile 65536</span><br><span class="line">xuhang hard nofile 65536</span><br></pre></td></tr></table></figure></p>
-<p>the default discovery settings are unsuitable for production use, 修改elasticsearch.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">discovery.seed_hosts: []</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/06/27/elasticsearch-remote-access/" data-id="ckbxofai20000couxh5gafswo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/search/">search</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-powershell概念" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/22/powershell概念/" class="article-date">
-  <time datetime="2020-06-22T12:44:15.000Z" itemprop="datePublished">2020-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/22/powershell概念/">powershell 概念</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="net-powershell"><a href="#net-powershell" class="headerlink" title=".net powershell"></a>.net powershell</h2><p>The reason for this is that PowerShell commands can read and write objects, as opposed to conventional shells that can only process strings of text. Because PowerShell runs on the .NET platform, the objects that are used are .NET objects, which makes it an ideal scripting language for .NET programs.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/06/22/powershell概念/" data-id="ckbxofaj20006coux3tukd7zn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-powershell-sample" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/22/powershell-sample/" class="article-date">
-  <time datetime="2020-06-22T12:44:15.000Z" itemprop="datePublished">2020-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/22/powershell-sample/">powershell sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="create-excel-前提是ms-office是安装好的"><a href="#create-excel-前提是ms-office是安装好的" class="headerlink" title="create excel(前提是ms office是安装好的)"></a>create excel(前提是ms office是安装好的)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># create new excel instance</span><br><span class="line"> $objExcel = New-Object -comobject Excel.Application</span><br><span class="line"> $objExcel.Visible = $True</span><br><span class="line"> $objWorkbook = $objExcel.Workbooks.Add()</span><br><span class="line"> $objWorksheet = $objWorkbook.Worksheets.Item(1)</span><br><span class="line"></span><br><span class="line"> # write information to the excel file</span><br><span class="line">$i = 0</span><br><span class="line">$first10 = (ps | sort ws -Descending | select -first 10)</span><br><span class="line">$first10 | foreach -Process &#123;$i++; $objWorksheet.Cells.Item($i,1) = $_.name; $objWorksheet.Cells.Item($i,2) = $_.ws&#125;</span><br><span class="line">$otherMem = (ps | measure ws -s).Sum - ($first10 | measure ws -s).Sum</span><br><span class="line">$objWorksheet.Cells.Item(11,1) = &quot;Others&quot;; $objWorksheet.Cells.Item(11,2) = $otherMem</span><br><span class="line"></span><br><span class="line"># draw the pie chart</span><br><span class="line">$objCharts = $objWorksheet.ChartObjects()</span><br><span class="line">$objChart = $objCharts.Add(0, 0, 500, 300)</span><br><span class="line">$objChart.Chart.SetSourceData($objWorksheet.range(&quot;A1:B11&quot;), 2)</span><br><span class="line">$objChart.Chart.ChartType = 70</span><br><span class="line">$objChart.Chart.ApplyDataLabels(5)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2020/06/22/powershell-sample/" data-id="ckbxofaj50007coux3zhmkel8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/powershell/">powershell</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -512,7 +549,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservices/">microservices</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -522,7 +559,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 11.11px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 12.22px;">maven</a> <a href="/tags/microservices/" style="font-size: 10px;">microservices</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -531,7 +568,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -544,23 +581,23 @@
       <ul>
         
           <li>
+            <a href="/2021/11/25/microservice-basic/">microservice basics</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/25/maven-parent-bom/">BOM dependency vs Parent Dependancy in Maven</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/06/machine-learning-basics/">machine learning basic</a>
+          </li>
+        
+          <li>
             <a href="/2021/07/09/k8s-pv/">k8s pv</a>
           </li>
         
           <li>
             <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
       </ul>

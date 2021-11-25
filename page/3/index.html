@@ -5,17 +5,17 @@
   
 
   
-  <title>No pains,no gains</title>
+  <title>平凡的码农</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="No pains,no gains">
+<meta property="og:title" content="平凡的码农">
 <meta property="og:url" content="https://mengxu2018.github.io/page/3/index.html">
-<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:site_name" content="平凡的码农">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="No pains,no gains">
+<meta name="twitter:title" content="平凡的码农">
   
-    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="平凡的码农" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">No pains,no gains</a>
+        <a href="/" id="logo">平凡的码农</a>
       </h1>
       
     </div>
@@ -61,6 +61,139 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-aliyun-yum源" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/21/aliyun-yum源/" class="article-date">
+  <time datetime="2020-03-21T12:44:15.000Z" itemprop="datePublished">2020-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/21/aliyun-yum源/">aliyun yum仓库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mv /etc/yum.repos.d /etc/yum.repos.d-bak<br>mkdir /etc/yum.repos.d<br>cd /etc/yum.repos.d<br>wget <a href="http://mirrors.aliyun.com/repo/Centos-7.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/Centos-7.repo</a><br>wget <a href="http://mirrors.aliyun.com/repo/epel-7.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/epel-7.repo</a><br>yum clean all<br>yum repolist</p>
+<p>如果要安装的软件比如docker不在这个源里面，就搜索阿里云yum docker<br>yum-config-manager –add-repo <a href="http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/03/21/aliyun-yum源/" data-id="ck9t8cab30000p0ux5cd0cl12" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-aliyun-pip源" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/21/aliyun-pip源/" class="article-date">
+  <time datetime="2020-03-21T12:44:15.000Z" itemprop="datePublished">2020-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/21/aliyun-pip源/">aliyun pip仓库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mkdir ~/.pip</p>
+<p>cat &gt; ~/.pip/pip.conf &lt;&lt; EOF</p>
+<p>[global]<br>trusted-host=mirrors.aliyun.com<br>index-url=<a href="https://mirrors.aliyun.com/pypi/simple/" target="_blank" rel="noopener">https://mirrors.aliyun.com/pypi/simple/</a></p>
+<p>EOF</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/03/21/aliyun-pip源/" data-id="ck9t8cabl0002p0uxz2aqvtlt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-istio-adapter" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/15/istio-adapter/" class="article-date">
+  <time datetime="2020-02-15T12:31:52.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/15/istio-adapter/">istio mixer adapter setup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="安装troubleshooting"><a href="#安装troubleshooting" class="headerlink" title="安装troubleshooting"></a>安装troubleshooting</h1><p><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Walkthrough</a></p>
+<h2 id="step1-‘inconsistent-vendoring’-error"><a href="#step1-‘inconsistent-vendoring’-error" class="headerlink" title="step1 ‘inconsistent vendoring’ error"></a>step1 ‘inconsistent vendoring’ error</h2><p><a href="https://github.com/golang/go/issues/34657" target="_blank" rel="noopener">https://github.com/golang/go/issues/34657</a><br>解决的办法就是export GOROOT=单独的go目录，不要go下面的src有istio的那个<br>export GOROOT=/root/software/go</p>
+<h2 id="Step-2-BUILD-WITH-CONTAINER-1-make-gen"><a href="#Step-2-BUILD-WITH-CONTAINER-1-make-gen" class="headerlink" title="Step 2 BUILD_WITH_CONTAINER=1 make gen"></a>Step 2 BUILD_WITH_CONTAINER=1 make gen</h2><p>Just to ensure everything is good, let’s generate the file and build the code. Go to the top of the repo and do:<br><code>BUILD_WITH_CONTAINER=1 make gen</code><br>实际上是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export BUILD_WITH_CONTAINER=1</span><br><span class="line">cd /root/kube/go/src/istio.io/istio</span><br><span class="line">make gen</span><br></pre></td></tr></table></figure></p>
+<p>不过这个里面有个证书的错误，暂时没有影响，可以再观察</p>
+<h2 id="step3-mygrpcadapter"><a href="#step3-mygrpcadapter" class="headerlink" title="step3 mygrpcadapter"></a>step3 mygrpcadapter</h2><p>mygrpcadapter.go:40:2: no matching versions for query “latest”</p>
+<p>“istio.io/istio/pkg/log” -&gt; “istio.io/pkg/log”</p>
+<h2 id="step-5-hang-on"><a href="#step-5-hang-on" class="headerlink" title="step 5 hang on"></a>step 5 hang on</h2><p>第五步中的 pushd $ISTIO/istio &amp;&amp; make mixs貌似需要minikube服务是shutdown的时候才可以安装成功，<br>但是docker daemon要启动</p>
+<p>mixc，mixs都在/root/kube/go/src/istio.io/istio/out/linux_amd64/下面，<br>也就是说在$ISTIO/istio/out/linux_amd64下面，<br>但是文档里面说的是在$GOPATH/out/linux_amd64/release/</p>
+<h2 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h2><p>When compiling multiple packages or a single non-main package, build compiles the packages but discards the resulting object, serving only as a check that the packages can be built.</p>
+<p>go build编译main package的会生成执行文件，非main的就没有输出，just 验证下</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>按照这个文章弄好的其实还是需要打包部署成一个kubenetes的service， 不可能每次都是cmd下面的脚本运行adapter，<br>其实就是把cmd下面的go文件编译一下，部署成kubernetes里面的service。</p>
+<p>mygrpcadapter/config下面的.proto文件其实是为了生成mygrpcadapter.yaml，这个文件也是kubernetes的一个资源，需要kubectl apply<br>至于config/config.proto里面的Params是给sample_operator_cfg.yaml里面的kind: handler使用的，<br>sample_operator_cfg.yaml里面的instance用了metric template，会封装数据参数传给adapter。<br>The operator that configures Istio controls how this template-specific data is constructed and dispatched to adapters.<br><a href="https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide" target="_blank" rel="noopener">https://github.com/istio/istio/wiki/Mixer-Out-Of-Process-Adapter-Dev-Guide</a></p>
+<p>adapter的rule也会定义规则，比如只允许特定的host访问，<br>到时候浏览器访问某个service的时候，首先gateway会转发到特定的service，这个是gateway和virtualservice来做的，<br>adapter这边的rule是另外一码事</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2020/02/15/istio-adapter/" data-id="ck6yot4r70000csuxr6x4hgpc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/istio/">istio</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-minikube-intro" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
@@ -160,49 +293,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-machine-learning-basic" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/12/31/machine-learning-basic/" class="article-date">
-  <time datetime="2019-12-31T14:51:52.000Z" itemprop="datePublished">2019-12-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/31/machine-learning-basic/">python machine learning basic</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://keras.io/examples/image_ocr/" target="_blank" rel="noopener">https://keras.io/examples/image_ocr/</a><br>这个研究下，主要是要安装  <a href="https://cairographics.org/" target="_blank" rel="noopener">https://cairographics.org/</a></p>
-<p>import sys<br>print(sys.path)<br>其实还是path的问题，主要是安装需要的dll到path里面，如果是redhat比较简单，win10要研究下</p>
-<p><a href="https://www.geeksforgeeks.org/python-image-classification-using-keras/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-image-classification-using-keras/</a><br><a href="https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras" target="_blank" rel="noopener">https://stackoverflow.com/questions/43469281/how-to-predict-input-image-using-trained-model-in-keras</a></p>
-<p>image classification<br><a href="https://github.com/mengxu2018/machine-learning" target="_blank" rel="noopener">https://github.com/mengxu2018/machine-learning</a></p>
-<p>看这个文章<br><a href="https://my.oschina.net/andyfeng/blog/2208657" target="_blank" rel="noopener">https://my.oschina.net/andyfeng/blog/2208657</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/12/31/machine-learning-basic/" data-id="ck5wdwas500003kji1sgtim3e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
 
     </footer>
   </div>
@@ -414,6 +504,8 @@
 <p>So to facilitate the adoption of lambdas and the use of the new functional interfaces like Consumer, Supplier, Predicate, etc. the JDK designers introduced the concept of default methods to provide backward compatibility and it is now easier to switch to Java - 8 without making any changes.</p>
 <p>If you don’t like the default implementation in the interface you can override it and supply your own.</p>
 <h2 id="java线程池"><a href="#java线程池" class="headerlink" title="java线程池"></a>java线程池</h2><p><a href="https://www.baeldung.com/java-runnable-callable" target="_blank" rel="noopener">https://www.baeldung.com/java-runnable-callable</a><br>Runnable和Callable区别</p>
+<h2 id="时间日期问题"><a href="#时间日期问题" class="headerlink" title="时间日期问题"></a>时间日期问题</h2><p><a href="https://gitee.com/mengxu2018/jdk-new-feature/tree/master/jdk8-datetime" target="_blank" rel="noopener">https://gitee.com/mengxu2018/jdk-new-feature/tree/master/jdk8-datetime</a></p>
+<p>如果用jpa可以看下面文章，老的jdk一般用java.sql.Timestamp,可以看到这个是sql这个package下面的<br><a href="https://www.baeldung.com/jpa-java-time" target="_blank" rel="noopener">https://www.baeldung.com/jpa-java-time</a></p>
 
       
     </div>
@@ -422,98 +514,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-FileChannel-ByteBuffer" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/11/FileChannel-ByteBuffer/" class="article-date">
-  <time datetime="2019-08-11T05:17:41.000Z" itemprop="datePublished">2019-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/11/FileChannel-ByteBuffer/">FileChannel ByteBuffer</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>FileChannel示例代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class FileChannelWriter &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String file = &quot;test_write_using_filechannel.txt&quot;;</span><br><span class="line">        try (RandomAccessFile writer = new RandomAccessFile(file, &quot;rw&quot;);</span><br><span class="line">             FileChannel channel = writer.getChannel()) &#123;</span><br><span class="line">            ByteBuffer buff = ByteBuffer.wrap(&quot;Hello&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">            channel.write(buff);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line"></span><br><span class="line">            System.out.println(buff.position());</span><br><span class="line">//            ByteBuffer buff2 = ByteBuffer.wrap(&quot;Hello world&quot;.getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            channel.position(3);</span><br><span class="line">            buff.position(4);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line">            channel.write(buff);</span><br><span class="line">            System.out.println(channel.position());</span><br><span class="line"></span><br><span class="line">            // verify</span><br><span class="line">            RandomAccessFile reader = new RandomAccessFile(file, &quot;r&quot;);</span><br><span class="line">            System.out.println(reader.readLine());</span><br><span class="line">            reader.close();</span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>发现channel写buffer的时候buffer自己的文件指针也随着变化 ，position如果是11，下次读写从12开始</p>
-<p><a href="https://medium.com/@xunnan.xu/its-all-about-buffers-zero-copy-mmap-and-java-nio-50f2a1bfc05c" target="_blank" rel="noopener">https://medium.com/@xunnan.xu/its-all-about-buffers-zero-copy-mmap-and-java-nio-50f2a1bfc05c</a></p>
-<p>linux sendfile是用来实现zero-copy的，就是java的FileChannel.transferTo<br>linux epoll是用来实现nio的selector的<br>前者是网络传输增强性能避免用户空间的buffer的，后者是io的模型用来减少所需要的线程数量</p>
-<p><a href="http://man7.org/linux/man-pages/man7/epoll.7.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man7/epoll.7.html</a><br>The epoll API performs a similar task to poll(2): monitoring multiple file descriptors to see if I/O is possible on any of them.  The epoll API can be used either as an edge-triggered or a level-triggered interface and scales well to large numbers of watched file descriptors.</p>
-<p>A new java.nio.channels.SelectorProvider implementation that is based on the Linux epoll event notification facility is included<br>If linux kernel &gt;= 2.6 is detected, then the java.nio.channels.spi.SelectorProvider will use epoll.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static Selector open() throws IOException &#123;</span><br><span class="line">    return SelectorProvider.provider().openSelector();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://www.baeldung.com/java-nio-selector" target="_blank" rel="noopener">https://www.baeldung.com/java-nio-selector</a><br><a href="https://github.com/mengxu2018/java-code-sample/tree/master/simple-nio/src/com/xu/nio/EchoTest.java" target="_blank" rel="noopener">https://github.com/mengxu2018/java-code-sample/tree/master/simple-nio/src/com/xu/nio/EchoTest.java</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/08/11/FileChannel-ByteBuffer/" data-id="ck272f0tg0003y0jip7kio5nj" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/">IO</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kafka源码开发环境" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/10/kafka源码开发环境/" class="article-date">
-  <time datetime="2019-08-10T13:43:59.000Z" itemprop="datePublished">2019-08-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/10/kafka源码开发环境/">kafka源码开发环境</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><p>cd kafka_source_dir<br>gradle</p>
-<p>./gradlew jar （如果不能下载wrapper可以直接用local的gradle命令)<br>./gradlew idea</p>
-<h2 id="去掉编译warning（build-gradle"><a href="#去掉编译warning（build-gradle" class="headerlink" title="去掉编译warning（build.gradle)"></a>去掉编译warning（build.gradle)</h2><p>tasks.withType(JavaCompile) {<br>      options.encoding = ‘UTF-8’<br>增加  options.warnings = false   </p>
-<h2 id="准备配置文件"><a href="#准备配置文件" class="headerlink" title="准备配置文件"></a>准备配置文件</h2><p>把config下面的log4j.properties文件copy到kafka-2.3.0-src\core\src\main\resources\log4j.properties<br>同时修改config下面的server.properties的log.dirs=c:/tmp/kafka-logs</p>
-<h2 id="启动windows-zookeeper"><a href="#启动windows-zookeeper" class="headerlink" title="启动windows zookeeper"></a>启动windows zookeeper</h2><p>直接执行zkServer.cmd（提前修改zoo.cfg的路径为windows路径)</p>
-<h2 id="导入intellij"><a href="#导入intellij" class="headerlink" title="导入intellij"></a>导入intellij</h2><p>intellij open然后选择kafka-2.3.0-src\build.gradle</p>
-<p>修改classpath<br><img src="/images/kakfa-build.PNG" alt="kakfa-build"><br>注意箭头的地方</p>
-<p>运行main方法，注意-Dkafka.logs.dir=c:/tmp/log4j-kafka-logs是针对的log4j.properties,<br>和log.dirs=c:/tmp/kafka-logs里面的不一样<br><img src="/images/kafka-main.PNG" alt="kakfa-main"></p>
-<h2 id="查错"><a href="#查错" class="headerlink" title="查错"></a>查错</h2><p>java.io.IOException: No snapshot found, but there are log entries. Something，清空zoo.cfg所配置的dataDir目录下面的东西</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/08/10/kafka源码开发环境/" data-id="ck272f0uu002dy0ji6c81nii0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
 
     </footer>
   </div>
@@ -540,7 +540,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservices/">microservices</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -550,7 +550,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 11.11px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 12.22px;">maven</a> <a href="/tags/microservices/" style="font-size: 10px;">microservices</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -559,7 +559,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -572,23 +572,23 @@
       <ul>
         
           <li>
+            <a href="/2021/11/25/microservice-basic/">microservice basics</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/25/maven-parent-bom/">BOM dependency vs Parent Dependancy in Maven</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/06/machine-learning-basics/">machine learning basic</a>
+          </li>
+        
+          <li>
             <a href="/2021/07/09/k8s-pv/">k8s pv</a>
           </li>
         
           <li>
             <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
       </ul>

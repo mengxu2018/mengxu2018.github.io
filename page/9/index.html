@@ -5,17 +5,17 @@
   
 
   
-  <title>No pains,no gains</title>
+  <title>平凡的码农</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="No pains,no gains">
+<meta property="og:title" content="平凡的码农">
 <meta property="og:url" content="https://mengxu2018.github.io/page/9/index.html">
-<meta property="og:site_name" content="No pains,no gains">
+<meta property="og:site_name" content="平凡的码农">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="No pains,no gains">
+<meta name="twitter:title" content="平凡的码农">
   
-    <link rel="alternate" href="/atom.xml" title="No pains,no gains" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="平凡的码农" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">No pains,no gains</a>
+        <a href="/" id="logo">平凡的码农</a>
       </h1>
       
     </div>
@@ -61,6 +61,50 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-maven-compiler" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/26/maven-compiler/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/26/maven-compiler/">maven compiler</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="default-compiler"><a href="#default-compiler" class="headerlink" title="default compiler"></a>default compiler</h2><p><code>&lt;forceJavacCompilerUse&gt;</code><br>compiler can now use javax.tools if available in your current jdk, you can disable this feature using -Dmaven.compiler.forceJavacCompilerUse=true or in the plugin configuration<br>默认会用当前jdk下面的javax.tools.JavaCompiler来编译，所谓当前的jdk就是运行maven的jdk<br>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;mvn -v</span><br><span class="line">Apache Maven 3.6.0 (97c98ec64a1fdfee7767ce5ffb20918da4f719f3; 2018-10-25T02:41:47+08:00)</span><br><span class="line">Maven home: D:\software\apache-maven-3.6.0\bin\..</span><br><span class="line">Java version: 1.8.0_191, vendor: Oracle Corporation, runtime: C:\java\jdk1.8.0_191\jre</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse" target="_blank" rel="noopener">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#forceJavacCompilerUse</a></p>
+<h2 id="设置编译级别和运行jvm"><a href="#设置编译级别和运行jvm" class="headerlink" title="设置编译级别和运行jvm"></a>设置编译级别和运行jvm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;</span><br><span class="line">    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Compiling-Sources-Using-A-Different-JDK"><a href="#Compiling-Sources-Using-A-Different-JDK" class="headerlink" title="Compiling Sources Using A Different JDK"></a>Compiling Sources Using A Different JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">   &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">   &lt;configuration&gt;</span><br><span class="line">     &lt;verbose&gt;true&lt;/verbose&gt;</span><br><span class="line">     &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">     &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;</span><br><span class="line">     &lt;compilerVersion&gt;1.3&lt;/compilerVersion&gt;</span><br><span class="line">   &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实默认的javax.tools里面的编译器也够了</p>
+<h2 id="scala-compiler"><a href="#scala-compiler" class="headerlink" title="scala compiler"></a>scala compiler</h2><p>scala的编译器是通过scala.version来指定的，具体可以看.m2\repository\org\scala-lang\scala-compiler\2.11.7<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;!--specify scala compiler, 2.12 will fail--&gt;</span><br><span class="line">    &lt;!--.m2\repository\org\scala-lang\scala-compiler\2.11.7--&gt;</span><br><span class="line">    &lt;!--you can find that the jars are named with 2.11 scala, D:\software\spark-2.4.1-bin-hadoop2.7\jars\spark-core_2.11-2.4.1.jar--&gt;</span><br><span class="line">    &lt;scala.version&gt;2.11.7&lt;/scala.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.0.2&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;jvmArgs&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xms64m&lt;/jvmArg&gt;</span><br><span class="line">            &lt;jvmArg&gt;-Xmx1024m&lt;/jvmArg&gt;</span><br><span class="line">        &lt;/jvmArgs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven-compiler/" data-id="ck272f0v4002sy0ji51d5x5cd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-升级python" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
@@ -97,6 +141,50 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-maven" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/26/maven/" class="article-date">
+  <time datetime="2019-05-26T14:51:52.000Z" itemprop="datePublished">2019-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/26/maven/">maven</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="阿里云配置"><a href="#阿里云配置" class="headerlink" title="阿里云配置"></a>阿里云配置</h3><p><a href="https://developer.aliyun.com/mvn/guide" target="_blank" rel="noopener">https://developer.aliyun.com/mvn/guide</a></p>
+<p>put below in pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">       &lt;repository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/repository&gt;</span><br><span class="line"></span><br><span class="line">   &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line">   &lt;pluginRepositories&gt;</span><br><span class="line">       &lt;pluginRepository&gt;</span><br><span class="line">           &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">           &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">           &lt;layout&gt;default&lt;/layout&gt;</span><br><span class="line">           &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">           &lt;snapshots&gt;</span><br><span class="line">               &lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">           &lt;/snapshots&gt;</span><br><span class="line">           &lt;releases&gt;</span><br><span class="line">               &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">           &lt;/releases&gt;</span><br><span class="line">       &lt;/pluginRepository&gt;</span><br><span class="line">   &lt;/pluginRepositories&gt;</span><br></pre></td></tr></table></figure></p>
+<p>如果setting统一配置如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirror&gt;</span><br><span class="line">  &lt;id&gt;aliyunmaven&lt;/id&gt;</span><br><span class="line">  &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line">  &lt;name&gt;阿里云公共仓库&lt;/name&gt;</span><br><span class="line">  &lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;</span><br><span class="line">&lt;/mirror&gt;</span><br></pre></td></tr></table></figure></p>
+<p>put below in build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="maven搜索顺序"><a href="#maven搜索顺序" class="headerlink" title="maven搜索顺序"></a>maven搜索顺序</h3><p><a href="https://cloud.tencent.com/developer/article/1532388" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1532388</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mengxu2018.github.io/2019/05/26/maven/" data-id="ckwefvi0a0007no8ejordy9j2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
 
     </footer>
   </div>
@@ -405,108 +493,6 @@
 
 
   
-    <article id="post-httpd-tomcat" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/httpd-tomcat/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/httpd-tomcat/">httpd tomcat</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="install-apache-on-VM1"><a href="#install-apache-on-VM1" class="headerlink" title="install apache on VM1"></a>install apache on VM1</h2><p>yum install -y httpd</p>
-<h2 id="start-apache"><a href="#start-apache" class="headerlink" title="start apache"></a>start apache</h2><p>sudo systemctl start httpd</p>
-<h2 id="starts-at-boot"><a href="#starts-at-boot" class="headerlink" title="starts at boot"></a>starts at boot</h2><p>sudo systemctl enable httpd</p>
-<h2 id="install-apxs"><a href="#install-apxs" class="headerlink" title="install apxs"></a>install apxs</h2><p>yum install httpd-devel</p>
-<ul>
-<li>find / -name apxs</li>
-<li>which apxs  (this file path will be used in ./configure below)</li>
-</ul>
-<h2 id="install-gcc"><a href="#install-gcc" class="headerlink" title="install gcc"></a>install gcc</h2><p>yum install -y gcc*<br>yum install autoconf<br>yum install libtool</p>
-<h2 id="install-mod-jk"><a href="#install-mod-jk" class="headerlink" title="install mod_jk"></a>install mod_jk</h2><p>wget <a href="http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz" target="_blank" rel="noopener">http://www.eu.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.46-src.tar.gz</a><br>tar -xf tomcat-connectors-1.2.46-src.tar.gz<br>cd tomcat-connectors-1.2.46-src/native<br>./buildconf.sh<br>./configure –with-apxs=/usr/bin/apxs<br>make &amp;&amp; make install<br>(find / -name mod_jk.so<br>/usr/lib64/httpd/modules/mod_jk.so)</p>
-<h2 id="Configure-httpd-conf"><a href="#Configure-httpd-conf" class="headerlink" title="Configure httpd.conf"></a>Configure httpd.conf</h2><p>Now that you’ve installed mod_jk, you need to configure it in your httpd.conf file so that you can use it.<br>You can find httpd.conf in the ‘conf’ directory of your Apache HTTPD home folder.<br>If httpd in installed by ‘yum install httpd’, this file is<br><code>/etc/httpd/conf/httpd.conf</code></p>
-<p>mod_jk requires two entities:</p>
-<ul>
-<li>mod_jk.xxx - The Apache HTTP Server module, depending on your operating system, it will be mod_jk.so, mod_jk.nlm or MOD_JK.SRVPGM (see the build section).</li>
-<li>workers.properties - A file that describes the host(s) and port(s) used by the workers (Tomcat processes). A sample workers.properties can be found under the conf directory in the source download.</li>
-</ul>
-<p>The configuration provided below, based on the Tomcat documentation, is the minimum configuration required for mod_jk to run correctly.</p>
-<p><code>#Load mod_jk module</code><br>LoadModule    jk_module  /usr/lib64/httpd/modules/mod_jk.so<br><code># Add the module (activate this lne for Apache 1.3)</code><br><code># AddModule     mod_jk.c</code><br><code># Where to find workers.properties</code><br>JkWorkersFile /etc/httpd/conf/workers.properties<br><code># Where to put jk shared memory</code><br>JkShmFile     /var/log/httpd/mod_jk.shm<br><code># Where to put jk logs</code><br>JkLogFile     /var/log/httpd/mod_jk.log<br><code># Set the jk log level [debug/error/info]</code><br>JkLogLevel    info<br><code># Send requests for context /examples to worker named worker1</code><br><code># 至于为什么 balancer，https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</code><br>JkMount  /playbook/* balancer</p>
-<h2 id="set-up-two-tomcat-on-VM2-VM3"><a href="#set-up-two-tomcat-on-VM2-VM3" class="headerlink" title="set up two tomcat on VM2, VM3"></a>set up two tomcat on VM2, VM3</h2><p>wget <a href="http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz" target="_blank" rel="noopener">http://ftp.mirror.tw/pub/apache/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz</a></p>
-<h2 id="Configure-workers-properties"><a href="#Configure-workers-properties" class="headerlink" title="Configure workers.properties"></a>Configure workers.properties</h2><p>The workers.properties file defines a list of Tomcat ‘workers’ to which Apache HTTPD can pass requests.<br>8009 is the ajp port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">worker.node1.host=192.168.77.131</span><br><span class="line">worker.node1.port=8009</span><br><span class="line"></span><br><span class="line">worker.node2.host=192.168.77.132</span><br><span class="line">worker.node2.port=8009</span><br></pre></td></tr></table></figure></p>
-<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>start two tomcat<br>可以在两台tomcat里面都放一个playbook<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node1<br>第一台里面放一个webapp/playbook/1.txt, 内容是I am node2<br>systemctl restart httpd<br>现在访问<br><code>http://192.168.77.130/playbook/1.txt</code><br>会发现I am node1和I am node2交替出现<br>如果强制停止一台tomcat，整个服务不会中断</p>
-<h2 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h2><p>systemctl start httpd<br>systemctl restart/start/status httpd<br><a href="https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/webserver_howto/apache.html</a><br><a href="https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration" target="_blank" rel="noopener">https://www.mulesoft.com/tcat/apache-tomcat-mod-jk-connector-configuration</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/workers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/workers.html</a><br><a href="https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html" target="_blank" rel="noopener">https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/httpd-tomcat/" data-id="ck272f0uc0018y0jiqq3wnzzq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/">tomcat</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-java-log" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/26/java-log/" class="article-date">
-  <time datetime="2019-03-26T14:51:52.000Z" itemprop="datePublished">2019-03-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/26/java-log/">java log implemention</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="logback-for-spring-data-jpa"><a href="#logback-for-spring-data-jpa" class="headerlink" title="logback for spring data jpa"></a>logback for spring data jpa</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;appender name=”STDOUT” class=”ch.qos.logback.core.ConsoleAppender”&gt;</span><br><span class="line"> &lt;encoder class=”ch.qos.logback.classic.encoder.PatternLayoutEncoder”&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n</span><br><span class="line"> &lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;appender name=”FILE” class=”ch.qos.logback.core.rolling.RollingFileAppender”&gt;</span><br><span class="line"> &lt;file&gt;$&#123;catalina.home&#125;/logs/playbook.log&lt;/file&gt;</span><br><span class="line"> &lt;rollingPolicy class=”ch.qos.logback.core.rolling.TimeBasedRollingPolicy”&gt;</span><br><span class="line"> &lt;! — daily rollover →</span><br><span class="line"> &lt;fileNamePattern&gt;$&#123;catalina.home&#125;/logs/playbook.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;</span><br><span class="line"> &lt;timeBasedFileNamingAndTriggeringPolicy</span><br><span class="line"> class=”ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP”&gt;</span><br><span class="line"> &lt;! — or whenever the file size reaches 50MB →</span><br><span class="line"> &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt;</span><br><span class="line"> &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span><br><span class="line"> &lt;! — keep 30 days’ worth of history →</span><br><span class="line"> &lt;maxHistory&gt;30&lt;/maxHistory&gt;</span><br><span class="line"> &lt;/rollingPolicy&gt;</span><br><span class="line"> &lt;encoder&gt;</span><br><span class="line"> &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125;.%M\(%line\) — %msg%n&lt;/pattern&gt;</span><br><span class="line"> &lt;/encoder&gt;</span><br><span class="line"> &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">&lt;logger name=”ch.qos.logback” level=”WARN” /&gt;</span><br><span class="line"> &lt;logger name=”com.demo.test” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.springframework.beans” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.SQL” level=”DEBUG” /&gt;</span><br><span class="line"> &lt;logger name=”org.hibernate.type.descriptor.sql” level=”TRACE” /&gt;</span><br><span class="line"> &lt;root level=”INFO”&gt;</span><br><span class="line"> &lt;appender-ref ref=”STDOUT” /&gt;</span><br><span class="line"> &lt;appender-ref ref=”FILE” /&gt;</span><br><span class="line"> &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>注意hibernate的log 需要 configure Hibernate to log via SLF4J,<br>System.setProperty(“org.jboss.logging.provider”, “slf4j”);<br>同时”hibernate.show_sql”设置为 “false”， 直接用logback,不要这种自带的控制台输出</p>
-<h2 id="tomcat-log"><a href="#tomcat-log" class="headerlink" title="tomcat log"></a>tomcat log</h2><p>所有的控制台输出都会重定向到tomcat/logs/catalina.out，但是maven tomcat7:run启动embended tomcat貌似没有这个文件<br>tocmat/logs/localhost.out 也会记录用户没有catch到的异常</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://tomcat.apache.org/tomcat-8.5-doc/logging.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-8.5-doc/logging.html</a><br><a href="https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback" target="_blank" rel="noopener">https://stackoverflow.com/questions/55411338/why-the-hibernate-does-not-work-with-logback</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://mengxu2018.github.io/2019/03/26/java-log/" data-id="ck272f0uf001fy0jilszu0w5x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -525,7 +511,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automation/">automation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hardware/">hardware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hbase/">hbase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microservices/">microservices</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/powershell/">powershell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search/">search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-boot/">spring-boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
     </div>
   </div>
 
@@ -535,7 +521,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 11.11px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 11.11px;">maven</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/OS/" style="font-size: 14.44px;">OS</a> <a href="/tags/automation/" style="font-size: 11.11px;">automation</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/database/" style="font-size: 11.11px;">database</a> <a href="/tags/docker/" style="font-size: 11.11px;">docker</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grpc/" style="font-size: 10px;">grpc</a> <a href="/tags/hadoop/" style="font-size: 10px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 11.11px;">hardware</a> <a href="/tags/hbase/" style="font-size: 10px;">hbase</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/java/" style="font-size: 17.78px;">java</a> <a href="/tags/javascript/" style="font-size: 11.11px;">javascript</a> <a href="/tags/jvm/" style="font-size: 11.11px;">jvm</a> <a href="/tags/kafka/" style="font-size: 20px;">kafka</a> <a href="/tags/kubernetes/" style="font-size: 16.67px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 15.56px;">linux</a> <a href="/tags/maven/" style="font-size: 12.22px;">maven</a> <a href="/tags/microservices/" style="font-size: 10px;">microservices</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/powershell/" style="font-size: 14.44px;">powershell</a> <a href="/tags/python/" style="font-size: 11.11px;">python</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/search/" style="font-size: 12.22px;">search</a> <a href="/tags/security/" style="font-size: 13.33px;">security</a> <a href="/tags/spark/" style="font-size: 18.89px;">spark</a> <a href="/tags/spring/" style="font-size: 12.22px;">spring</a> <a href="/tags/spring-boot/" style="font-size: 10px;">spring-boot</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
     </div>
   </div>
 
@@ -544,7 +530,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
     </div>
   </div>
 
@@ -557,23 +543,23 @@
       <ul>
         
           <li>
+            <a href="/2021/11/25/microservice-basic/">microservice basics</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/25/maven-parent-bom/">BOM dependency vs Parent Dependancy in Maven</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/06/machine-learning-basics/">machine learning basic</a>
+          </li>
+        
+          <li>
             <a href="/2021/07/09/k8s-pv/">k8s pv</a>
           </li>
         
           <li>
             <a href="/2021/07/05/kafka-leader选举/">kafka leader选举</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/26/spring-jpa/">spring jpa</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/06/kubernetes-basic-definition/">kubernetes basic</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/04/spring-boot-debug/">spring boot debug</a>
           </li>
         
       </ul>
